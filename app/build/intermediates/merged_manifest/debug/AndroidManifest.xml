@@ -35,7 +35,9 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:fontFamily="monospace"
-        android:label="Minimalist Launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:label="MISS Minimal"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.MinimalistLauncher" >

@@ -19,6 +19,7 @@ color grey_ccc
 color white
 drawable bg_border_dark
 drawable ic_flashlight
+drawable ic_launcher_background
 drawable ic_settings
 id appList
 id bottomBar
@@ -109,4 +110,7 @@ layout bottom_sheet_app_options
 layout bottom_sheet_home_options
 layout row_app
 layout row_notification
+mipmap ic_launcher
+mipmap ic_launcher_foreground
+mipmap ic_launcher_round
 style Theme.MinimalistLauncher
