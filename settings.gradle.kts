@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Minimalist Launcher"
+rootProject.name = "MISS Minimal"
 include(":app")

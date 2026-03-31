@@ -19,7 +19,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="Minimalist Launcher"
+        android:label="MISS Minimal"
         android:supportsRtl="true"
         android:theme="@style/Theme.MinimalistLauncher"
         android:fontFamily="monospace">
