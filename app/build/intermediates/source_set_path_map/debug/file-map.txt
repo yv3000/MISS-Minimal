@@ -1,0 +1,36 @@
+com.minimalist.launcher.app-core-1.12.0-0 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\res
+com.minimalist.launcher.app-recyclerview-1.3.2-1 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1967e1e8bab6fe8d88b99b81d56bec8c\transformed\recyclerview-1.3.2\res
+com.minimalist.launcher.app-jetified-emoji2-1.2.0-2 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\res
+com.minimalist.launcher.app-coordinatorlayout-1.1.0-3 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1b7e7d42c09330717c0f30c1a26b026e\transformed\coordinatorlayout-1.1.0\res
+com.minimalist.launcher.app-appcompat-1.6.1-4 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\203633569084268d91b86896c05ec691\transformed\appcompat-1.6.1\res
+com.minimalist.launcher.app-jetified-lifecycle-viewmodel-savedstate-2.6.1-5 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\26be3109208c9c191f8b0b43e1ecb0a4\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\res
+com.minimalist.launcher.app-jetified-emoji2-views-helper-1.2.0-6 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\6089b9cbeea08def7f363e7168f00484\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.minimalist.launcher.app-jetified-profileinstaller-1.3.0-7 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\res
+com.minimalist.launcher.app-jetified-lifecycle-process-2.6.1-8 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\res
+com.minimalist.launcher.app-fragment-1.3.6-9 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\72c737eacb186dd7103945ed63ad814d\transformed\fragment-1.3.6\res
+com.minimalist.launcher.app-jetified-startup-runtime-1.1.1-10 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\res
+com.minimalist.launcher.app-jetified-activity-1.8.0-11 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\7d239ef3ccc0494084f25ac27780d485\transformed\jetified-activity-1.8.0\res
+com.minimalist.launcher.app-jetified-annotation-experimental-1.3.0-12 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\830c4b38d29252fb53da59ed4d69b1e3\transformed\jetified-annotation-experimental-1.3.0\res
+com.minimalist.launcher.app-jetified-viewpager2-1.1.0-beta02-13 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8645173b583426115c371ba900fc09ae\transformed\jetified-viewpager2-1.1.0-beta02\res
+com.minimalist.launcher.app-core-runtime-2.2.0-14 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\911712ca186cc966f4cd56d73c827562\transformed\core-runtime-2.2.0\res
+com.minimalist.launcher.app-jetified-core-ktx-1.12.0-15 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\975e798d13596a55b1a0c7189cc62a5f\transformed\jetified-core-ktx-1.12.0\res
+com.minimalist.launcher.app-lifecycle-livedata-2.6.1-16 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\98171fba50fa9eccb4e122128fefcca8\transformed\lifecycle-livedata-2.6.1\res
+com.minimalist.launcher.app-material-1.11.0-17 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\res
+com.minimalist.launcher.app-constraintlayout-2.1.4-18 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\res
+com.minimalist.launcher.app-jetified-savedstate-1.2.1-19 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\af14d72c7a0d45b64fa2457ec072deaf\transformed\jetified-savedstate-1.2.1\res
+com.minimalist.launcher.app-jetified-customview-poolingcontainer-1.0.0-20 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\b1722148389ca7efcfbccbf1e06f4ecb\transformed\jetified-customview-poolingcontainer-1.0.0\res
+com.minimalist.launcher.app-jetified-flexbox-3.0.0-21 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\cca5389634f41a777199d7b9e2ea3de7\transformed\jetified-flexbox-3.0.0\res
+com.minimalist.launcher.app-cardview-1.0.0-22 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d07cd4c43e4b2c87cae5e3bf7546d876\transformed\cardview-1.0.0\res
+com.minimalist.launcher.app-transition-1.2.0-23 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d479cbd9ac619c4be5d0bb4bb11515a6\transformed\transition-1.2.0\res
+com.minimalist.launcher.app-lifecycle-viewmodel-2.6.1-24 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\dbe401a4d8a84c624f1cd8d7bb1d206f\transformed\lifecycle-viewmodel-2.6.1\res
+com.minimalist.launcher.app-lifecycle-livedata-core-2.6.1-25 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e0b751ae2c664a8650c142d2b610b275\transformed\lifecycle-livedata-core-2.6.1\res
+com.minimalist.launcher.app-drawerlayout-1.1.1-26 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e3e75efa42b136845f791508889dd489\transformed\drawerlayout-1.1.1\res
+com.minimalist.launcher.app-jetified-appcompat-resources-1.6.1-27 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\eb81125f1f1fee1fa872c08a389ecde3\transformed\jetified-appcompat-resources-1.6.1\res
+com.minimalist.launcher.app-lifecycle-runtime-2.6.1-28 X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f80208bf8a17946213742606b7a75e6e\transformed\lifecycle-runtime-2.6.1\res
+com.minimalist.launcher.app-pngs-29 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\generated\res\pngs\debug
+com.minimalist.launcher.app-resValues-30 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\generated\res\resValues\debug
+com.minimalist.launcher.app-packageDebugResources-31 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.minimalist.launcher.app-packageDebugResources-32 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.minimalist.launcher.app-merged_res-33 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\merged_res\debug
+com.minimalist.launcher.app-debug-34 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\debug\res
+com.minimalist.launcher.app-main-35 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\res

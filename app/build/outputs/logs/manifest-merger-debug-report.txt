@@ -1,0 +1,443 @@
+-- Merging decision tree log ---
+manifest
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-70:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-70:12
+MERGED from [androidx.databinding:viewbinding:8.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c6e6bb8cacbfe484df00007b8449075a\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\eb81125f1f1fee1fa872c08a389ecde3\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\203633569084268d91b86896c05ec691\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1967e1e8bab6fe8d88b99b81d56bec8c\transformed\recyclerview-1.3.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8645173b583426115c371ba900fc09ae\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.3.6] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\72c737eacb186dd7103945ed63ad814d\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.8.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\7d239ef3ccc0494084f25ac27780d485\transformed\jetified-activity-1.8.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\b1722148389ca7efcfbccbf1e06f4ecb\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\975e798d13596a55b1a0c7189cc62a5f\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\6089b9cbeea08def7f363e7168f00484\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e3e75efa42b136845f791508889dd489\transformed\drawerlayout-1.1.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1b7e7d42c09330717c0f30c1a26b026e\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8360ec519faacc3bec849c8c8a450ef9\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d479cbd9ac619c4be5d0bb4bb11515a6\transformed\transition-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\28519d95726504c7b05bdfe57fd23878\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\11fc345a2a187511f21e12d942a7ed25\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\92b82d8dceeb2e2fb724d9c65e65fcb4\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3e88cc2b7e3068ddd0600d42bd70ed6b\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\016b12d10d02d14e2f80a0afba2cfa4f\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\328bd4500e66bab9c4939613fe39dad5\transformed\customview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\af14d72c7a0d45b64fa2457ec072deaf\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e0b751ae2c664a8650c142d2b610b275\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\98171fba50fa9eccb4e122128fefcca8\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\dbe401a4d8a84c624f1cd8d7bb1d206f\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f80208bf8a17946213742606b7a75e6e\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\26be3109208c9c191f8b0b43e1ecb0a4\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\cca5389634f41a777199d7b9e2ea3de7\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\194f2f3b32eeb61cd5ef19c6205829a7\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d07cd4c43e4b2c87cae5e3bf7546d876\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c31ee264d4734c8f93ea34d44f24ae1f\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3406562d63d63a81fb039d7df847c11d\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f819406a4ee7f3be8dbce22bc443d519\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\911712ca186cc966f4cd56d73c827562\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1f70781855ba204f61d9a9e198db703e\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\0c8d3b80bb64fc1ce92ccfb0d5d8b5cf\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\afed394d9c1ce6f740d811f774879dac\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\830c4b38d29252fb53da59ed4d69b1e3\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:5:5-80
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:5:22-78
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:6:5-76
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:6:22-74
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:5-109
+	tools:ignore
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:71-106
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:22-70
+uses-permission#android.permission.CAMERA
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:8:5-64
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:8:22-62
+uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:9:5-79
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:9:22-77
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:10:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:10:22-73
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:11:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:11:22-73
+uses-permission#android.permission.BLUETOOTH
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:12:5-67
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:12:22-65
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:13:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:13:22-73
+uses-permission#android.permission.QUERY_ALL_PACKAGES
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:5-119
+	tools:ignore
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:75-116
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:22-74
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:15:5-78
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:15:22-76
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:16:5-78
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:16:22-76
+uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:17:5-84
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:17:22-82
+uses-permission#android.permission.VIBRATE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:18:5-65
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:18:22-63
+application
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:5-68:19
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:5-68:19
+MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3406562d63d63a81fb039d7df847c11d\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3406562d63d63a81fb039d7df847c11d\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+	android:fontFamily
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:9-39
+	android:extractNativeLibs
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:9-35
+	android:label
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:9-44
+	android:allowBackup
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:9-35
+	android:theme
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:9-56
+receiver#com.minimalist.launcher.BootReceiver
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:27:9-34:20
+	android:enabled
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:13-35
+	android:exported
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:13-36
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:13-41
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:31:13-33:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:32:17-78
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:32:25-76
+activity#com.minimalist.launcher.MainActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:9-50:20
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:13-49
+	android:clearTaskOnLaunch
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:39:13-45
+	android:stateNotNeeded
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:40:13-42
+	android:launchMode
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:13-44
+	android:exported
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:13-36
+	android:resumeWhilePausing
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:41:13-46
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.HOME+category:name:android.intent.category.LAUNCHER
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:44:13-49:29
+action#android.intent.action.MAIN
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:17-69
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:25-66
+category#android.intent.category.HOME
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:17-73
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:27-70
+category#android.intent.category.DEFAULT
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:17-76
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:27-73
+category#android.intent.category.LAUNCHER
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:17-77
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:27-74
+activity#com.minimalist.launcher.AppPickerActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:52:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:52:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:52:19-52
+activity#com.minimalist.launcher.QuickSettingsActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:9-95
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:57-93
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:19-56
+activity#com.minimalist.launcher.AppDrawerActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:19-52
+activity#com.minimalist.launcher.LauncherSettingsActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:9-98
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:60-96
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:19-59
+activity#com.minimalist.launcher.TimeLimitActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:19-52
+activity#com.minimalist.launcher.FocusActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:9-87
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:49-85
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:19-48
+activity#com.minimalist.launcher.NotificationPanelActivity
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:9-99
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:61-97
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:19-60
+service#com.minimalist.launcher.NotificationService
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:9-66:19
+	android:exported
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:13-36
+	android:permission
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-87
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:18-53
+intent-filter#action:name:android.service.notification.NotificationListenerService
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:13-65:29
+action#android.service.notification.NotificationListenerService
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:17-99
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:25-96
+uses-sdk
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+MERGED from [androidx.databinding:viewbinding:8.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c6e6bb8cacbfe484df00007b8449075a\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.databinding:viewbinding:8.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c6e6bb8cacbfe484df00007b8449075a\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9de0cbe1ab1ed9abc46bafe81231781e\transformed\material-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\9edabc8f42025011ae47eac4fec80b9b\transformed\constraintlayout-2.1.4\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\eb81125f1f1fee1fa872c08a389ecde3\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\eb81125f1f1fee1fa872c08a389ecde3\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\203633569084268d91b86896c05ec691\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\203633569084268d91b86896c05ec691\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1967e1e8bab6fe8d88b99b81d56bec8c\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1967e1e8bab6fe8d88b99b81d56bec8c\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8645173b583426115c371ba900fc09ae\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8645173b583426115c371ba900fc09ae\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\72c737eacb186dd7103945ed63ad814d\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\72c737eacb186dd7103945ed63ad814d\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.8.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\7d239ef3ccc0494084f25ac27780d485\transformed\jetified-activity-1.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\7d239ef3ccc0494084f25ac27780d485\transformed\jetified-activity-1.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\b1722148389ca7efcfbccbf1e06f4ecb\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\b1722148389ca7efcfbccbf1e06f4ecb\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\975e798d13596a55b1a0c7189cc62a5f\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\975e798d13596a55b1a0c7189cc62a5f\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\6089b9cbeea08def7f363e7168f00484\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\6089b9cbeea08def7f363e7168f00484\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e3e75efa42b136845f791508889dd489\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e3e75efa42b136845f791508889dd489\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1b7e7d42c09330717c0f30c1a26b026e\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1b7e7d42c09330717c0f30c1a26b026e\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8360ec519faacc3bec849c8c8a450ef9\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\8360ec519faacc3bec849c8c8a450ef9\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d479cbd9ac619c4be5d0bb4bb11515a6\transformed\transition-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d479cbd9ac619c4be5d0bb4bb11515a6\transformed\transition-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\28519d95726504c7b05bdfe57fd23878\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\28519d95726504c7b05bdfe57fd23878\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\11fc345a2a187511f21e12d942a7ed25\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\11fc345a2a187511f21e12d942a7ed25\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\92b82d8dceeb2e2fb724d9c65e65fcb4\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\92b82d8dceeb2e2fb724d9c65e65fcb4\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3e88cc2b7e3068ddd0600d42bd70ed6b\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3e88cc2b7e3068ddd0600d42bd70ed6b\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\016b12d10d02d14e2f80a0afba2cfa4f\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\016b12d10d02d14e2f80a0afba2cfa4f\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\328bd4500e66bab9c4939613fe39dad5\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\328bd4500e66bab9c4939613fe39dad5\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\af14d72c7a0d45b64fa2457ec072deaf\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\af14d72c7a0d45b64fa2457ec072deaf\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e0b751ae2c664a8650c142d2b610b275\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\e0b751ae2c664a8650c142d2b610b275\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\98171fba50fa9eccb4e122128fefcca8\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\98171fba50fa9eccb4e122128fefcca8\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\dbe401a4d8a84c624f1cd8d7bb1d206f\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\dbe401a4d8a84c624f1cd8d7bb1d206f\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f80208bf8a17946213742606b7a75e6e\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f80208bf8a17946213742606b7a75e6e\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\26be3109208c9c191f8b0b43e1ecb0a4\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\26be3109208c9c191f8b0b43e1ecb0a4\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\cca5389634f41a777199d7b9e2ea3de7\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\cca5389634f41a777199d7b9e2ea3de7\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\194f2f3b32eeb61cd5ef19c6205829a7\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\194f2f3b32eeb61cd5ef19c6205829a7\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d07cd4c43e4b2c87cae5e3bf7546d876\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\d07cd4c43e4b2c87cae5e3bf7546d876\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c31ee264d4734c8f93ea34d44f24ae1f\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\c31ee264d4734c8f93ea34d44f24ae1f\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3406562d63d63a81fb039d7df847c11d\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\3406562d63d63a81fb039d7df847c11d\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f819406a4ee7f3be8dbce22bc443d519\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\f819406a4ee7f3be8dbce22bc443d519\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\911712ca186cc966f4cd56d73c827562\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\911712ca186cc966f4cd56d73c827562\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1f70781855ba204f61d9a9e198db703e\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\1f70781855ba204f61d9a9e198db703e\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\0c8d3b80bb64fc1ce92ccfb0d5d8b5cf\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\0c8d3b80bb64fc1ce92ccfb0d5d8b5cf\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\afed394d9c1ce6f740d811f774879dac\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\afed394d9c1ce6f740d811f774879dac\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\830c4b38d29252fb53da59ed4d69b1e3\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\830c4b38d29252fb53da59ed4d69b1e3\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\759681a65a75742db4bf3975bba2858e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\199f3744116dbd66fc532d5d39883a86\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+permission#com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+uses-permission#com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\04b5936cf70585fe5227ada488037a2d\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\697d8b703d7c5fd65dd3c9c0268f937c\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\transforms-3\641718f90b0e8f3f1ce0d90417523426\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92

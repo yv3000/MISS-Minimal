@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey_444">#444444</color>
+    <color name="grey_555">#555555</color>
+    <color name="grey_666">#666666</color>
+    <color name="grey_aaa">#aaaaaa</color>
+    <color name="grey_ccc">#cccccc</color>
+    <color name="grey_2a2a2a">#2a2a2a</color>
+    <color name="grey_1a1a1a">#1a1a1a</color>
+    <color name="grey_111">#111111</color>
+    <color name="grey_333">#333333</color>
+</resources>
