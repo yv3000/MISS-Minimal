@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.minimalist.launcher.R;
@@ -43,6 +44,12 @@ public final class ActivityMainBinding implements ViewBinding {
   public final FrameLayout fullscreenTimeOverlay;
 
   @NonNull
+  public final Guideline guideBottom;
+
+  @NonNull
+  public final Guideline guideTop;
+
+  @NonNull
   public final TextView tvAppCamera;
 
   @NonNull
@@ -72,9 +79,10 @@ public final class ActivityMainBinding implements ViewBinding {
   private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull LinearLayout appList,
       @NonNull LinearLayout bottomBar, @NonNull TextView btnExit, @NonNull TextView btnFocus,
       @NonNull TextView btnTime, @NonNull View dateDivider,
-      @NonNull FrameLayout fullscreenTimeOverlay, @NonNull TextView tvAppCamera,
-      @NonNull TextView tvAppPhone, @NonNull TextView tvAppSlot1, @NonNull TextView tvAppSlot2,
-      @NonNull TextView tvAppSlot3, @NonNull TextView tvDate, @NonNull TextView tvFullscreenDate,
+      @NonNull FrameLayout fullscreenTimeOverlay, @NonNull Guideline guideBottom,
+      @NonNull Guideline guideTop, @NonNull TextView tvAppCamera, @NonNull TextView tvAppPhone,
+      @NonNull TextView tvAppSlot1, @NonNull TextView tvAppSlot2, @NonNull TextView tvAppSlot3,
+      @NonNull TextView tvDate, @NonNull TextView tvFullscreenDate,
       @NonNull TextView tvFullscreenTime, @NonNull TextView tvTime) {
     this.rootView = rootView;
     this.appList = appList;
@@ -84,6 +92,8 @@ public final class ActivityMainBinding implements ViewBinding {
     this.btnTime = btnTime;
     this.dateDivider = dateDivider;
     this.fullscreenTimeOverlay = fullscreenTimeOverlay;
+    this.guideBottom = guideBottom;
+    this.guideTop = guideTop;
     this.tvAppCamera = tvAppCamera;
     this.tvAppPhone = tvAppPhone;
     this.tvAppSlot1 = tvAppSlot1;
@@ -164,6 +174,18 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.guideBottom;
+      Guideline guideBottom = ViewBindings.findChildViewById(rootView, id);
+      if (guideBottom == null) {
+        break missingId;
+      }
+
+      id = R.id.guideTop;
+      Guideline guideTop = ViewBindings.findChildViewById(rootView, id);
+      if (guideTop == null) {
+        break missingId;
+      }
+
       id = R.id.tvAppCamera;
       TextView tvAppCamera = ViewBindings.findChildViewById(rootView, id);
       if (tvAppCamera == null) {
@@ -219,8 +241,9 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ConstraintLayout) rootView, appList, bottomBar, btnExit,
-          btnFocus, btnTime, dateDivider, fullscreenTimeOverlay, tvAppCamera, tvAppPhone,
-          tvAppSlot1, tvAppSlot2, tvAppSlot3, tvDate, tvFullscreenDate, tvFullscreenTime, tvTime);
+          btnFocus, btnTime, dateDivider, fullscreenTimeOverlay, guideBottom, guideTop, tvAppCamera,
+          tvAppPhone, tvAppSlot1, tvAppSlot2, tvAppSlot3, tvDate, tvFullscreenDate,
+          tvFullscreenTime, tvTime);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

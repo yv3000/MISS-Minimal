@@ -3217,6 +3217,7 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id boxStrictWarning
 id btn10m
 id btn15m
 id btn1m
@@ -3232,6 +3233,7 @@ id btnChangeApp
 id btnCustom
 id btnData
 id btnDnd
+id btnEnableStrict
 id btnExit
 id btnFlashlight
 id btnFocus
@@ -3368,6 +3370,8 @@ id graph_wrap
 id group_divider
 id grouping
 id groups
+id guideBottom
+id guideTop
 id header_title
 id hide_ime_id
 id hideable
@@ -3395,6 +3399,7 @@ id jumpToStart
 id labeled
 id layout
 id layoutStopwatch
+id layoutStrict
 id layoutTimer
 id layoutTimerInput
 id left
@@ -3608,7 +3613,9 @@ id submit_area
 id supportScrollUp
 id tabMode
 id tabStopwatch
+id tabStrict
 id tabTimer
+id tabsLayout
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
 id tag_accessibility_heading
@@ -3671,6 +3678,9 @@ id tvFontSizeState
 id tvFullscreenDate
 id tvFullscreenTime
 id tvHeader
+id tvStrictCountdown
+id tvStrictModeTitle
+id tvStrictStatus
 id tvTime
 id tvTimeCount
 id tvTimeUp
@@ -5350,3 +5360,4 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml device_admin

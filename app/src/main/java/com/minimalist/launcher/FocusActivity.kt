@@ -1,6 +1,7 @@
 package com.minimalist.launcher
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -8,11 +9,14 @@ import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.minimalist.launcher.databinding.ActivityFocusBinding
 
 class FocusActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFocusBinding
+    private val REQUEST_DEVICE_ADMIN = 2001
+    private var pendingStrictStart = false
     private var seconds = 0
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -44,6 +48,25 @@ class FocusActivity : AppCompatActivity() {
         }
     }
 
+    private var strictRemainingSeconds = 0L
+    private val strictHandler = Handler(Looper.getMainLooper())
+    private val strictRunnable = object : Runnable {
+        override fun run() {
+            if (strictRemainingSeconds <= 0) {
+                StrictModeManager(this@FocusActivity).endStrictMode {
+                    binding.tvStrictCountdown.text = "DONE"
+                    binding.tvStrictStatus.text = "strict mode ended"
+                }
+                return
+            }
+            strictRemainingSeconds--
+            val m = strictRemainingSeconds / 60
+            val s = strictRemainingSeconds % 60
+            binding.tvStrictCountdown.text = String.format("%02d:%02d", m, s)
+            strictHandler.postDelayed(this, 1000)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFocusBinding.inflate(layoutInflater)
@@ -53,15 +76,32 @@ class FocusActivity : AppCompatActivity() {
         binding.tabStopwatch.setOnClickListener {
             binding.layoutStopwatch.visibility = View.VISIBLE
             binding.layoutTimer.visibility = View.GONE
+            binding.layoutStrict.visibility = View.GONE
             binding.tabStopwatch.setTextColor(resources.getColor(R.color.white, null))
             binding.tabTimer.setTextColor(resources.getColor(R.color.grey_555, null))
+            binding.tabStrict.setTextColor(resources.getColor(R.color.grey_555, null))
         }
 
         binding.tabTimer.setOnClickListener {
             binding.layoutStopwatch.visibility = View.GONE
             binding.layoutTimer.visibility = View.VISIBLE
+            binding.layoutStrict.visibility = View.GONE
             binding.tabStopwatch.setTextColor(resources.getColor(R.color.grey_555, null))
             binding.tabTimer.setTextColor(resources.getColor(R.color.white, null))
+            binding.tabStrict.setTextColor(resources.getColor(R.color.grey_555, null))
+        }
+
+        binding.tabStrict.setOnClickListener {
+            binding.layoutStopwatch.visibility = View.GONE
+            binding.layoutTimer.visibility = View.GONE
+            binding.layoutStrict.visibility = View.VISIBLE
+            binding.tabStopwatch.setTextColor(resources.getColor(R.color.grey_555, null))
+            binding.tabTimer.setTextColor(resources.getColor(R.color.grey_555, null))
+            binding.tabStrict.setTextColor(resources.getColor(R.color.white, null))
+
+            binding.boxStrictWarning.visibility = View.VISIBLE
+            binding.btnEnableStrict.visibility = View.VISIBLE
+            binding.tvStrictCountdown.visibility = View.GONE
         }
 
         // Stopwatch actions
@@ -131,6 +171,123 @@ class FocusActivity : AppCompatActivity() {
         binding.btnTimerResume.setOnClickListener { resumeTimer() }
         binding.btnTimerStop.setOnClickListener { resetTimer() }
         binding.btnTimerReset.setOnClickListener { resetTimer() }
+
+        // Strict mode actions
+        binding.btnEnableStrict.setOnClickListener {
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val adminComponent = android.content.ComponentName(this, MissDeviceAdmin::class.java)
+
+            if (!dpm.isAdminActive(adminComponent)) {
+                // Not admin yet - request it
+                pendingStrictStart = true
+                val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
+                intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_ADD_EXPLANATION, "MISS Minimal needs this to block camera and distractions during Strict Mode.")
+                startActivityForResult(intent, REQUEST_DEVICE_ADMIN)
+                return@setOnClickListener
+            }
+            // Already admin - show confirmation dialog
+            showStrictConfirmDialog()
+        }
+    }
+
+    private fun showStrictConfirmDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Are you sure?")
+            .setMessage("Calls, messages and all notifications will be silenced for 25 minutes.\nThis cannot be cancelled.")
+            .setPositiveButton("YES, BLOCK EVERYTHING") { _, _ ->
+                startStrictMode()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+            .window?.setBackgroundDrawableResource(android.R.color.black)
+    }
+
+    fun startStrictMode() {
+        // Check DND permission
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+        if (!nm.isNotificationPolicyAccessGranted) {
+            startActivity(Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+            android.widget.Toast.makeText(this,
+                "Grant DND access, then enable Strict Mode again",
+                android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Check Device Admin
+        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+        val adminComp = android.content.ComponentName(this, MissDeviceAdmin::class.java)
+        if (!dpm.isAdminActive(adminComp)) {
+            pendingStrictStart = true
+            val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+            intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComp)
+            intent.putExtra(
+                android.app.admin.DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                "MISS Minimal needs Device Admin to block camera and distractions during Strict Mode.")
+            startActivityForResult(intent, REQUEST_DEVICE_ADMIN)
+            return
+        }
+
+        // Check overlay permission
+        if (android.os.Build.VERSION.SDK_INT >= 23 && !android.provider.Settings.canDrawOverlays(this)) {
+            startActivityForResult(
+                Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    android.net.Uri.parse("package:$packageName")), 3001)
+            android.widget.Toast.makeText(this,
+                "Grant overlay permission, then enable again",
+                android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // All permissions OK — enable DND
+        nm.setInterruptionFilter(android.app.NotificationManager.INTERRUPTION_FILTER_NONE)
+
+        // Disable camera
+        if (dpm.isAdminActive(adminComp)) {
+            dpm.setCameraDisabled(adminComp, true)
+        }
+
+        // Save state
+        getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("strict_active", true)
+            .apply()
+
+        // Start overlay service
+        val svc = Intent(this, StrictModeOverlayService::class.java)
+        svc.putExtra("seconds", 25 * 60)
+        startService(svc)
+
+        // Close FocusActivity — overlay takes over
+        finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_DEVICE_ADMIN) {
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val adminComponent = android.content.ComponentName(this, MissDeviceAdmin::class.java)
+            if (dpm.isAdminActive(adminComponent)) {
+                if (pendingStrictStart) {
+                    pendingStrictStart = false
+                    showStrictConfirmDialog()
+                }
+            } else {
+                pendingStrictStart = false
+                android.widget.Toast.makeText(this, "Device Admin required for Strict Mode", android.widget.Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun startStrictCountdown(seconds: Long) {
+        binding.boxStrictWarning.visibility = View.GONE
+        binding.btnEnableStrict.visibility = View.GONE
+        binding.tvStrictCountdown.visibility = View.VISIBLE
+        binding.tvStrictStatus.text = "all distractions blocked"
+        
+        strictRemainingSeconds = seconds
+        strictHandler.removeCallbacks(strictRunnable)
+        strictHandler.post(strictRunnable)
     }
 
     private fun styleNumberPicker(picker: android.widget.NumberPicker) {
@@ -249,10 +406,15 @@ class FocusActivity : AppCompatActivity() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
         blinkHandler.removeCallbacks(blinkRunnable)
+        strictHandler.removeCallbacks(strictRunnable)
         timerRunning = false
     }
 
     override fun onBackPressed() {
+        if (StrictModeOverlayService.isRunning) {
+            // Cannot go back during strict mode
+            return
+        }
         super.onBackPressed()
         overridePendingTransition(0, R.anim.slide_down_exit)
     }
@@ -265,6 +427,9 @@ class FocusActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         applyFontSize()
+        binding.boxStrictWarning.visibility = View.VISIBLE
+        binding.btnEnableStrict.visibility = View.VISIBLE
+        binding.tvStrictCountdown.visibility = View.GONE
     }
 
     fun applyFontSize() {

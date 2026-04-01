@@ -62,17 +62,72 @@ class MainActivity : AppCompatActivity() {
         handler.post(timeRunnable)
         
         binding.tvTime.textSize = 72f
-        binding.tvDate.textSize = 11f
+        binding.tvDate.textSize = 16f
+
 
         if (!isDefaultLauncher()) {
             requestLauncherRole()
         }
+
+        hideSystemUI()
     }
 
     override fun onResume() {
         super.onResume()
         applyFontSize()
         updateHomescreenApps()
+        startNotificationBlocker()
+        hideSystemUI()
+        
+        if (isDefaultLauncher()) {
+            checkAllPermissions()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!StrictModeOverlayService.isRunning) {
+            stopNotificationBlocker()
+        }
+    }
+    
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 3001) {
+            if (Build.VERSION.SDK_INT >= 23 && Settings.canDrawOverlays(this)) {
+                startNotificationBlocker()
+            }
+        }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (!hasFocus) {
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                hideSystemUI()
+            }, 50)
+        } else {
+            hideSystemUI()
+            startNotificationBlocker()
+        }
+    }
+
+    private fun hideSystemUI() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.let {
+                it.hide(android.view.WindowInsets.Type.statusBars() or android.view.WindowInsets.Type.navigationBars())
+                it.systemBarsBehavior = android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+        window.decorView.systemUiVisibility = (
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            or View.SYSTEM_UI_FLAG_FULLSCREEN
+            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        )
     }
 
     private fun requestLauncherRole() {
@@ -98,6 +153,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(timeRunnable)
+        stopNotificationBlocker()
     }
 
     override fun onBackPressed() {
@@ -123,6 +179,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnExit.setOnClickListener { animateClick(it) {
+            stopNotificationBlocker()
             val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
                 .setMessage("Switch to default launcher?")
                 .setPositiveButton("Yes") { _, _ ->
@@ -350,5 +407,73 @@ class MainActivity : AppCompatActivity() {
                 applyToAllTextViews(view.getChildAt(i), size)
             }
         }
+    }
+
+    fun startNotificationBlocker() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (!Settings.canDrawOverlays(this)) {
+                // Request overlay permission
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    android.net.Uri.parse("package:$packageName")
+                )
+                startActivityForResult(intent, 3001)
+                return
+            }
+        }
+        val intent = Intent(this, NotificationBlockerService::class.java)
+        startService(intent)
+    }
+
+    fun stopNotificationBlocker() {
+        val intent = Intent(this, NotificationBlockerService::class.java)
+        intent.action = "STOP"
+        startService(intent)
+    }
+
+    fun checkAllPermissions() {
+        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("permissions_done", false)) 
+            return
+
+        // Step 1 — Overlay permission (for notif blocker)
+        if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("MISS Minimal")
+                .setMessage("Allow 'Display over other apps' to block system notification panel while using launcher.")
+                .setPositiveButton("Grant") { _, _ ->
+                    startActivityForResult(
+                        Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            android.net.Uri.parse("package:$packageName")), 3001)
+                }.setCancelable(false).show()
+            return
+        }
+
+        // Step 2 — DND permission
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+        if (!nm.isNotificationPolicyAccessGranted) {
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("MISS Minimal")
+                .setMessage("Allow Do Not Disturb access for Strict Mode to silence all calls and notifications.")
+                .setPositiveButton("Grant") { _, _ ->
+                    startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+                }.setNegativeButton("Skip", null).show()
+        }
+
+        // Step 3 — Device Admin (for strict mode camera disable)
+        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+        val adminComp = android.content.ComponentName(this, MissDeviceAdmin::class.java)
+        if (!dpm.isAdminActive(adminComp)) {
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("MISS Minimal")
+                .setMessage("Activate Device Admin to enable camera blocking in Strict Mode. You can deactivate this anytime in phone settings.")
+                .setPositiveButton("Activate") { _, _ ->
+                    val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+                    intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComp)
+                    startActivityForResult(intent, 2001)
+                }.setNegativeButton("Skip", null).show()
+        }
+
+        prefs.edit().putBoolean("permissions_done", true).apply()
     }
 }

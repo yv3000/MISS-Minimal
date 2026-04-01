@@ -6,12 +6,25 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92"/>
+
     <EditText
         android:id="@+id/etSearch"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/bg_border_dark"
         android:fontFamily="monospace"
         android:hint="search apps..."
@@ -21,19 +34,20 @@
         android:textSize="14sp"
         android:singleLine="true"
         android:inputType="textVisiblePassword"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/guideTop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvApps"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearch" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/etSearch"
+        app:layout_constraintBottom_toTopOf="@id/guideBottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/btnSettings"
