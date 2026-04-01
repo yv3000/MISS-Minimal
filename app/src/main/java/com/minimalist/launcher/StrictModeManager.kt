@@ -22,7 +22,7 @@ class StrictModeManager(private val context: Context) {
     private val adminComponent = ComponentName(context, MissDeviceAdmin::class.java)
     private val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-    private val prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
 
     fun startStrictMode(): Boolean {
         if (nm.isNotificationPolicyAccessGranted) {

@@ -3400,6 +3400,7 @@ id labeled
 id layout
 id layoutStopwatch
 id layoutStrict
+id layoutStrictActive
 id layoutTimer
 id layoutTimerInput
 id left
@@ -3678,7 +3679,9 @@ id tvFontSizeState
 id tvFullscreenDate
 id tvFullscreenTime
 id tvHeader
+id tvOverlayTimer
 id tvStrictCountdown
+id tvStrictDescription
 id tvStrictModeTitle
 id tvStrictStatus
 id tvTime
@@ -3912,6 +3915,7 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout overlay_strict_mode
 layout row_app
 layout row_notification
 layout select_dialog_item_material
@@ -3949,6 +3953,7 @@ string abc_searchview_description_voice
 string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
+string accessibility_description
 string androidx_startup
 string appbar_scrolling_view_behavior
 string bottom_sheet_behavior
@@ -5360,4 +5365,5 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml accessibility_service_config
 xml device_admin

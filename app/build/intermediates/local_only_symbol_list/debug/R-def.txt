@@ -67,6 +67,7 @@ id guideBottom
 id guideTop
 id layoutStopwatch
 id layoutStrict
+id layoutStrictActive
 id layoutTimer
 id layoutTimerInput
 id pickerHours
@@ -97,7 +98,9 @@ id tvFontSizeState
 id tvFullscreenDate
 id tvFullscreenTime
 id tvHeader
+id tvOverlayTimer
 id tvStrictCountdown
+id tvStrictDescription
 id tvStrictModeTitle
 id tvStrictStatus
 id tvTime
@@ -118,10 +121,13 @@ layout activity_quick_settings
 layout activity_time_limit
 layout bottom_sheet_app_options
 layout bottom_sheet_home_options
+layout overlay_strict_mode
 layout row_app
 layout row_notification
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
+string accessibility_description
 style Theme.MinimalistLauncher
+xml accessibility_service_config
 xml device_admin

@@ -4,7 +4,7 @@
             "outputFile": "com.minimalist.launcher.app-mergeDebugResources-31:/values-v28/values-v28.xml",
             "map": [
                 {
-                    "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\caches\\transforms-3\\203633569084268d91b86896c05ec691\\transformed\\appcompat-1.6.1\\res\\values-v28\\values-v28.xml",
+                    "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\caches\\9.0-milestone-1\\transforms\\067fd224697f47bf71b5649652ac6a15\\transformed\\appcompat-1.6.1\\res\\values-v28\\values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,8",
                         "startColumns": "4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\caches\\transforms-3\\9de0cbe1ab1ed9abc46bafe81231781e\\transformed\\material-1.11.0\\res\\values-v28\\values-v28.xml",
+                    "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\caches\\9.0-milestone-1\\transforms\\793205836a99412d80353f324bc2d9d6\\transformed\\material-1.11.0\\res\\values-v28\\values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",

@@ -82,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         if (isDefaultLauncher()) {
             checkAllPermissions()
         }
+        MissLauncherApp.blockNotifPanel = true
+        checkAccessibilityPermission()
     }
 
     override fun onPause() {
@@ -89,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         if (!StrictModeOverlayService.isRunning) {
             stopNotificationBlocker()
         }
+        MissLauncherApp.blockNotifPanel = false
     }
     
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -179,20 +182,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.btnExit.setOnClickListener { animateClick(it) {
-            stopNotificationBlocker()
-            val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-                .setMessage("Switch to default launcher?")
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setMessage("Exit to system launcher?")
                 .setPositiveButton("Yes") { _, _ ->
-                    val intent = Intent(Intent.ACTION_MAIN)
-                    intent.addCategory(Intent.CATEGORY_HOME)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    packageManager.clearPackagePreferredActivities(packageName)
-                    startActivity(intent)
+                    MissLauncherApp.blockNotifPanel = false
+                    stopNotificationBlocker()
+                    
+                    try {
+                        val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        startActivity(Intent(Settings.ACTION_SETTINGS))
+                    }
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
-            
-            dialog.window?.setBackgroundDrawableResource(android.R.color.black)
+                .window?.setBackgroundDrawableResource(android.R.color.black)
         }}
 
         binding.btnFocus.setOnClickListener { animateClick(it) {
@@ -475,5 +480,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         prefs.edit().putBoolean("permissions_done", true).apply()
+    }
+    fun checkAccessibilityPermission() {
+        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("asked_accessibility", false)) return
+        if (!isAccessibilityEnabled()) {
+            prefs.edit().putBoolean("asked_accessibility", true).apply()
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("MISS Minimal")
+                .setMessage("Enable Accessibility Service to prevent system notification panel from opening while launcher is active.\n\nSettings → Accessibility → MISS Minimal → ON")
+                .setPositiveButton("Open Settings") { _, _ ->
+                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                }
+                .setNegativeButton("Skip", null)
+                .show()
+        }
+    }
+
+    fun isAccessibilityEnabled(): Boolean {
+        val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as android.view.accessibility.AccessibilityManager
+        val enabledServices = Settings.Secure.getString(
+            contentResolver,
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+        ) ?: return false
+        return enabledServices.contains(packageName)
     }
 }

@@ -251,15 +251,21 @@ class FocusActivity : AppCompatActivity() {
         getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
             .edit()
             .putBoolean("strict_active", true)
+            .putLong("strict_end", System.currentTimeMillis() + 25 * 60 * 1000L)
             .apply()
 
-        // Start overlay service
-        val svc = Intent(this, StrictModeOverlayService::class.java)
-        svc.putExtra("seconds", 25 * 60)
-        startService(svc)
+        // Switch to countdown UI within FocusActivity
+        showStrictCountdownUI()
+        startStrictCountdown(25 * 60)
+    }
 
-        // Close FocusActivity — overlay takes over
-        finish()
+    fun showStrictCountdownUI() {
+        binding.tabStopwatch.visibility = View.GONE
+        binding.tabTimer.visibility = View.GONE
+        binding.tabStrict.visibility = View.GONE
+        binding.boxStrictWarning.visibility = View.GONE
+        binding.btnEnableStrict.visibility = View.GONE
+        binding.layoutStrictActive.visibility = View.VISIBLE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -411,7 +417,8 @@ class FocusActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (StrictModeOverlayService.isRunning) {
+        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("strict_active", false)) {
             // Cannot go back during strict mode
             return
         }
@@ -420,6 +427,10 @@ class FocusActivity : AppCompatActivity() {
     }
 
     override fun finish() {
+        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("strict_active", false)) {
+            return // prevent finish during strict mode
+        }
         super.finish()
         overridePendingTransition(0, R.anim.slide_down_exit)
     }
@@ -427,9 +438,23 @@ class FocusActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         applyFontSize()
-        binding.boxStrictWarning.visibility = View.VISIBLE
-        binding.btnEnableStrict.visibility = View.VISIBLE
-        binding.tvStrictCountdown.visibility = View.GONE
+        
+        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("strict_active", false)) {
+            val remaining = (prefs.getLong("strict_end", 0) - System.currentTimeMillis()) / 1000
+            if (remaining > 0) {
+                showStrictCountdownUI()
+                startStrictCountdown(remaining)
+            } else {
+                StrictModeManager(this).endStrictMode {}
+            }
+        } else {
+            binding.boxStrictWarning.visibility = View.VISIBLE
+            binding.btnEnableStrict.visibility = View.VISIBLE
+            if (::binding.isInitialized && binding.layoutStrictActive != null) {
+                 binding.layoutStrictActive.visibility = View.GONE
+            }
+        }
     }
 
     fun applyFontSize() {

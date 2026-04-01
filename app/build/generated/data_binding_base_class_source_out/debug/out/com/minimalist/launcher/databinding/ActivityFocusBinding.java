@@ -68,6 +68,9 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final LinearLayout layoutStrict;
 
   @NonNull
+  public final LinearLayout layoutStrictActive;
+
+  @NonNull
   public final LinearLayout layoutTimer;
 
   @NonNull
@@ -98,6 +101,9 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final TextView tvStrictCountdown;
 
   @NonNull
+  public final TextView tvStrictDescription;
+
+  @NonNull
   public final TextView tvStrictModeTitle;
 
   @NonNull
@@ -120,11 +126,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       @NonNull TextView btnTimerResume, @NonNull TextView btnTimerStart,
       @NonNull TextView btnTimerStop, @NonNull Guideline guideBottom, @NonNull Guideline guideTop,
       @NonNull LinearLayout layoutStopwatch, @NonNull LinearLayout layoutStrict,
-      @NonNull LinearLayout layoutTimer, @NonNull LinearLayout layoutTimerInput,
-      @NonNull NumberPicker pickerHours, @NonNull NumberPicker pickerMinutes,
-      @NonNull NumberPicker pickerSeconds, @NonNull TextView tabStopwatch,
-      @NonNull TextView tabStrict, @NonNull TextView tabTimer, @NonNull LinearLayout tabsLayout,
-      @NonNull TextView tvStrictCountdown, @NonNull TextView tvStrictModeTitle,
+      @NonNull LinearLayout layoutStrictActive, @NonNull LinearLayout layoutTimer,
+      @NonNull LinearLayout layoutTimerInput, @NonNull NumberPicker pickerHours,
+      @NonNull NumberPicker pickerMinutes, @NonNull NumberPicker pickerSeconds,
+      @NonNull TextView tabStopwatch, @NonNull TextView tabStrict, @NonNull TextView tabTimer,
+      @NonNull LinearLayout tabsLayout, @NonNull TextView tvStrictCountdown,
+      @NonNull TextView tvStrictDescription, @NonNull TextView tvStrictModeTitle,
       @NonNull TextView tvStrictStatus, @NonNull TextView tvTimeUp, @NonNull TextView tvTimer,
       @NonNull TextView tvTimerDisplay) {
     this.rootView = rootView;
@@ -143,6 +150,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.guideTop = guideTop;
     this.layoutStopwatch = layoutStopwatch;
     this.layoutStrict = layoutStrict;
+    this.layoutStrictActive = layoutStrictActive;
     this.layoutTimer = layoutTimer;
     this.layoutTimerInput = layoutTimerInput;
     this.pickerHours = pickerHours;
@@ -153,6 +161,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.tabTimer = tabTimer;
     this.tabsLayout = tabsLayout;
     this.tvStrictCountdown = tvStrictCountdown;
+    this.tvStrictDescription = tvStrictDescription;
     this.tvStrictModeTitle = tvStrictModeTitle;
     this.tvStrictStatus = tvStrictStatus;
     this.tvTimeUp = tvTimeUp;
@@ -277,6 +286,12 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.layoutStrictActive;
+      LinearLayout layoutStrictActive = ViewBindings.findChildViewById(rootView, id);
+      if (layoutStrictActive == null) {
+        break missingId;
+      }
+
       id = R.id.layoutTimer;
       LinearLayout layoutTimer = ViewBindings.findChildViewById(rootView, id);
       if (layoutTimer == null) {
@@ -337,6 +352,12 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvStrictDescription;
+      TextView tvStrictDescription = ViewBindings.findChildViewById(rootView, id);
+      if (tvStrictDescription == null) {
+        break missingId;
+      }
+
       id = R.id.tvStrictModeTitle;
       TextView tvStrictModeTitle = ViewBindings.findChildViewById(rootView, id);
       if (tvStrictModeTitle == null) {
@@ -370,10 +391,10 @@ public final class ActivityFocusBinding implements ViewBinding {
       return new ActivityFocusBinding((ConstraintLayout) rootView, boxStrictWarning,
           btnEnableStrict, btnStopwatchPause, btnStopwatchResume, btnStopwatchStart,
           btnStopwatchStop, btnTimerPause, btnTimerReset, btnTimerResume, btnTimerStart,
-          btnTimerStop, guideBottom, guideTop, layoutStopwatch, layoutStrict, layoutTimer,
-          layoutTimerInput, pickerHours, pickerMinutes, pickerSeconds, tabStopwatch, tabStrict,
-          tabTimer, tabsLayout, tvStrictCountdown, tvStrictModeTitle, tvStrictStatus, tvTimeUp,
-          tvTimer, tvTimerDisplay);
+          btnTimerStop, guideBottom, guideTop, layoutStopwatch, layoutStrict, layoutStrictActive,
+          layoutTimer, layoutTimerInput, pickerHours, pickerMinutes, pickerSeconds, tabStopwatch,
+          tabStrict, tabTimer, tabsLayout, tvStrictCountdown, tvStrictDescription,
+          tvStrictModeTitle, tvStrictStatus, tvTimeUp, tvTimer, tvTimerDisplay);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
