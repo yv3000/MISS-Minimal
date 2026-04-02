@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-106:12
-INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-106:12
-INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-106:12
-INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-106:12
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-107:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-107:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-107:12
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-107:12
 MERGED from [androidx.databinding:viewbinding:8.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\627a51687e53848977afe0b4ef0ecaac\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
@@ -126,9 +126,13 @@ uses-permission#android.permission.SYSTEM_ALERT_WINDOW
 ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:5-77
 	android:name
 		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:22-75
+uses-permission#android.permission.BIND_ACCESSIBILITY_SERVICE
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:5-84
+	android:name
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:22-82
 application
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:5-104:19
-INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:5-104:19
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:5-105:19
+INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:5-105:19
 MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -146,183 +150,183 @@ MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIR
 MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.1.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:fontFamily
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-39
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:31:9-39
 	android:extractNativeLibs
 		INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:9-35
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:9-35
 	android:label
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:27:9-37
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:9-37
 	android:roundIcon
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:9-54
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:27:9-54
 	android:icon
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:9-43
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:9-43
 	android:allowBackup
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:9-35
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:9-35
 	android:theme
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:9-56
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-56
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:9-40
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:9-40
 receiver#com.minimalist.launcher.BootReceiver
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:32:9-39:20
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:33:9-40:20
 	android:enabled
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:34:13-35
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:35:13-35
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:35:13-36
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:13-36
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:33:13-41
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:34:13-41
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:13-38:29
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:13-39:29
 action#android.intent.action.BOOT_COMPLETED
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:17-78
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:17-78
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:25-76
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:25-76
 receiver#com.minimalist.launcher.MissDeviceAdmin
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:41:9-51:20
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:9-52:20
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:44:13-36
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:13-36
 	android:permission
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:13-70
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:44:13-70
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:13-44
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:13-44
 meta-data#android.app.device_admin
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:13-47:55
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:13-48:55
 	android:resource
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:17-53
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:17-53
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:17-56
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:17-56
 intent-filter#action:name:android.app.action.DEVICE_ADMIN_ENABLED
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:13-50:29
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:13-51:29
 action#android.app.action.DEVICE_ADMIN_ENABLED
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:17-81
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:50:17-81
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:25-79
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:50:25-79
 activity#com.minimalist.launcher.MainActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:9-67:20
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:9-68:20
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:59:13-49
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:13-49
 	android:clearTaskOnLaunch
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:13-45
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:13-45
 	android:stateNotNeeded
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:13-42
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:13-42
 	android:launchMode
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:13-44
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:13-44
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:13-36
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-36
 	android:resumeWhilePausing
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:13-46
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:59:13-46
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:13-41
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.HOME+category:name:android.intent.category.LAUNCHER
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-66:29
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:13-67:29
 action#android.intent.action.MAIN
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:17-69
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:17-69
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:25-66
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:25-66
 category#android.intent.category.HOME
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:17-73
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:17-73
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:27-70
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:27-70
 category#android.intent.category.DEFAULT
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:17-76
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:17-76
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:27-73
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:27-73
 category#android.intent.category.LAUNCHER
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:17-77
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:66:17-77
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:27-74
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:66:27-74
 activity#com.minimalist.launcher.AppPickerActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:9-91
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:9-91
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:53-89
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:53-89
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:19-52
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:19-52
 activity#com.minimalist.launcher.QuickSettingsActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:9-95
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:9-95
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:57-93
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:57-93
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:19-56
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:19-56
 activity#com.minimalist.launcher.AppDrawerActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:9-91
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:9-91
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:53-89
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:53-89
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:19-52
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:19-52
 activity#com.minimalist.launcher.LauncherSettingsActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:9-98
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:9-98
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:60-96
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:60-96
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:19-59
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:19-59
 activity#com.minimalist.launcher.TimeLimitActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:9-91
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:9-91
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:53-89
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:53-89
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:19-52
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:19-52
 activity#com.minimalist.launcher.FocusActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:9-87
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:9-87
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:49-85
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:49-85
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:19-48
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:19-48
 activity#com.minimalist.launcher.NotificationPanelActivity
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:9-99
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:9-99
 	android:screenOrientation
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:61-97
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:61-97
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:19-60
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:19-60
 service#com.minimalist.launcher.NotificationService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:9-83:19
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:9-84:19
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:13-36
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:13-36
 	android:permission
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:13-87
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:13-87
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:18-53
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:18-53
 intent-filter#action:name:android.service.notification.NotificationListenerService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:13-82:29
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:13-83:29
 action#android.service.notification.NotificationListenerService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:17-99
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:17-99
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:25-96
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:25-96
 service#com.minimalist.launcher.NotificationBlockerService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:5-86:39
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:5-87:39
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:13-37
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:13-37
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:14-56
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:14-56
 service#com.minimalist.launcher.NotificationBlockAccessibility
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:9-98:19
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:9-99:19
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:13-36
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:13-36
 	android:permission
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:13-79
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:13-79
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:13-59
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:13-59
 intent-filter#action:name:android.accessibilityservice.AccessibilityService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:13-94:29
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:13-95:29
 action#android.accessibilityservice.AccessibilityService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:17-91
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:17-91
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:25-89
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:25-89
 meta-data#android.accessibilityservice
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:95:13-97:71
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:13-98:71
 	android:resource
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:17-69
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:98:17-69
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:17-60
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:17-60
 service#com.minimalist.launcher.StrictModeOverlayService
-ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:100:9-102:39
+ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:9-103:39
 	android:exported
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-37
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:103:13-37
 	android:foregroundServiceType
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:13-55
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-55
 	android:name
-		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:100:18-58
+		ADDED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:18-58
 uses-sdk
 INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml

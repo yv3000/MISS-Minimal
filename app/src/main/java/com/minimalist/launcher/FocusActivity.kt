@@ -1,475 +1,533 @@
 package com.minimalist.launcher
 
-import android.content.Context
+import android.app.AlertDialog
+import android.app.NotificationManager
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.os.VibratorManager
+import android.provider.Settings
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.minimalist.launcher.databinding.ActivityFocusBinding
 
 class FocusActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFocusBinding
-    private val REQUEST_DEVICE_ADMIN = 2001
-    private var pendingStrictStart = false
-    private var seconds = 0
-    private val handler = Handler(Looper.getMainLooper())
-    private val runnable = object : Runnable {
-        override fun run() {
-            seconds++
-            val m = seconds / 60
-            val s = seconds % 60
-            binding.tvTimer.text = String.format("%02d:%02d", m, s)
-            handler.postDelayed(this, 1000)
-        }
-    }
 
-    private var timeRemainingMs: Long = 0
-    private var timerRunning = false
-    private var timerPaused = false
+  // Handlers
+  private val handler = Handler(Looper.getMainLooper())
+
+  // Stopwatch state
+  private var swSeconds = 0
+  private var swRunning = false
+  private var swPaused = false
+
+  // Timer state
+  private var timerHours = 0
+  private var timerMinutes = 0
+  private var timerSeconds = 0
+  private var timerRemaining = 0
+  private var timerRunning = false
+  private var timerPaused = false
+
+  // Strict state
+  private var strictRemainingSeconds = 0
+  private var strictCountdownRunnable: java.lang.Runnable? = null
+
+  // Views
+  private lateinit var tabStopwatch: TextView
+  private lateinit var tabTimer: TextView
+  private lateinit var tabStrict: TextView
+  private lateinit var panelStopwatch: LinearLayout
+  private lateinit var panelTimer: LinearLayout
+  private lateinit var panelStrict: LinearLayout
+  private lateinit var panelStrictActive: FrameLayout
+  private lateinit var tvStopwatch: TextView
+  private lateinit var btnSwStart: TextView
+  private lateinit var btnSwPause: TextView
+  private lateinit var btnSwStop: TextView
+  private lateinit var btnSwResume: TextView
+  private lateinit var pickerHours: NumberPicker
+  private lateinit var pickerMinutes: NumberPicker
+  private lateinit var pickerSeconds: NumberPicker
+  private lateinit var layoutPickers: LinearLayout
+  private lateinit var tvTimerCountdown: TextView
+  private lateinit var tvTimeUp: TextView
+  private lateinit var btnTimerStart: TextView
+  private lateinit var btnTimerPause: TextView
+  private lateinit var btnTimerStop: TextView
+  private lateinit var btnTimerResume: TextView
+  private lateinit var btnTimerReset: TextView
+  private lateinit var btnEnableStrict: TextView
+  private lateinit var tvStrictCountdown: TextView
+  private lateinit var tvStrictStatus: TextView
+  private lateinit var btnExitStrict: TextView
+
+  private lateinit var prefs: SharedPreferences
+  private lateinit var vibrator: Vibrator
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
     
-    private var timerHours = 0
-    private var timerMinutes = 0
-    private var timerSeconds = 0
-    private var remainingSeconds = 0
+    // Wrap entire onCreate in try-catch to prevent crash
+    try {
+      setContentView(R.layout.activity_focus)
+      
+      prefs = getSharedPreferences("miss_prefs", 
+        MODE_PRIVATE)
+      
+      vibrator = if (Build.VERSION.SDK_INT >= 31)
+        getSystemService(VibratorManager::class.java)
+          .defaultVibrator
+      else
+        @Suppress("DEPRECATION")
+        getSystemService(VIBRATOR_SERVICE) as Vibrator
+
+      bindViews()
+      setupTabs()
+      setupStopwatch()
+      setupTimer()
+      setupStrictMode()
+
+    } catch (e: Exception) {
+      e.printStackTrace()
+      // Never crash — go back gracefully
+      finish()
+    }
+  }
+
+  fun bindViews() {
+    tabStopwatch = findViewById(R.id.tabStopwatch)
+    tabTimer = findViewById(R.id.tabTimer)
+    tabStrict = findViewById(R.id.tabStrict)
+    panelStopwatch = findViewById(R.id.panelStopwatch)
+    panelTimer = findViewById(R.id.panelTimer)
+    panelStrict = findViewById(R.id.panelStrict)
+    panelStrictActive = findViewById(R.id.panelStrictActive)
+    tvStopwatch = findViewById(R.id.tvStopwatch)
+    btnSwStart = findViewById(R.id.btnSwStart)
+    btnSwPause = findViewById(R.id.btnSwPause)
+    btnSwStop = findViewById(R.id.btnSwStop)
+    btnSwResume = findViewById(R.id.btnSwResume)
+    pickerHours = findViewById(R.id.pickerHours)
+    pickerMinutes = findViewById(R.id.pickerMinutes)
+    pickerSeconds = findViewById(R.id.pickerSeconds)
+    layoutPickers = findViewById(R.id.layoutPickers)
+    tvTimerCountdown = findViewById(R.id.tvTimerCountdown)
+    tvTimeUp = findViewById(R.id.tvTimeUp)
+    btnTimerStart = findViewById(R.id.btnTimerStart)
+    btnTimerPause = findViewById(R.id.btnTimerPause)
+    btnTimerStop = findViewById(R.id.btnTimerStop)
+    btnTimerResume = findViewById(R.id.btnTimerResume)
+    btnTimerReset = findViewById(R.id.btnTimerReset)
+    btnEnableStrict = findViewById(R.id.btnEnableStrict)
+    tvStrictCountdown = findViewById(R.id.tvStrictCountdown)
+    tvStrictStatus = findViewById(R.id.tvStrictStatus)
+    btnExitStrict = findViewById(R.id.btnExitStrict)
+  }
+
+  fun setupTabs() {
+    fun selectTab(tab: Int) {
+      // Reset all
+      tabStopwatch.setTextColor(
+        android.graphics.Color.parseColor("#666666"))
+      tabTimer.setTextColor(
+        android.graphics.Color.parseColor("#666666"))
+      tabStrict.setTextColor(
+        android.graphics.Color.parseColor("#666666"))
+      panelStopwatch.visibility = View.GONE
+      panelTimer.visibility = View.GONE
+      panelStrict.visibility = View.GONE
+
+      when (tab) {
+        0 -> {
+          tabStopwatch.setTextColor(
+            android.graphics.Color.WHITE)
+          panelStopwatch.visibility = View.VISIBLE
+        }
+        1 -> {
+          tabTimer.setTextColor(
+            android.graphics.Color.WHITE)
+          panelTimer.visibility = View.VISIBLE
+        }
+        2 -> {
+          tabStrict.setTextColor(
+            android.graphics.Color.WHITE)
+          panelStrict.visibility = View.VISIBLE
+          // Always show warning when tab opened
+          findViewById<LinearLayout>(
+            R.id.layoutStrictWarning)
+            .visibility = View.VISIBLE
+          btnEnableStrict.visibility = View.VISIBLE
+        }
+      }
+    }
+
+    selectTab(0) // Default: stopwatch
+    tabStopwatch.setOnClickListener { selectTab(0) }
+    tabTimer.setOnClickListener { selectTab(1) }
+    tabStrict.setOnClickListener { selectTab(2) }
+  }
+
+  fun setupStopwatch() {
+    btnSwStart.setOnClickListener {
+      swRunning = true
+      swPaused = false
+      btnSwStart.visibility = View.GONE
+      btnSwPause.visibility = View.VISIBLE
+      btnSwStop.visibility = View.VISIBLE
+      runStopwatch()
+    }
+    btnSwPause.setOnClickListener {
+      swPaused = true
+      handler.removeCallbacksAndMessages(null)
+      btnSwPause.visibility = View.GONE
+      btnSwResume.visibility = View.VISIBLE
+    }
+    btnSwResume.setOnClickListener {
+      swPaused = false
+      btnSwResume.visibility = View.GONE
+      btnSwPause.visibility = View.VISIBLE
+      runStopwatch()
+    }
+    btnSwStop.setOnClickListener {
+      handler.removeCallbacksAndMessages(null)
+      swRunning = false
+      swPaused = false
+      swSeconds = 0
+      tvStopwatch.text = "00:00"
+      btnSwStart.visibility = View.VISIBLE
+      btnSwPause.visibility = View.GONE
+      btnSwStop.visibility = View.GONE
+      btnSwResume.visibility = View.GONE
+    }
+  }
+
+  fun runStopwatch() {
+    handler.post(object : Runnable {
+      override fun run() {
+        if (!swRunning || swPaused) return
+        swSeconds++
+        val m = swSeconds / 60
+        val s = swSeconds % 60
+        tvStopwatch.text = "%02d:%02d".format(m, s)
+        handler.postDelayed(this, 1000)
+      }
+    })
+  }
+
+  fun setupTimer() {
+    pickerHours.minValue = 0
+    pickerHours.maxValue = 99
+    pickerHours.wrapSelectorWheel = true
+    pickerMinutes.minValue = 0
+    pickerMinutes.maxValue = 59
+    pickerMinutes.wrapSelectorWheel = true
+    pickerSeconds.minValue = 0
+    pickerSeconds.maxValue = 59
+    pickerSeconds.wrapSelectorWheel = true
+
+    // Style pickers white
+    styleNumberPicker(pickerHours)
+    styleNumberPicker(pickerMinutes)
+    styleNumberPicker(pickerSeconds)
+
+    pickerHours.setOnValueChangedListener { 
+      _, _, v -> timerHours = v }
+    pickerMinutes.setOnValueChangedListener { 
+      _, _, v -> timerMinutes = v }
+    pickerSeconds.setOnValueChangedListener { 
+      _, _, v -> timerSeconds = v }
+
+    btnTimerStart.setOnClickListener {
+      timerHours = pickerHours.value
+      timerMinutes = pickerMinutes.value
+      timerSeconds = pickerSeconds.value
+      val total = timerHours * 3600 + 
+                  timerMinutes * 60 + timerSeconds
+      if (total <= 0) {
+        Toast.makeText(this, 
+          "Set a time first", Toast.LENGTH_SHORT).show()
+        return@setOnClickListener
+      }
+      timerRemaining = total
+      startTimer()
+    }
+
+    btnTimerPause.setOnClickListener {
+      timerPaused = true
+      handler.removeCallbacksAndMessages(null)
+      btnTimerPause.visibility = View.GONE
+      btnTimerResume.visibility = View.VISIBLE
+    }
+
+    btnTimerResume.setOnClickListener {
+      timerPaused = false
+      btnTimerResume.visibility = View.GONE
+      btnTimerPause.visibility = View.VISIBLE
+      runTimer()
+    }
+
+    btnTimerStop.setOnClickListener { resetTimer() }
+    btnTimerReset.setOnClickListener { resetTimer() }
+  }
+
+  fun startTimer() {
+    timerRunning = true
+    timerPaused = false
+    layoutPickers.visibility = View.GONE
+    tvTimerCountdown.visibility = View.VISIBLE
+    btnTimerStart.visibility = View.GONE
+    btnTimerPause.visibility = View.VISIBLE
+    btnTimerStop.visibility = View.VISIBLE
+    runTimer()
+  }
+
+  fun runTimer() {
+    handler.post(object : Runnable {
+      override fun run() {
+        if (!timerRunning || timerPaused) return
+        if (timerRemaining <= 0) {
+          onTimerDone()
+          return
+        }
+        val h = timerRemaining / 3600
+        val m = (timerRemaining % 3600) / 60
+        val s = timerRemaining % 60
+        tvTimerCountdown.text = 
+          "%02d:%02d:%02d".format(h, m, s)
+        timerRemaining--
+        handler.postDelayed(this, 1000)
+      }
+    })
+  }
+
+  fun onTimerDone() {
+    timerRunning = false
+    tvTimerCountdown.text = "00:00:00"
+    tvTimeUp.visibility = View.VISIBLE
+    btnTimerPause.visibility = View.GONE
+    btnTimerStop.visibility = View.GONE
+    btnTimerReset.visibility = View.VISIBLE
+    // Vibrate subtle 3s pattern
+    val pattern = longArrayOf(0,300,200,300,200,300,200)
+    if (Build.VERSION.SDK_INT >= 26) {
+      vibrator.vibrate(
+        VibrationEffect.createWaveform(pattern, -1))
+    } else {
+      @Suppress("DEPRECATION")
+      vibrator.vibrate(pattern, -1)
+    }
+  }
+
+  fun resetTimer() {
+    handler.removeCallbacksAndMessages(null)
+    timerRunning = false
+    timerPaused = false
+    timerRemaining = 0
+    tvTimeUp.visibility = View.GONE
+    tvTimerCountdown.visibility = View.GONE
+    layoutPickers.visibility = View.VISIBLE
+    btnTimerStart.visibility = View.VISIBLE
+    btnTimerPause.visibility = View.GONE
+    btnTimerStop.visibility = View.GONE
+    btnTimerResume.visibility = View.GONE
+    btnTimerReset.visibility = View.GONE
+    pickerHours.value = 0
+    pickerMinutes.value = 0
+    pickerSeconds.value = 0
+    timerHours = 0; timerMinutes = 0; timerSeconds = 0
+  }
+
+  fun styleNumberPicker(p: NumberPicker) {
+    try {
+      val f = NumberPicker::class.java
+        .getDeclaredField("mSelectorWheelPaint")
+      f.isAccessible = true
+      (f.get(p) as android.graphics.Paint)
+        .color = android.graphics.Color.WHITE
+      p.invalidate()
+    } catch (e: Exception) { e.printStackTrace() }
+  }
+
+  override fun onResume() {
+    super.onResume()
+    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
+    val active = prefs.getBoolean("active", false)
+    val endTime = prefs.getLong("end_time", 0)
     
-    private val blinkHandler = Handler(Looper.getMainLooper())
-    private var blinkState = false
-    private val blinkRunnable = object : Runnable {
-        override fun run() {
-            blinkState = !blinkState
-            binding.tvTimeUp.visibility = if (blinkState) View.VISIBLE else View.INVISIBLE
-            blinkHandler.postDelayed(this, 1000)
-        }
+    if (active && System.currentTimeMillis() < endTime) {
+      val remaining = (endTime - System.currentTimeMillis()) / 1000
+      strictRemainingSeconds = remaining.toInt()
+      StrictModeService.isStrictModeActive = true
+      StrictModeService.strictEndTimeMs = endTime
+      showStrictCountdown()
+    } else if (active) {
+      endStrictMode()
+    } else {
+      val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
+      val tvStrictDesc = layoutStrictWarning.getChildAt(1) as? TextView
+      if (!isAccessibilityServiceEnabled()) {
+         tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS Minimal Strict Mode'\n3. Toggle it ON\n4. Come back here"
+         btnEnableStrict.text = "Open Settings →"
+      } else {
+         tvStrictDesc?.text = "Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
+         btnEnableStrict.text = "ENABLE STRICT MODE"
+      }
     }
+  }
 
-    private var strictRemainingSeconds = 0L
-    private val strictHandler = Handler(Looper.getMainLooper())
-    private val strictRunnable = object : Runnable {
-        override fun run() {
-            if (strictRemainingSeconds <= 0) {
-                StrictModeManager(this@FocusActivity).endStrictMode {
-                    binding.tvStrictCountdown.text = "DONE"
-                    binding.tvStrictStatus.text = "strict mode ended"
-                }
-                return
-            }
-            strictRemainingSeconds--
-            val m = strictRemainingSeconds / 60
-            val s = strictRemainingSeconds % 60
-            binding.tvStrictCountdown.text = String.format("%02d:%02d", m, s)
-            strictHandler.postDelayed(this, 1000)
-        }
+  fun isAccessibilityServiceEnabled(): Boolean {
+    val expectedServiceName = "${packageName}/.StrictModeService"
+    val enabledServices = Settings.Secure.getString(
+      contentResolver,
+      Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+    ) ?: return false
+    return enabledServices.contains(expectedServiceName)
+  }
+
+  fun setupStrictMode() {
+    btnEnableStrict.setOnClickListener {
+      if (!isAccessibilityServiceEnabled()) {
+        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+      } else {
+        showStrictConfirmDialog()
+      }
     }
+  }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityFocusBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+  fun showStrictConfirmDialog() {
+    AlertDialog.Builder(this)
+      .setMessage(
+        "25 minutes of complete focus.\n\n" +
+        "No apps can be opened.\n" +
+        "No calls. No messages.\n" +
+        "Cannot be cancelled.\n\n" +
+        "Are you ready?")
+      .setPositiveButton("START") { _, _ ->
+        startStrictMode()
+      }
+      .setNegativeButton("Cancel", null)
+      .show()
+  }
 
-        // Tabs
-        binding.tabStopwatch.setOnClickListener {
-            binding.layoutStopwatch.visibility = View.VISIBLE
-            binding.layoutTimer.visibility = View.GONE
-            binding.layoutStrict.visibility = View.GONE
-            binding.tabStopwatch.setTextColor(resources.getColor(R.color.white, null))
-            binding.tabTimer.setTextColor(resources.getColor(R.color.grey_555, null))
-            binding.tabStrict.setTextColor(resources.getColor(R.color.grey_555, null))
-        }
-
-        binding.tabTimer.setOnClickListener {
-            binding.layoutStopwatch.visibility = View.GONE
-            binding.layoutTimer.visibility = View.VISIBLE
-            binding.layoutStrict.visibility = View.GONE
-            binding.tabStopwatch.setTextColor(resources.getColor(R.color.grey_555, null))
-            binding.tabTimer.setTextColor(resources.getColor(R.color.white, null))
-            binding.tabStrict.setTextColor(resources.getColor(R.color.grey_555, null))
-        }
-
-        binding.tabStrict.setOnClickListener {
-            binding.layoutStopwatch.visibility = View.GONE
-            binding.layoutTimer.visibility = View.GONE
-            binding.layoutStrict.visibility = View.VISIBLE
-            binding.tabStopwatch.setTextColor(resources.getColor(R.color.grey_555, null))
-            binding.tabTimer.setTextColor(resources.getColor(R.color.grey_555, null))
-            binding.tabStrict.setTextColor(resources.getColor(R.color.white, null))
-
-            binding.boxStrictWarning.visibility = View.VISIBLE
-            binding.btnEnableStrict.visibility = View.VISIBLE
-            binding.tvStrictCountdown.visibility = View.GONE
-        }
-
-        // Stopwatch actions
-        binding.btnStopwatchStart.setOnClickListener {
-            handler.post(runnable)
-            binding.btnStopwatchStart.visibility = View.GONE
-            binding.btnStopwatchPause.visibility = View.VISIBLE
-            binding.btnStopwatchResume.visibility = View.GONE
-            binding.btnStopwatchStop.visibility = View.VISIBLE
-        }
-        binding.btnStopwatchPause.setOnClickListener {
-            handler.removeCallbacks(runnable)
-            binding.btnStopwatchPause.visibility = View.GONE
-            binding.btnStopwatchResume.visibility = View.VISIBLE
-        }
-        binding.btnStopwatchResume.setOnClickListener {
-            handler.post(runnable)
-            binding.btnStopwatchResume.visibility = View.GONE
-            binding.btnStopwatchPause.visibility = View.VISIBLE
-        }
-        binding.btnStopwatchStop.setOnClickListener {
-            handler.removeCallbacks(runnable)
-            seconds = 0
-            binding.tvTimer.text = "00:00"
-            binding.btnStopwatchStart.visibility = View.VISIBLE
-            binding.btnStopwatchPause.visibility = View.GONE
-            binding.btnStopwatchResume.visibility = View.GONE
-            binding.btnStopwatchStop.visibility = View.GONE
-        }
-
-        // Timer actions
-
-        binding.pickerHours.minValue = 0
-        binding.pickerHours.maxValue = 99
-        binding.pickerHours.wrapSelectorWheel = true
-        
-        binding.pickerMinutes.minValue = 0
-        binding.pickerMinutes.maxValue = 59
-        binding.pickerMinutes.wrapSelectorWheel = true
-        
-        binding.pickerSeconds.minValue = 0
-        binding.pickerSeconds.maxValue = 59
-        binding.pickerSeconds.wrapSelectorWheel = true
-
-        styleNumberPicker(binding.pickerHours)
-        styleNumberPicker(binding.pickerMinutes)
-        styleNumberPicker(binding.pickerSeconds)
-
-        binding.pickerHours.setOnValueChangedListener { _, _, newVal -> timerHours = newVal }
-        binding.pickerMinutes.setOnValueChangedListener { _, _, newVal -> timerMinutes = newVal }
-        binding.pickerSeconds.setOnValueChangedListener { _, _, newVal -> timerSeconds = newVal }
-
-        binding.btnTimerStart.setOnClickListener {
-            timerHours = binding.pickerHours.value
-            timerMinutes = binding.pickerMinutes.value
-            timerSeconds = binding.pickerSeconds.value
-            
-            val totalSeconds = (timerHours * 3600) + (timerMinutes * 60) + timerSeconds
-            
-            if (totalSeconds <= 0) {
-                android.widget.Toast.makeText(this, "Set a time first", android.widget.Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            startTimer(totalSeconds)
-        }
-        binding.btnTimerPause.setOnClickListener { pauseTimer() }
-        binding.btnTimerResume.setOnClickListener { resumeTimer() }
-        binding.btnTimerStop.setOnClickListener { resetTimer() }
-        binding.btnTimerReset.setOnClickListener { resetTimer() }
-
-        // Strict mode actions
-        binding.btnEnableStrict.setOnClickListener {
-            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            val adminComponent = android.content.ComponentName(this, MissDeviceAdmin::class.java)
-
-            if (!dpm.isAdminActive(adminComponent)) {
-                // Not admin yet - request it
-                pendingStrictStart = true
-                val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-                intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
-                intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_ADD_EXPLANATION, "MISS Minimal needs this to block camera and distractions during Strict Mode.")
-                startActivityForResult(intent, REQUEST_DEVICE_ADMIN)
-                return@setOnClickListener
-            }
-            // Already admin - show confirmation dialog
-            showStrictConfirmDialog()
-        }
+  fun startStrictMode() {
+    val durationMs = 25L * 60L * 1000L // 25 minutes
+    
+    // Enable DND
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    if (nm.isNotificationPolicyAccessGranted) {
+      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
     }
+    
+    // Set strict mode active via companion object
+    StrictModeService.startStrict(durationMs)
+    
+    // Save to SharedPreferences for persistence
+    getSharedPreferences("strict_prefs", MODE_PRIVATE)
+      .edit()
+      .putBoolean("active", true)
+      .putLong("end_time", System.currentTimeMillis() + durationMs)
+      .apply()
+    
+    strictRemainingSeconds = 25 * 60
+    showStrictCountdown()
+  }
 
-    private fun showStrictConfirmDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Are you sure?")
-            .setMessage("Calls, messages and all notifications will be silenced for 25 minutes.\nThis cannot be cancelled.")
-            .setPositiveButton("YES, BLOCK EVERYTHING") { _, _ ->
-                startStrictMode()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-            .window?.setBackgroundDrawableResource(android.R.color.black)
-    }
+  fun showStrictCountdown() {
+    findViewById<View>(R.id.tabBar).visibility = View.GONE
+    panelStopwatch.visibility = View.GONE
+    panelTimer.visibility = View.GONE
+    panelStrict.visibility = View.GONE
+    panelStrictActive.visibility = View.VISIBLE
+    
+    tvStrictStatus.text = "focus session active"
+    btnExitStrict.visibility = View.GONE
+    tvStrictCountdown.text = "%02d:%02d".format(strictRemainingSeconds / 60, strictRemainingSeconds % 60)
 
-    fun startStrictMode() {
-        // Check DND permission
-        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-        if (!nm.isNotificationPolicyAccessGranted) {
-            startActivity(Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
-            android.widget.Toast.makeText(this,
-                "Grant DND access, then enable Strict Mode again",
-                android.widget.Toast.LENGTH_LONG).show()
-            return
+    strictCountdownRunnable?.let { handler.removeCallbacks(it) }
+    strictCountdownRunnable = object : Runnable {
+      override fun run() {
+        if (strictRemainingSeconds <= 0) {
+          endStrictMode()
+          return
         }
-
-        // Check Device Admin
-        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-        val adminComp = android.content.ComponentName(this, MissDeviceAdmin::class.java)
-        if (!dpm.isAdminActive(adminComp)) {
-            pendingStrictStart = true
-            val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-            intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComp)
-            intent.putExtra(
-                android.app.admin.DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                "MISS Minimal needs Device Admin to block camera and distractions during Strict Mode.")
-            startActivityForResult(intent, REQUEST_DEVICE_ADMIN)
-            return
-        }
-
-        // Check overlay permission
-        if (android.os.Build.VERSION.SDK_INT >= 23 && !android.provider.Settings.canDrawOverlays(this)) {
-            startActivityForResult(
-                Intent(android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    android.net.Uri.parse("package:$packageName")), 3001)
-            android.widget.Toast.makeText(this,
-                "Grant overlay permission, then enable again",
-                android.widget.Toast.LENGTH_LONG).show()
-            return
-        }
-
-        // All permissions OK — enable DND
-        nm.setInterruptionFilter(android.app.NotificationManager.INTERRUPTION_FILTER_NONE)
-
-        // Disable camera
-        if (dpm.isAdminActive(adminComp)) {
-            dpm.setCameraDisabled(adminComp, true)
-        }
-
-        // Save state
-        getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-            .edit()
-            .putBoolean("strict_active", true)
-            .putLong("strict_end", System.currentTimeMillis() + 25 * 60 * 1000L)
-            .apply()
-
-        // Switch to countdown UI within FocusActivity
-        showStrictCountdownUI()
-        startStrictCountdown(25 * 60)
+        val m = strictRemainingSeconds / 60
+        val s = strictRemainingSeconds % 60
+        tvStrictCountdown.text = "%02d:%02d".format(m, s)
+        strictRemainingSeconds--
+        handler.postDelayed(this, 1000)
+      }
     }
+    handler.post(strictCountdownRunnable!!)
+  }
 
-    fun showStrictCountdownUI() {
-        binding.tabStopwatch.visibility = View.GONE
-        binding.tabTimer.visibility = View.GONE
-        binding.tabStrict.visibility = View.GONE
-        binding.boxStrictWarning.visibility = View.GONE
-        binding.btnEnableStrict.visibility = View.GONE
-        binding.layoutStrictActive.visibility = View.VISIBLE
+  fun endStrictMode() {
+    StrictModeService.endStrict()
+    
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    if (nm.isNotificationPolicyAccessGranted) {
+      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
     }
+    
+    getSharedPreferences("strict_prefs", MODE_PRIVATE)
+      .edit().clear().apply()
+    
+    val vibrator = if (Build.VERSION.SDK_INT >= 31) {
+      getSystemService(VibratorManager::class.java).defaultVibrator
+    } else {
+      @Suppress("DEPRECATION")
+      getSystemService(VIBRATOR_SERVICE) as Vibrator
+    }
+    val pattern = longArrayOf(0,300,200,300,200,300)
+    if (Build.VERSION.SDK_INT >= 26) {
+      vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
+    } else {
+      @Suppress("DEPRECATION")
+      vibrator.vibrate(pattern, -1)
+    }
+    
+    tvStrictCountdown.text = "DONE"
+    tvStrictStatus.text = "session complete"
+    
+    btnExitStrict.visibility = View.VISIBLE
+    btnExitStrict.setOnClickListener {
+      showStrictWarningScreen()
+    }
+  }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_DEVICE_ADMIN) {
-            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-            val adminComponent = android.content.ComponentName(this, MissDeviceAdmin::class.java)
-            if (dpm.isAdminActive(adminComponent)) {
-                if (pendingStrictStart) {
-                    pendingStrictStart = false
-                    showStrictConfirmDialog()
-                }
-            } else {
-                pendingStrictStart = false
-                android.widget.Toast.makeText(this, "Device Admin required for Strict Mode", android.widget.Toast.LENGTH_LONG).show()
-            }
-        }
-    }
+  fun showStrictWarningScreen() {
+    findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
+    panelStrictActive.visibility = View.GONE
+    
+    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabStrict.setTextColor(android.graphics.Color.WHITE)
+    
+    panelStopwatch.visibility = View.GONE
+    panelTimer.visibility = View.GONE
+    panelStrict.visibility = View.VISIBLE
+  }
 
-    private fun startStrictCountdown(seconds: Long) {
-        binding.boxStrictWarning.visibility = View.GONE
-        binding.btnEnableStrict.visibility = View.GONE
-        binding.tvStrictCountdown.visibility = View.VISIBLE
-        binding.tvStrictStatus.text = "all distractions blocked"
-        
-        strictRemainingSeconds = seconds
-        strictHandler.removeCallbacks(strictRunnable)
-        strictHandler.post(strictRunnable)
-    }
+  override fun onBackPressed() {
+    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
+    if (prefs.getBoolean("active", false)) return // Block back during strict
+    super.onBackPressed()
+  }
 
-    private fun styleNumberPicker(picker: android.widget.NumberPicker) {
-        try {
-            val f = android.widget.NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
-            f.isAccessible = true
-            (f.get(picker) as android.graphics.Paint).color = android.graphics.Color.WHITE
-            picker.invalidate()
-        } catch (e: Exception) {}
-        
-        try {
-            val dividerField = android.widget.NumberPicker::class.java.getDeclaredField("mSelectionDivider")
-            dividerField.isAccessible = true
-            dividerField.set(picker, android.graphics.drawable.ColorDrawable(android.graphics.Color.parseColor("#222222")))
-        } catch (e: Exception) {}
-    }
-
-    private fun startTimer(totalSecs: Int) {
-        remainingSeconds = totalSecs
-        timerRunning = true
-        timerPaused = false
-        binding.layoutTimerInput.visibility = View.GONE
-        binding.tvTimerDisplay.visibility = View.VISIBLE
-        binding.btnTimerStart.visibility = View.GONE
-        binding.btnTimerPause.visibility = View.VISIBLE
-        binding.btnTimerStop.visibility = View.VISIBLE
-        runTimer()
-    }
-
-    private fun runTimer() {
-        handler.post(object : Runnable {
-            override fun run() {
-                if (!timerRunning || timerPaused) return
-                if (remainingSeconds <= 0) {
-                    onTimerFinished()
-                    return
-                }
-                val h = remainingSeconds / 3600
-                val m = (remainingSeconds % 3600) / 60
-                val s = remainingSeconds % 60
-                binding.tvTimerDisplay.text = String.format("%02d:%02d:%02d", h, m, s)
-                remainingSeconds--
-                handler.postDelayed(this, 1000)
-            }
-        })
-    }
-
-    private fun pauseTimer() {
-        if (timerRunning) {
-            timerPaused = true
-            binding.btnTimerPause.visibility = View.GONE
-            binding.btnTimerResume.visibility = View.VISIBLE
-        }
-    }
-
-    private fun resumeTimer() {
-        if (timerPaused) {
-            timerPaused = false
-            binding.btnTimerResume.visibility = View.GONE
-            binding.btnTimerPause.visibility = View.VISIBLE
-            runTimer()
-        }
-    }
-
-    private fun resetTimer() {
-        timerRunning = false
-        timerPaused = false
-        remainingSeconds = 0
-        blinkHandler.removeCallbacks(blinkRunnable)
-        binding.tvTimeUp.visibility = View.GONE
-        binding.tvTimerDisplay.visibility = View.GONE
-        binding.layoutTimerInput.visibility = View.VISIBLE
-        binding.btnTimerStart.visibility = View.VISIBLE
-        binding.btnTimerPause.visibility = View.GONE
-        binding.btnTimerResume.visibility = View.GONE
-        binding.btnTimerStop.visibility = View.GONE
-        binding.btnTimerReset.visibility = View.GONE
-        
-        binding.pickerHours.value = 0
-        binding.pickerMinutes.value = 0
-        binding.pickerSeconds.value = 0
-        timerHours = 0
-        timerMinutes = 0
-        timerSeconds = 0
-    }
-
-    private fun onTimerFinished() {
-        timerRunning = false
-        binding.tvTimerDisplay.text = "00:00:00"
-        
-        val vibrator = if (android.os.Build.VERSION.SDK_INT >= 31) {
-            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as android.os.VibratorManager
-            vibratorManager.defaultVibrator
-        } else {
-            @Suppress("DEPRECATION")
-            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        }
-        val pattern = longArrayOf(0, 300, 200, 300, 200, 300, 200, 300, 200, 300)
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(android.os.VibrationEffect.createWaveform(pattern, -1))
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(pattern, -1)
-        }
-        
-        binding.tvTimeUp.visibility = View.VISIBLE
-        blinkState = true
-        blinkHandler.postDelayed(blinkRunnable, 1000)
-        
-        binding.btnTimerReset.visibility = View.VISIBLE
-        binding.btnTimerPause.visibility = View.GONE
-        binding.btnTimerStop.visibility = View.GONE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
-        blinkHandler.removeCallbacks(blinkRunnable)
-        strictHandler.removeCallbacks(strictRunnable)
-        timerRunning = false
-    }
-
-    override fun onBackPressed() {
-        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("strict_active", false)) {
-            // Cannot go back during strict mode
-            return
-        }
-        super.onBackPressed()
-        overridePendingTransition(0, R.anim.slide_down_exit)
-    }
-
-    override fun finish() {
-        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("strict_active", false)) {
-            return // prevent finish during strict mode
-        }
-        super.finish()
-        overridePendingTransition(0, R.anim.slide_down_exit)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        applyFontSize()
-        
-        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("strict_active", false)) {
-            val remaining = (prefs.getLong("strict_end", 0) - System.currentTimeMillis()) / 1000
-            if (remaining > 0) {
-                showStrictCountdownUI()
-                startStrictCountdown(remaining)
-            } else {
-                StrictModeManager(this).endStrictMode {}
-            }
-        } else {
-            binding.boxStrictWarning.visibility = View.VISIBLE
-            binding.btnEnableStrict.visibility = View.VISIBLE
-            if (::binding.isInitialized && binding.layoutStrictActive != null) {
-                 binding.layoutStrictActive.visibility = View.GONE
-            }
-        }
-    }
-
-    fun applyFontSize() {
-        val size = AppFont.get(this)
-        applyToAllTextViews(window.decorView, size)
-    }
-
-    fun applyToAllTextViews(view: android.view.View, size: Float) {
-        if (view is android.widget.TextView) {
-            if (view.tag == "fixed_size") return
-            view.textSize = size
-        } else if (view is android.view.ViewGroup) {
-            for (i in 0 until view.childCount) {
-                applyToAllTextViews(view.getChildAt(i), size)
-            }
-        }
-    }
+  override fun onDestroy() {
+    handler.removeCallbacksAndMessages(null)
+    super.onDestroy()
+  }
 }

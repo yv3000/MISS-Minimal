@@ -16,10 +16,6 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-35:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.minimalist.launcher.app-merged_res-33:/layout_activity_focus.xml.flat",
-        "source": "com.minimalist.launcher.app-main-35:/layout/activity_focus.xml"
-    },
-    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-33:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-35:\\mipmap-xxxhdpi\\ic_launcher_foreground.webp"
     },
@@ -50,6 +46,10 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-33:\\mipmap-mdpi_ic_launcher_foreground.webp.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-35:\\mipmap-mdpi\\ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.minimalist.launcher.app-merged_res-33:/drawable_btn_border.xml.flat",
+        "source": "com.minimalist.launcher.app-main-35:/drawable/btn_border.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-33:\\layout_activity_focus.xml.flat",
@@ -154,6 +154,10 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-33:\\layout_activity_app_drawer.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-35:\\layout\\activity_app_drawer.xml"
+    },
+    {
+        "merged": "com.minimalist.launcher.app-merged_res-33:/drawable_border_box.xml.flat",
+        "source": "com.minimalist.launcher.app-main-35:/drawable/border_box.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-33:\\mipmap-hdpi_ic_launcher.webp.flat",

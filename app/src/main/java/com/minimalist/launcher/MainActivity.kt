@@ -80,10 +80,14 @@ class MainActivity : AppCompatActivity() {
         hideSystemUI()
         
         if (isDefaultLauncher()) {
-            checkAllPermissions()
+            requestAllPermissionsOnFirstLaunch()
         }
-        MissLauncherApp.blockNotifPanel = true
-        checkAccessibilityPermission()
+        
+        getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("block_notif_panel", true)
+            .apply()
+        checkAndPromptAccessibility()
     }
 
     override fun onPause() {
@@ -91,7 +95,10 @@ class MainActivity : AppCompatActivity() {
         if (!StrictModeOverlayService.isRunning) {
             stopNotificationBlocker()
         }
-        MissLauncherApp.blockNotifPanel = false
+        getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("block_notif_panel", false)
+            .apply()
     }
     
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -183,14 +190,23 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         binding.btnExit.setOnClickListener { animateClick(it) {
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setMessage("Exit to system launcher?")
+                .setMessage("Switch to system launcher?")
                 .setPositiveButton("Yes") { _, _ ->
-                    MissLauncherApp.blockNotifPanel = false
-                    stopNotificationBlocker()
-                    
+                    // Disable notif blocker first
+                    getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+                        .edit()
+                        .putBoolean("block_notif_panel", false)
+                        .apply()
+                    // Stop overlay service
                     try {
-                        val intent = Intent(Settings.ACTION_HOME_SETTINGS)
-                        startActivity(intent)
+                        stopService(Intent(this,
+                            NotificationBlockerService::class.java))
+                    } catch (e: Exception) {}
+                    // Open Home Settings — only reliable method
+                    // Same approach used by Nova, Niagara, etc.
+                    try {
+                        startActivity(Intent(
+                            Settings.ACTION_HOME_SETTINGS))
                     } catch (e: Exception) {
                         startActivity(Intent(Settings.ACTION_SETTINGS))
                     }
@@ -436,73 +452,78 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
     }
 
-    fun checkAllPermissions() {
-        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("permissions_done", false)) 
+    fun requestAllPermissionsOnFirstLaunch() {
+        val prefs = getSharedPreferences(
+            "miss_prefs", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("first_launch_done", false)) 
             return
+        prefs.edit()
+            .putBoolean("first_launch_done", true).apply()
 
-        // Step 1 — Overlay permission (for notif blocker)
-        if (Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this)) {
+        // 1. Overlay permission
+        if (Build.VERSION.SDK_INT >= 23 &&
+            !Settings.canDrawOverlays(this)) {
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal")
-                .setMessage("Allow 'Display over other apps' to block system notification panel while using launcher.")
+                .setTitle("MISS Minimal Setup")
+                .setMessage("Step 1/3: Allow display over " +
+                    "other apps — needed to block system " +
+                    "notification panel.")
                 .setPositiveButton("Grant") { _, _ ->
-                    startActivityForResult(
-                        Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            android.net.Uri.parse("package:$packageName")), 3001)
+                    startActivity(Intent(
+                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        android.net.Uri.parse("package:$packageName")))
                 }.setCancelable(false).show()
             return
         }
 
-        // Step 2 — DND permission
-        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+        // 2. DND
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE)
+            as android.app.NotificationManager
         if (!nm.isNotificationPolicyAccessGranted) {
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal")
-                .setMessage("Allow Do Not Disturb access for Strict Mode to silence all calls and notifications.")
+                .setTitle("MISS Minimal Setup")
+                .setMessage("Step 2/3: Allow Do Not Disturb " +
+                    "access — needed for Strict Mode.")
                 .setPositiveButton("Grant") { _, _ ->
-                    startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+                    startActivity(Intent(
+                        Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
                 }.setNegativeButton("Skip", null).show()
         }
 
-        // Step 3 — Device Admin (for strict mode camera disable)
-        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
-        val adminComp = android.content.ComponentName(this, MissDeviceAdmin::class.java)
-        if (!dpm.isAdminActive(adminComp)) {
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal")
-                .setMessage("Activate Device Admin to enable camera blocking in Strict Mode. You can deactivate this anytime in phone settings.")
-                .setPositiveButton("Activate") { _, _ ->
-                    val intent = Intent(android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-                    intent.putExtra(android.app.admin.DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComp)
-                    startActivityForResult(intent, 2001)
-                }.setNegativeButton("Skip", null).show()
-        }
-
-        prefs.edit().putBoolean("permissions_done", true).apply()
-    }
-    fun checkAccessibilityPermission() {
-        val prefs = getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("asked_accessibility", false)) return
-        if (!isAccessibilityEnabled()) {
-            prefs.edit().putBoolean("asked_accessibility", true).apply()
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal")
-                .setMessage("Enable Accessibility Service to prevent system notification panel from opening while launcher is active.\n\nSettings → Accessibility → MISS Minimal → ON")
-                .setPositiveButton("Open Settings") { _, _ ->
-                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-                }
-                .setNegativeButton("Skip", null)
-                .show()
-        }
+        // 3. Accessibility
+        checkAndPromptAccessibility()
     }
 
-    fun isAccessibilityEnabled(): Boolean {
-        val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as android.view.accessibility.AccessibilityManager
-        val enabledServices = Settings.Secure.getString(
+    fun checkAndPromptAccessibility() {
+        val enabled = Settings.Secure.getString(
             contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-        ) ?: return false
-        return enabledServices.contains(packageName)
+            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+            ?.contains(packageName) == true
+        
+        if (!enabled) {
+            val asked = getSharedPreferences(
+                "miss_prefs", Context.MODE_PRIVATE)
+                .getBoolean("asked_accessibility", false)
+            if (!asked) {
+                getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("asked_accessibility", true)
+                    .apply()
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Block System Panel?")
+                    .setMessage(
+                        "Enable Accessibility Service so swipe-down " +
+                        "doesn't open system notifications while " +
+                        "launcher is active.\n\n" +
+                        "Settings → Accessibility → Installed Apps " +
+                        "→ MISS Minimal → ON")
+                    .setPositiveButton("Open Settings") { _, _ ->
+                        startActivity(Intent(
+                            Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                    }
+                    .setNegativeButton("Skip", null)
+                    .show()
+            }
+        }
     }
 }

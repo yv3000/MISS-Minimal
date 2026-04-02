@@ -56,272 +56,275 @@
 26    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 26-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:5-77
 26-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:22-75
-27
-28    <permission
-28-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
-29        android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-29-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
-30        android:protectionLevel="signature" />
-30-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
-31
-32    <uses-permission android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-32-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
-32-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
-33
-34    <application
-34-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:5-104:19
-35        android:name="com.minimalist.launcher.MissLauncherApp"
-35-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:9-40
-36        android:allowBackup="true"
-36-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:9-35
-37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-37-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
-38        android:debuggable="true"
-39        android:extractNativeLibs="false"
-40        android:fontFamily="monospace"
-40-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-39
-41        android:icon="@mipmap/ic_launcher"
-41-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:9-43
-42        android:label="MISS Minimal"
-42-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:27:9-37
-43        android:roundIcon="@mipmap/ic_launcher_round"
-43-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:9-54
-44        android:supportsRtl="true"
-44-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:9-35
-45        android:testOnly="true"
-46        android:theme="@style/Theme.MinimalistLauncher" >
-46-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:9-56
-47        <receiver
-47-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:32:9-39:20
-48            android:name="com.minimalist.launcher.BootReceiver"
-48-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:33:13-41
-49            android:enabled="true"
-49-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:34:13-35
-50            android:exported="true" >
-50-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:35:13-36
-51            <intent-filter>
-51-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:13-38:29
-52                <action android:name="android.intent.action.BOOT_COMPLETED" />
-52-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:17-78
-52-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:25-76
-53            </intent-filter>
-54        </receiver>
-55        <receiver
-55-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:41:9-51:20
-56            android:name="com.minimalist.launcher.MissDeviceAdmin"
-56-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:13-44
-57            android:exported="true"
-57-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:44:13-36
-58            android:permission="android.permission.BIND_DEVICE_ADMIN" >
-58-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:13-70
-59            <meta-data
-59-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:13-47:55
-60                android:name="android.app.device_admin"
-60-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:17-56
-61                android:resource="@xml/device_admin" />
-61-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:17-53
-62
-63            <intent-filter>
-63-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:13-50:29
-64                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-64-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:17-81
-64-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:25-79
-65            </intent-filter>
-66        </receiver>
-67
-68        <activity
-68-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:9-67:20
-69            android:name="com.minimalist.launcher.MainActivity"
-69-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:13-41
-70            android:clearTaskOnLaunch="true"
-70-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:13-45
-71            android:exported="true"
-71-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:13-36
-72            android:launchMode="singleTask"
-72-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:13-44
-73            android:resumeWhilePausing="true"
-73-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:13-46
-74            android:screenOrientation="portrait"
-74-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:59:13-49
-75            android:stateNotNeeded="true" >
-75-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:13-42
-76            <intent-filter>
-76-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-66:29
-77                <action android:name="android.intent.action.MAIN" />
-77-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:17-69
-77-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:25-66
-78
-79                <category android:name="android.intent.category.HOME" />
-79-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:17-73
-79-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:27-70
-80                <category android:name="android.intent.category.DEFAULT" />
-80-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:17-76
-80-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:27-73
-81                <category android:name="android.intent.category.LAUNCHER" />
-81-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:17-77
-81-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:27-74
-82            </intent-filter>
-83        </activity>
-84        <activity
-84-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:9-91
-85            android:name="com.minimalist.launcher.AppPickerActivity"
-85-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:19-52
-86            android:screenOrientation="portrait" />
-86-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:53-89
-87        <activity
-87-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:9-95
-88            android:name="com.minimalist.launcher.QuickSettingsActivity"
-88-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:19-56
-89            android:screenOrientation="portrait" />
-89-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:57-93
-90        <activity
-90-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:9-91
-91            android:name="com.minimalist.launcher.AppDrawerActivity"
-91-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:19-52
-92            android:screenOrientation="portrait" />
-92-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:53-89
-93        <activity
-93-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:9-98
-94            android:name="com.minimalist.launcher.LauncherSettingsActivity"
-94-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:19-59
-95            android:screenOrientation="portrait" />
-95-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:60-96
-96        <activity
-96-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:9-91
-97            android:name="com.minimalist.launcher.TimeLimitActivity"
-97-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:19-52
-98            android:screenOrientation="portrait" />
-98-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:53-89
-99        <activity
-99-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:9-87
-100            android:name="com.minimalist.launcher.FocusActivity"
-100-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:19-48
-101            android:screenOrientation="portrait" />
-101-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:49-85
-102        <activity
-102-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:9-99
-103            android:name="com.minimalist.launcher.NotificationPanelActivity"
-103-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:19-60
-104            android:screenOrientation="portrait" />
-104-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:61-97
-105
-106        <service
-106-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:9-83:19
-107            android:name="com.minimalist.launcher.NotificationService"
-107-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:18-53
-108            android:exported="true"
-108-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:13-36
-109            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-109-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:13-87
-110            <intent-filter>
-110-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:13-82:29
-111                <action android:name="android.service.notification.NotificationListenerService" />
-111-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:17-99
-111-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:25-96
-112            </intent-filter>
-113        </service>
-114        <service
-114-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:5-86:39
-115            android:name="com.minimalist.launcher.NotificationBlockerService"
-115-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:14-56
-116            android:exported="false" />
-116-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:13-37
-117        <service
-117-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:9-98:19
-118            android:name="com.minimalist.launcher.NotificationBlockAccessibility"
-118-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:13-59
-119            android:exported="true"
-119-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:13-36
-120            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
-120-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:13-79
-121            <intent-filter>
-121-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:13-94:29
-122                <action android:name="android.accessibilityservice.AccessibilityService" />
-122-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:17-91
-122-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:25-89
-123            </intent-filter>
-124
-125            <meta-data
-125-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:95:13-97:71
-126                android:name="android.accessibilityservice"
-126-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:17-60
-127                android:resource="@xml/accessibility_service_config" />
-127-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:17-69
-128        </service>
-129        <service
-129-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:100:9-102:39
-130            android:name="com.minimalist.launcher.StrictModeOverlayService"
-130-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:100:18-58
-131            android:exported="false"
-131-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-37
-132            android:foregroundServiceType="specialUse" />
-132-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:13-55
-133
-134        <provider
-134-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-135            android:name="androidx.startup.InitializationProvider"
-135-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-136            android:authorities="com.minimalist.launcher.androidx-startup"
-136-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
-137            android:exported="false" >
-137-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
-138            <meta-data
-138-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-139                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-139-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-140                android:value="androidx.startup" />
-140-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-141            <meta-data
-141-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
-142                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-142-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
-143                android:value="androidx.startup" />
-143-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
-144            <meta-data
-144-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-145                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-145-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-146                android:value="androidx.startup" />
-146-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-147        </provider>
-148
-149        <receiver
-149-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-150            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-150-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-151            android:directBootAware="false"
-151-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-152            android:enabled="true"
-152-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-153            android:exported="true"
-153-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-154            android:permission="android.permission.DUMP" >
-154-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-155            <intent-filter>
-155-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-156                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-156-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-156-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-157            </intent-filter>
-158            <intent-filter>
-158-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-159                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-159-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-159-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-160            </intent-filter>
-161            <intent-filter>
-161-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-162                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-162-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-162-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-163            </intent-filter>
-164            <intent-filter>
-164-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-165                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-165-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-165-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-166            </intent-filter>
-167        </receiver>
-168    </application>
-169
-170</manifest>
+27    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+27-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:5-84
+27-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:22-82
+28
+29    <permission
+29-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+30        android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+30-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+31        android:protectionLevel="signature" />
+31-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+32
+33    <uses-permission android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+33-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+33-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+34
+35    <application
+35-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:5-105:19
+36        android:name="com.minimalist.launcher.MissLauncherApp"
+36-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:9-40
+37        android:allowBackup="true"
+37-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:9-35
+38        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+38-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+39        android:debuggable="true"
+40        android:extractNativeLibs="false"
+41        android:fontFamily="monospace"
+41-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:31:9-39
+42        android:icon="@mipmap/ic_launcher"
+42-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:9-43
+43        android:label="MISS Minimal"
+43-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:9-37
+44        android:roundIcon="@mipmap/ic_launcher_round"
+44-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:27:9-54
+45        android:supportsRtl="true"
+45-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:9-35
+46        android:testOnly="true"
+47        android:theme="@style/Theme.MinimalistLauncher" >
+47-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-56
+48        <receiver
+48-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:33:9-40:20
+49            android:name="com.minimalist.launcher.BootReceiver"
+49-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:34:13-41
+50            android:enabled="true"
+50-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:35:13-35
+51            android:exported="true" >
+51-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:13-36
+52            <intent-filter>
+52-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:37:13-39:29
+53                <action android:name="android.intent.action.BOOT_COMPLETED" />
+53-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:17-78
+53-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:25-76
+54            </intent-filter>
+55        </receiver>
+56        <receiver
+56-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:9-52:20
+57            android:name="com.minimalist.launcher.MissDeviceAdmin"
+57-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:13-44
+58            android:exported="true"
+58-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:45:13-36
+59            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+59-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:44:13-70
+60            <meta-data
+60-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:46:13-48:55
+61                android:name="android.app.device_admin"
+61-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:17-56
+62                android:resource="@xml/device_admin" />
+62-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:17-53
+63
+64            <intent-filter>
+64-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:13-51:29
+65                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+65-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:50:17-81
+65-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:50:25-79
+66            </intent-filter>
+67        </receiver>
+68
+69        <activity
+69-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:9-68:20
+70            android:name="com.minimalist.launcher.MainActivity"
+70-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:13-41
+71            android:clearTaskOnLaunch="true"
+71-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:57:13-45
+72            android:exported="true"
+72-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-36
+73            android:launchMode="singleTask"
+73-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:56:13-44
+74            android:resumeWhilePausing="true"
+74-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:59:13-46
+75            android:screenOrientation="portrait"
+75-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:13-49
+76            android:stateNotNeeded="true" >
+76-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:58:13-42
+77            <intent-filter>
+77-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:13-67:29
+78                <action android:name="android.intent.action.MAIN" />
+78-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:17-69
+78-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:25-66
+79
+80                <category android:name="android.intent.category.HOME" />
+80-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:17-73
+80-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:27-70
+81                <category android:name="android.intent.category.DEFAULT" />
+81-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:17-76
+81-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:27-73
+82                <category android:name="android.intent.category.LAUNCHER" />
+82-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:66:17-77
+82-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:66:27-74
+83            </intent-filter>
+84        </activity>
+85        <activity
+85-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:9-91
+86            android:name="com.minimalist.launcher.AppPickerActivity"
+86-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:19-52
+87            android:screenOrientation="portrait" />
+87-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:53-89
+88        <activity
+88-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:9-95
+89            android:name="com.minimalist.launcher.QuickSettingsActivity"
+89-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:19-56
+90            android:screenOrientation="portrait" />
+90-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:57-93
+91        <activity
+91-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:9-91
+92            android:name="com.minimalist.launcher.AppDrawerActivity"
+92-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:19-52
+93            android:screenOrientation="portrait" />
+93-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:72:53-89
+94        <activity
+94-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:9-98
+95            android:name="com.minimalist.launcher.LauncherSettingsActivity"
+95-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:19-59
+96            android:screenOrientation="portrait" />
+96-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:60-96
+97        <activity
+97-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:9-91
+98            android:name="com.minimalist.launcher.TimeLimitActivity"
+98-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:19-52
+99            android:screenOrientation="portrait" />
+99-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:74:53-89
+100        <activity
+100-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:9-87
+101            android:name="com.minimalist.launcher.FocusActivity"
+101-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:19-48
+102            android:screenOrientation="portrait" />
+102-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:49-85
+103        <activity
+103-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:9-99
+104            android:name="com.minimalist.launcher.NotificationPanelActivity"
+104-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:19-60
+105            android:screenOrientation="portrait" />
+105-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:61-97
+106
+107        <service
+107-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:9-84:19
+108            android:name="com.minimalist.launcher.NotificationService"
+108-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:18-53
+109            android:exported="true"
+109-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:13-36
+110            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+110-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:13-87
+111            <intent-filter>
+111-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:13-83:29
+112                <action android:name="android.service.notification.NotificationListenerService" />
+112-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:17-99
+112-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:25-96
+113            </intent-filter>
+114        </service>
+115        <service
+115-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:5-87:39
+116            android:name="com.minimalist.launcher.NotificationBlockerService"
+116-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:14-56
+117            android:exported="false" />
+117-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:13-37
+118        <service
+118-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:9-99:19
+119            android:name="com.minimalist.launcher.NotificationBlockAccessibility"
+119-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:13-59
+120            android:exported="true"
+120-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:13-36
+121            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+121-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:13-79
+122            <intent-filter>
+122-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:13-95:29
+123                <action android:name="android.accessibilityservice.AccessibilityService" />
+123-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:17-91
+123-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:25-89
+124            </intent-filter>
+125
+126            <meta-data
+126-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:13-98:71
+127                android:name="android.accessibilityservice"
+127-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:17-60
+128                android:resource="@xml/accessibility_service_config" />
+128-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:98:17-69
+129        </service>
+130        <service
+130-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:9-103:39
+131            android:name="com.minimalist.launcher.StrictModeOverlayService"
+131-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:18-58
+132            android:exported="false"
+132-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:103:13-37
+133            android:foregroundServiceType="specialUse" />
+133-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-55
+134
+135        <provider
+135-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+136            android:name="androidx.startup.InitializationProvider"
+136-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+137            android:authorities="com.minimalist.launcher.androidx-startup"
+137-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+138            android:exported="false" >
+138-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+139            <meta-data
+139-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+140                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+140-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+141                android:value="androidx.startup" />
+141-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+142            <meta-data
+142-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+143                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+143-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+144                android:value="androidx.startup" />
+144-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+145            <meta-data
+145-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+146                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+146-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+147                android:value="androidx.startup" />
+147-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+148        </provider>
+149
+150        <receiver
+150-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+151            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+151-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+152            android:directBootAware="false"
+152-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+153            android:enabled="true"
+153-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+154            android:exported="true"
+154-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+155            android:permission="android.permission.DUMP" >
+155-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+156            <intent-filter>
+156-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+157                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+157-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+157-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+158            </intent-filter>
+159            <intent-filter>
+159-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+160                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+160-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+160-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+161            </intent-filter>
+162            <intent-filter>
+162-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+163                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+163-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+163-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+164            </intent-filter>
+165            <intent-filter>
+165-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+166                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+166-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+166-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+167            </intent-filter>
+168        </receiver>
+169    </application>
+170
+171</manifest>

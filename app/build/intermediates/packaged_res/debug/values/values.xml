@@ -11,7 +11,7 @@
     <color name="grey_aaa">#aaaaaa</color>
     <color name="grey_ccc">#cccccc</color>
     <color name="white">#FFFFFF</color>
-    <string name="accessibility_description">MISS Minimal uses this to keep your launcher in focus and block system panel interruptions.</string>
+    <string name="accessibility_desc">Keeps MISS Minimal in focus by blocking system panel when launcher is active.</string>
     <style name="Theme.MinimalistLauncher" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#000000</item>
