@@ -73,6 +73,7 @@ Everything still works underneath. Your apps are all there in the drawer. Your n
 
 ### Exit
 - EXIT button on home screen → takes you to Home Settings to switch back to your system launcher
+- (Currently, there is an issue, so it might not work on some phones.)
 
 ---
 
