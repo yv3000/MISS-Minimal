@@ -79,8 +79,6 @@ Everything still works underneath. Your apps are all there in the drawer. Your n
 
 ## Screenshots
 
-> *Add your screenshots here after uploading to the repo*
-
 | Home Screen | App Drawer | Quick Settings | Focus Mode | Strict Mode |
 |:-----------:|:----------:|:--------------:|:----------:|:-----------:|
 | ![Home Screen](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/HOMESCREEN.jpeg) | ![App Drawer](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/APP%20DRAWER.jpeg) | ![Quick Settings](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/QUICK%20SETTINGS.jpeg) | ![Focus Mode](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/TIMER.jpeg) | ![Strict Mode](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/STRICT%20MODE.jpeg) |
