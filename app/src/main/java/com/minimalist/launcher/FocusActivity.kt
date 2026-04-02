@@ -103,6 +103,47 @@ class FocusActivity : AppCompatActivity() {
     panelTimer.visibility = View.GONE
   }
 
+  fun selectTab(tab: String) {
+    if (tab == "strict") {
+      onStrictTabSelected()
+      return
+    }
+    
+    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabStrict.setTextColor(android.graphics.Color.parseColor("#666666"))
+    panelStopwatch.visibility = View.GONE
+    panelTimer.visibility = View.GONE
+    panelStrict.visibility = View.GONE
+
+    when (tab) {
+      "stopwatch" -> {
+        tabStopwatch.setTextColor(android.graphics.Color.WHITE)
+        panelStopwatch.visibility = View.VISIBLE
+      }
+      "timer" -> {
+        tabTimer.setTextColor(android.graphics.Color.WHITE)
+        panelTimer.visibility = View.VISIBLE
+      }
+    }
+  }
+
+  fun onStrictTabSelected() {
+    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
+    val startNow = prefs.getBoolean("start_immediately", false)
+    
+    if (startNow) {
+      prefs.edit()
+        .remove("start_immediately")
+        .apply()
+      startStrictMode()
+      return
+    }
+    
+    selectStrictTab()
+    showStrictWarningScreen()
+  }
+
   private fun showStrictWarningScreen() {
     findViewById<View>(R.id.layoutStrictWarning).visibility = View.VISIBLE
     btnEnableStrict.visibility = View.VISIBLE
@@ -127,27 +168,10 @@ class FocusActivity : AppCompatActivity() {
 
   private fun setupTabs() {
     fun selectTab(tab: Int) {
-      if (tab == 2) {
-        selectStrictTab()
-        return
-      }
-
-      tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
-      tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
-      tabStrict.setTextColor(android.graphics.Color.parseColor("#666666"))
-      panelStopwatch.visibility = View.GONE
-      panelTimer.visibility = View.GONE
-      panelStrict.visibility = View.GONE
-
       when (tab) {
-        0 -> {
-          tabStopwatch.setTextColor(android.graphics.Color.WHITE)
-          panelStopwatch.visibility = View.VISIBLE
-        }
-        1 -> {
-          tabTimer.setTextColor(android.graphics.Color.WHITE)
-          panelTimer.visibility = View.VISIBLE
-        }
+        0 -> selectTab("stopwatch")
+        1 -> selectTab("timer")
+        2 -> selectTab("strict")
       }
     }
 
@@ -158,7 +182,7 @@ class FocusActivity : AppCompatActivity() {
       if (!checkAllStrictPermissions()) {
         startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
-        selectTab(2)
+        onStrictTabSelected()
       }
     }
   }
@@ -279,8 +303,25 @@ class FocusActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
+    
+    // Check if returning from permission screen
+    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
+    val startNow = prefs.getBoolean("start_immediately", false)
+    
+    if (startNow) {
+      prefs.edit()
+        .remove("start_immediately")
+        .apply()
+      // Switch to strict tab and start timer
+      selectTab("strict")
+      startStrictMode()
+      return
+    }
+    
+    // Restore timer if already running
     StrictModeManager.restoreFromPrefs(this)
     if (StrictModeManager.isActive()) {
+      selectTab("strict")
       val remaining = StrictModeManager.getRemainingMs() / 1000
       strictRemainingSeconds = remaining.toInt()
       showStrictCountdown()

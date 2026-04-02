@@ -78,11 +78,10 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         }
 
         btnContinue.setOnClickListener {
-            // Go back to FocusActivity and open STRICT tab
-            val intent = Intent(this, FocusActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            intent.putExtra("open_tab", "strict")
-            startActivity(intent)
+            val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
+            prefs.edit()
+                .putBoolean("start_immediately", true)
+                .apply()
             finish()
         }
     }
