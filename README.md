@@ -81,7 +81,7 @@ Everything still works underneath. Your apps are all there in the drawer. Your n
 
 | Home Screen | App Drawer | Quick Settings | Focus Mode | Strict Mode |
 |:-----------:|:----------:|:--------------:|:----------:|:-----------:|
-| ![Home Screen](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/APP_DRAWER_w5fzgm.jpg) | ![App Drawer](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/APP_DRAWER_w5fzgm.jpg) | ![Quick Settings](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/QUICK_SETTINGS_tu0ayb.jpg) | ![Focus Mode]([https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/TIMER.jpeg](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/TIMER_ixjoli.jpg)) | ![Strict Mode](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/STRICT_MODE_auc4sh.jpg) |
+| ![Home Screen](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/HOMESCREEN_nvjep9.jpg) | ![App Drawer](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/APP_DRAWER_w5fzgm.jpg) | ![Quick Settings](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/QUICK_SETTINGS_tu0ayb.jpg) | ![Focus Mode](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/TIMER_ixjoli.jpg) | ![Strict Mode](https://res.cloudinary.com/dpuitsxuh/image/upload/v1775162858/STRICT_MODE_auc4sh.jpg) |
 
 ---
 
