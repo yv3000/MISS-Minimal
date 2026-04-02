@@ -5,7 +5,7 @@
 Built by **THE YV🖤**
 &nbsp;
 [![linktr.ee/yv_3000](https://img.shields.io/badge/linktree-yv__3000-39E09B?style=flat&logo=linktree&logoColor=white)](https://linktr.ee/yv_3000)
-[![License: MIT](https://img.shields.io/badge/License-MIT-white.svg)](LICENSE)
+[![License: MIT](https://github.com/yv3000/MISS-Minimal/tree/main?tab=readme-ov-file#license)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Android%208.0%2B-black.svg)](https://developer.android.com)
 [![Open Source](https://img.shields.io/badge/open--source-yes-brightgreen)](https://github.com)
 
@@ -83,7 +83,7 @@ Everything still works underneath. Your apps are all there in the drawer. Your n
 
 | Home Screen | App Drawer | Quick Settings | Focus Mode | Strict Mode |
 |:-----------:|:----------:|:--------------:|:----------:|:-----------:|
-| *soon* | *soon* | *soon* | *soon* | *soon* |
+| ![Home Screen](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/HOMESCREEN.jpeg) | ![App Drawer](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/APP%20DRAWER.jpeg) | ![Quick Settings](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/QUICK%20SETTINGS.jpeg) | ![Focus Mode](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/TIMER.jpeg) | ![Strict Mode](https://github.com/yv3000/MISS-Minimal/blob/25c4ecc00c3ffaef0dce31cc950714826566c244/STRICT%20MODE.jpeg) |
 
 ---
 
@@ -108,7 +108,7 @@ Requirements:
 - Java 17 or higher
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/MISS-Minimal.git
+git clone https://github.com/yv3000/MISS-Minimal.git
 ```
 
 Open in Android Studio → wait for Gradle sync → connect your phone via USB → tap Run ▶
@@ -176,7 +176,7 @@ Designer. Builder. Minimalist.
 ```
 MIT License
 
-Copyright (c) 2026 THE YV
+Copyright (c) 2025 THE YV
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
