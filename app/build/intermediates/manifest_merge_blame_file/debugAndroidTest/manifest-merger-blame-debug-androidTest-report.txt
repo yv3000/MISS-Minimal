@@ -3,32 +3,32 @@
 3    package="com.minimalist.launcher.test" >
 4
 5    <uses-sdk
-5-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:5:5-74
+5-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:5:5-74
 6        android:minSdkVersion="26"
-6-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:5:15-41
+6-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:5:15-41
 7        android:targetSdkVersion="34" />
-7-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:5:42-71
+7-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:5:42-71
 8
 9    <instrumentation
-9-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:11:5-15:73
+9-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:11:5-15:73
 10        android:name="androidx.test.runner.AndroidJUnitRunner"
-10-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:11:22-76
+10-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:11:22-76
 11        android:functionalTest="false"
-11-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:14:22-52
+11-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:14:22-52
 12        android:handleProfiling="false"
-12-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:13:22-53
+12-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:13:22-53
 13        android:label="Tests for com.minimalist.launcher"
-13-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:15:22-71
+13-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:15:22-71
 14        android:targetPackage="com.minimalist.launcher" />
-14-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:12:22-69
+14-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:12:22-69
 15
 16    <application
-16-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:7:5-9:19
+16-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:7:5-9:19
 17        android:debuggable="true"
 18        android:extractNativeLibs="false" >
 19        <uses-library android:name="android.test.runner" />
-19-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:8:9-60
-19-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest17567434587028202099.xml:8:23-57
+19-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:8:9-60
+19-->X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest8467271289448983453.xml:8:23-57
 20    </application>
 21
 22</manifest>
