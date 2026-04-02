@@ -22,9 +22,10 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
 
     <permission
         android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -59,7 +60,7 @@
             android:permission="android.permission.BIND_DEVICE_ADMIN" >
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin" />
+                android:resource="@xml/device_admin_rules" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -103,6 +104,9 @@
         <activity
             android:name="com.minimalist.launcher.NotificationPanelActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.minimalist.launcher.PermissionOnboardingActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.minimalist.launcher.NotificationService"
@@ -131,6 +135,19 @@
             android:name="com.minimalist.launcher.StrictModeOverlayService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
+        <service
+            android:name="com.minimalist.launcher.StrictModeService"
+            android:exported="true"
+            android:label="MISS Minimal Strict Mode"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/strict_mode_service" />
+        </service>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

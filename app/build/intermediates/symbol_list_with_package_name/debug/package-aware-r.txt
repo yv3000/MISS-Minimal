@@ -3223,6 +3223,11 @@ id btn10m
 id btn15m
 id btn1m
 id btn5m
+id btnAllowAccessibility
+id btnAllowBattery
+id btnAllowDnd
+id btnAllowOverlay
+id btnAllowUsage
 id btnAutoBrightness
 id btnBluetooth
 id btnBsAddHome
@@ -3231,11 +3236,13 @@ id btnBsRename
 id btnBsTimeLimit
 id btnBsUninstall
 id btnChangeApp
+id btnContinue
 id btnCustom
 id btnData
 id btnDnd
 id btnEnableStrict
 id btnExit
+id btnExitStrict
 id btnFlashlight
 id btnFocus
 id btnFontSize
@@ -3244,6 +3251,7 @@ id btnSettings
 id btnSoundNormal
 id btnSoundSilent
 id btnSoundVibrate
+id btnStartAgain
 id btnSwPause
 id btnSwResume
 id btnSwStart
@@ -3400,6 +3408,7 @@ id jumpToStart
 id labeled
 id layout
 id layoutPickers
+id layoutStrictComplete
 id layoutStrictWarning
 id left
 id leftToRight
@@ -3544,6 +3553,11 @@ id right_icon
 id right_side
 id rounded
 id row
+id rowAccessibility
+id rowBattery
+id rowDnd
+id rowOverlay
+id rowUsage
 id row_index_key
 id row_reverse
 id rvApps
@@ -3684,12 +3698,20 @@ id tvFullscreenDate
 id tvFullscreenTime
 id tvHeader
 id tvOverlayTimer
+id tvStatusAccessibility
+id tvStatusBattery
+id tvStatusDnd
+id tvStatusOverlay
+id tvStatusUsage
 id tvStopwatch
 id tvStrictCountdown
+id tvStrictStatus
+id tvSubtitle
 id tvTime
 id tvTimeCount
 id tvTimeUp
 id tvTimerCountdown
+id tvTitle
 id tvVolumeState
 id tvVolumeVal
 id tvWifiState
@@ -3837,6 +3859,7 @@ layout activity_focus
 layout activity_launcher_settings
 layout activity_main
 layout activity_notification_panel
+layout activity_permission_onboarding
 layout activity_quick_settings
 layout activity_time_limit
 layout bottom_sheet_app_options
@@ -4094,6 +4117,7 @@ string searchview_navigation_content_description
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string strict_mode_description
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
@@ -5367,4 +5391,5 @@ styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
 xml accessibility_service_config
-xml device_admin
+xml device_admin_rules
+xml strict_mode_service

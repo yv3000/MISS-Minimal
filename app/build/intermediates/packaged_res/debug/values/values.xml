@@ -12,6 +12,7 @@
     <color name="grey_ccc">#cccccc</color>
     <color name="white">#FFFFFF</color>
     <string name="accessibility_desc">Keeps MISS Minimal in focus by blocking system panel when launcher is active.</string>
+    <string name="strict_mode_description">MISS Minimal Strict Mode — blocks all apps during focus session</string>
     <style name="Theme.MinimalistLauncher" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#000000</item>

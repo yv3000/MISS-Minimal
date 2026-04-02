@@ -2,10 +2,7 @@ package com.minimalist.launcher
 
 import android.app.AlertDialog
 import android.app.NotificationManager
-import android.app.admin.DevicePolicyManager
-import android.content.ComponentName
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -25,15 +22,11 @@ import androidx.appcompat.app.AppCompatActivity
 
 class FocusActivity : AppCompatActivity() {
 
-  // Handlers
   private val handler = Handler(Looper.getMainLooper())
-
-  // Stopwatch state
   private var swSeconds = 0
   private var swRunning = false
   private var swPaused = false
 
-  // Timer state
   private var timerHours = 0
   private var timerMinutes = 0
   private var timerSeconds = 0
@@ -41,11 +34,9 @@ class FocusActivity : AppCompatActivity() {
   private var timerRunning = false
   private var timerPaused = false
 
-  // Strict state
   private var strictRemainingSeconds = 0
-  private var strictCountdownRunnable: java.lang.Runnable? = null
+  private var strictCountdownRunnable: Runnable? = null
 
-  // Views
   private lateinit var tabStopwatch: TextView
   private lateinit var tabTimer: TextView
   private lateinit var tabStrict: TextView
@@ -54,45 +45,23 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var panelStrict: LinearLayout
   private lateinit var panelStrictActive: FrameLayout
   private lateinit var tvStopwatch: TextView
-  private lateinit var btnSwStart: TextView
-  private lateinit var btnSwPause: TextView
-  private lateinit var btnSwStop: TextView
-  private lateinit var btnSwResume: TextView
-  private lateinit var pickerHours: NumberPicker
-  private lateinit var pickerMinutes: NumberPicker
-  private lateinit var pickerSeconds: NumberPicker
-  private lateinit var layoutPickers: LinearLayout
-  private lateinit var tvTimerCountdown: TextView
-  private lateinit var tvTimeUp: TextView
-  private lateinit var btnTimerStart: TextView
-  private lateinit var btnTimerPause: TextView
-  private lateinit var btnTimerStop: TextView
-  private lateinit var btnTimerResume: TextView
-  private lateinit var btnTimerReset: TextView
-  private lateinit var btnEnableStrict: TextView
   private lateinit var tvStrictCountdown: TextView
   private lateinit var tvStrictStatus: TextView
+  private lateinit var layoutStrictComplete: LinearLayout
+  private lateinit var btnStartAgain: TextView
   private lateinit var btnExitStrict: TextView
+  private lateinit var btnEnableStrict: TextView
 
-  private lateinit var prefs: SharedPreferences
   private lateinit var vibrator: Vibrator
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    
-    // Wrap entire onCreate in try-catch to prevent crash
     try {
       setContentView(R.layout.activity_focus)
-      
-      prefs = getSharedPreferences("miss_prefs", 
-        MODE_PRIVATE)
-      
       vibrator = if (Build.VERSION.SDK_INT >= 31)
-        getSystemService(VibratorManager::class.java)
-          .defaultVibrator
+        getSystemService(VibratorManager::class.java).defaultVibrator
       else
-        @Suppress("DEPRECATION")
-        getSystemService(VIBRATOR_SERVICE) as Vibrator
+        @Suppress("DEPRECATION") getSystemService(VIBRATOR_SERVICE) as Vibrator
 
       bindViews()
       setupTabs()
@@ -100,14 +69,46 @@ class FocusActivity : AppCompatActivity() {
       setupTimer()
       setupStrictMode()
 
+      handleIntent(intent)
     } catch (e: Exception) {
       e.printStackTrace()
-      // Never crash — go back gracefully
       finish()
     }
   }
 
-  fun bindViews() {
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    intent?.let { handleIntent(it) }
+  }
+
+  private fun handleIntent(intent: Intent) {
+    if (intent.getBooleanExtra("show_strict_timer", false)) {
+      showStrictCountdown()
+    }
+    val tab = intent.getStringExtra("open_tab")
+    if (tab == "strict") {
+      // Switch to strict tab
+      selectStrictTab()
+      // Show the warning screen with ENABLE button
+      showStrictWarningScreen()
+    }
+  }
+
+  private fun selectStrictTab() {
+    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabStrict.setTextColor(android.graphics.Color.WHITE)
+    panelStrict.visibility = View.VISIBLE
+    panelStopwatch.visibility = View.GONE
+    panelTimer.visibility = View.GONE
+  }
+
+  private fun showStrictWarningScreen() {
+    findViewById<View>(R.id.layoutStrictWarning).visibility = View.VISIBLE
+    btnEnableStrict.visibility = View.VISIBLE
+  }
+
+  private fun bindViews() {
     tabStopwatch = findViewById(R.id.tabStopwatch)
     tabTimer = findViewById(R.id.tabTimer)
     tabStrict = findViewById(R.id.tabStrict)
@@ -116,413 +117,308 @@ class FocusActivity : AppCompatActivity() {
     panelStrict = findViewById(R.id.panelStrict)
     panelStrictActive = findViewById(R.id.panelStrictActive)
     tvStopwatch = findViewById(R.id.tvStopwatch)
-    btnSwStart = findViewById(R.id.btnSwStart)
-    btnSwPause = findViewById(R.id.btnSwPause)
-    btnSwStop = findViewById(R.id.btnSwStop)
-    btnSwResume = findViewById(R.id.btnSwResume)
-    pickerHours = findViewById(R.id.pickerHours)
-    pickerMinutes = findViewById(R.id.pickerMinutes)
-    pickerSeconds = findViewById(R.id.pickerSeconds)
-    layoutPickers = findViewById(R.id.layoutPickers)
-    tvTimerCountdown = findViewById(R.id.tvTimerCountdown)
-    tvTimeUp = findViewById(R.id.tvTimeUp)
-    btnTimerStart = findViewById(R.id.btnTimerStart)
-    btnTimerPause = findViewById(R.id.btnTimerPause)
-    btnTimerStop = findViewById(R.id.btnTimerStop)
-    btnTimerResume = findViewById(R.id.btnTimerResume)
-    btnTimerReset = findViewById(R.id.btnTimerReset)
-    btnEnableStrict = findViewById(R.id.btnEnableStrict)
     tvStrictCountdown = findViewById(R.id.tvStrictCountdown)
     tvStrictStatus = findViewById(R.id.tvStrictStatus)
+    layoutStrictComplete = findViewById(R.id.layoutStrictComplete)
+    btnStartAgain = findViewById(R.id.btnStartAgain)
     btnExitStrict = findViewById(R.id.btnExitStrict)
+    btnEnableStrict = findViewById(R.id.btnEnableStrict)
   }
 
-  fun setupTabs() {
+  private fun setupTabs() {
     fun selectTab(tab: Int) {
-      // Reset all
-      tabStopwatch.setTextColor(
-        android.graphics.Color.parseColor("#666666"))
-      tabTimer.setTextColor(
-        android.graphics.Color.parseColor("#666666"))
-      tabStrict.setTextColor(
-        android.graphics.Color.parseColor("#666666"))
+      if (tab == 2) {
+        selectStrictTab()
+        return
+      }
+
+      tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
+      tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
+      tabStrict.setTextColor(android.graphics.Color.parseColor("#666666"))
       panelStopwatch.visibility = View.GONE
       panelTimer.visibility = View.GONE
       panelStrict.visibility = View.GONE
 
       when (tab) {
         0 -> {
-          tabStopwatch.setTextColor(
-            android.graphics.Color.WHITE)
+          tabStopwatch.setTextColor(android.graphics.Color.WHITE)
           panelStopwatch.visibility = View.VISIBLE
         }
         1 -> {
-          tabTimer.setTextColor(
-            android.graphics.Color.WHITE)
+          tabTimer.setTextColor(android.graphics.Color.WHITE)
           panelTimer.visibility = View.VISIBLE
-        }
-        2 -> {
-          tabStrict.setTextColor(
-            android.graphics.Color.WHITE)
-          panelStrict.visibility = View.VISIBLE
-          // Always show warning when tab opened
-          findViewById<LinearLayout>(
-            R.id.layoutStrictWarning)
-            .visibility = View.VISIBLE
-          btnEnableStrict.visibility = View.VISIBLE
         }
       }
     }
 
-    selectTab(0) // Default: stopwatch
+    selectTab(0)
     tabStopwatch.setOnClickListener { selectTab(0) }
     tabTimer.setOnClickListener { selectTab(1) }
-    tabStrict.setOnClickListener { selectTab(2) }
+    tabStrict.setOnClickListener {
+      if (!checkAllStrictPermissions()) {
+        startActivity(Intent(this, PermissionOnboardingActivity::class.java))
+      } else {
+        selectTab(2)
+      }
+    }
   }
 
-  fun setupStopwatch() {
-    btnSwStart.setOnClickListener {
-      swRunning = true
-      swPaused = false
-      btnSwStart.visibility = View.GONE
-      btnSwPause.visibility = View.VISIBLE
-      btnSwStop.visibility = View.VISIBLE
+  private fun setupStopwatch() {
+    val btnStart = findViewById<TextView>(R.id.btnSwStart)
+    val btnPause = findViewById<TextView>(R.id.btnSwPause)
+    val btnStop = findViewById<TextView>(R.id.btnSwStop)
+    val btnResume = findViewById<TextView>(R.id.btnSwResume)
+
+    btnStart.setOnClickListener {
+      swRunning = true; swPaused = false
+      btnStart.visibility = View.GONE
+      btnPause.visibility = View.VISIBLE
+      btnStop.visibility = View.VISIBLE
       runStopwatch()
     }
-    btnSwPause.setOnClickListener {
+    btnPause.setOnClickListener {
       swPaused = true
       handler.removeCallbacksAndMessages(null)
-      btnSwPause.visibility = View.GONE
-      btnSwResume.visibility = View.VISIBLE
+      btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE
     }
-    btnSwResume.setOnClickListener {
+    btnResume.setOnClickListener {
       swPaused = false
-      btnSwResume.visibility = View.GONE
-      btnSwPause.visibility = View.VISIBLE
+      btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE
       runStopwatch()
     }
-    btnSwStop.setOnClickListener {
+    btnStop.setOnClickListener {
       handler.removeCallbacksAndMessages(null)
-      swRunning = false
-      swPaused = false
-      swSeconds = 0
+      swRunning = false; swPaused = false; swSeconds = 0
       tvStopwatch.text = "00:00"
-      btnSwStart.visibility = View.VISIBLE
-      btnSwPause.visibility = View.GONE
-      btnSwStop.visibility = View.GONE
-      btnSwResume.visibility = View.GONE
+      btnStart.visibility = View.VISIBLE; btnPause.visibility = View.GONE
+      btnStop.visibility = View.GONE; btnResume.visibility = View.GONE
     }
   }
 
-  fun runStopwatch() {
+  private fun runStopwatch() {
     handler.post(object : Runnable {
       override fun run() {
         if (!swRunning || swPaused) return
         swSeconds++
-        val m = swSeconds / 60
-        val s = swSeconds % 60
+        val m = swSeconds / 60; val s = swSeconds % 60
         tvStopwatch.text = "%02d:%02d".format(m, s)
         handler.postDelayed(this, 1000)
       }
     })
   }
 
-  fun setupTimer() {
-    pickerHours.minValue = 0
-    pickerHours.maxValue = 99
-    pickerHours.wrapSelectorWheel = true
-    pickerMinutes.minValue = 0
-    pickerMinutes.maxValue = 59
-    pickerMinutes.wrapSelectorWheel = true
-    pickerSeconds.minValue = 0
-    pickerSeconds.maxValue = 59
-    pickerSeconds.wrapSelectorWheel = true
+  private fun setupTimer() {
+    val hPicker = findViewById<NumberPicker>(R.id.pickerHours)
+    val mPicker = findViewById<NumberPicker>(R.id.pickerMinutes)
+    val sPicker = findViewById<NumberPicker>(R.id.pickerSeconds)
+    hPicker.minValue = 0; hPicker.maxValue = 99
+    mPicker.minValue = 0; mPicker.maxValue = 59
+    sPicker.minValue = 0; sPicker.maxValue = 59
+    styleNumberPicker(hPicker); styleNumberPicker(mPicker); styleNumberPicker(sPicker)
 
-    // Style pickers white
-    styleNumberPicker(pickerHours)
-    styleNumberPicker(pickerMinutes)
-    styleNumberPicker(pickerSeconds)
+    val btnStart = findViewById<TextView>(R.id.btnTimerStart)
+    val btnPause = findViewById<TextView>(R.id.btnTimerPause)
+    val btnStop = findViewById<TextView>(R.id.btnTimerStop)
+    val btnResume = findViewById<TextView>(R.id.btnTimerResume)
+    val btnReset = findViewById<TextView>(R.id.btnTimerReset)
+    val layoutPickers = findViewById<View>(R.id.layoutPickers)
+    val tvCountdown = findViewById<TextView>(R.id.tvTimerCountdown)
+    val tvUp = findViewById<TextView>(R.id.tvTimeUp)
 
-    pickerHours.setOnValueChangedListener { 
-      _, _, v -> timerHours = v }
-    pickerMinutes.setOnValueChangedListener { 
-      _, _, v -> timerMinutes = v }
-    pickerSeconds.setOnValueChangedListener { 
-      _, _, v -> timerSeconds = v }
-
-    btnTimerStart.setOnClickListener {
-      timerHours = pickerHours.value
-      timerMinutes = pickerMinutes.value
-      timerSeconds = pickerSeconds.value
-      val total = timerHours * 3600 + 
-                  timerMinutes * 60 + timerSeconds
+    btnStart.setOnClickListener {
+      val total = hPicker.value * 3600 + mPicker.value * 60 + sPicker.value
       if (total <= 0) {
-        Toast.makeText(this, 
-          "Set a time first", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Set a time first", Toast.LENGTH_SHORT).show()
         return@setOnClickListener
       }
-      timerRemaining = total
-      startTimer()
+      timerRemaining = total; timerRunning = true; timerPaused = false
+      layoutPickers.visibility = View.GONE; tvCountdown.visibility = View.VISIBLE
+      btnStart.visibility = View.GONE; btnPause.visibility = View.VISIBLE; btnStop.visibility = View.VISIBLE
+      runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset)
     }
 
-    btnTimerPause.setOnClickListener {
-      timerPaused = true
-      handler.removeCallbacksAndMessages(null)
-      btnTimerPause.visibility = View.GONE
-      btnTimerResume.visibility = View.VISIBLE
-    }
-
-    btnTimerResume.setOnClickListener {
-      timerPaused = false
-      btnTimerResume.visibility = View.GONE
-      btnTimerPause.visibility = View.VISIBLE
-      runTimer()
-    }
-
-    btnTimerStop.setOnClickListener { resetTimer() }
-    btnTimerReset.setOnClickListener { resetTimer() }
+    btnPause.setOnClickListener { timerPaused = true; btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE }
+    btnResume.setOnClickListener { timerPaused = false; btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE; runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset) }
+    btnStop.setOnClickListener { resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker) }
+    btnReset.setOnClickListener { resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker) }
   }
 
-  fun startTimer() {
-    timerRunning = true
-    timerPaused = false
-    layoutPickers.visibility = View.GONE
-    tvTimerCountdown.visibility = View.VISIBLE
-    btnTimerStart.visibility = View.GONE
-    btnTimerPause.visibility = View.VISIBLE
-    btnTimerStop.visibility = View.VISIBLE
-    runTimer()
-  }
-
-  fun runTimer() {
+  private fun runTimer(tv: TextView, up: TextView, pause: View, stop: View, reset: View) {
     handler.post(object : Runnable {
       override fun run() {
         if (!timerRunning || timerPaused) return
         if (timerRemaining <= 0) {
-          onTimerDone()
+          timerRunning = false; up.visibility = View.VISIBLE; pause.visibility = View.GONE; stop.visibility = View.GONE; reset.visibility = View.VISIBLE
+          val pattern = longArrayOf(0, 300, 200, 300, 200, 300, 200)
+          if (Build.VERSION.SDK_INT >= 26) vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
+          else @Suppress("DEPRECATION") vibrator.vibrate(pattern, -1)
           return
         }
-        val h = timerRemaining / 3600
-        val m = (timerRemaining % 3600) / 60
-        val s = timerRemaining % 60
-        tvTimerCountdown.text = 
-          "%02d:%02d:%02d".format(h, m, s)
-        timerRemaining--
-        handler.postDelayed(this, 1000)
+        val h = timerRemaining / 3600; val m = (timerRemaining % 3600) / 60; val s = timerRemaining % 60
+        tv.text = "%02d:%02d:%02d".format(h, m, s)
+        timerRemaining--; handler.postDelayed(this, 1000)
       }
     })
   }
 
-  fun onTimerDone() {
-    timerRunning = false
-    tvTimerCountdown.text = "00:00:00"
-    tvTimeUp.visibility = View.VISIBLE
-    btnTimerPause.visibility = View.GONE
-    btnTimerStop.visibility = View.GONE
-    btnTimerReset.visibility = View.VISIBLE
-    // Vibrate subtle 3s pattern
-    val pattern = longArrayOf(0,300,200,300,200,300,200)
-    if (Build.VERSION.SDK_INT >= 26) {
-      vibrator.vibrate(
-        VibrationEffect.createWaveform(pattern, -1))
-    } else {
-      @Suppress("DEPRECATION")
-      vibrator.vibrate(pattern, -1)
-    }
+  private fun resetTimer(lp: View, tv: View, up: View, start: View, pause: View, stop: View, resume: View, reset: View, hp: NumberPicker, mp: NumberPicker, sp: NumberPicker) {
+    timerRunning = false; timerPaused = false; timerRemaining = 0
+    lp.visibility = View.VISIBLE; tv.visibility = View.GONE; up.visibility = View.GONE
+    start.visibility = View.VISIBLE; pause.visibility = View.GONE; stop.visibility = View.GONE; resume.visibility = View.GONE; reset.visibility = View.GONE
+    hp.value = 0; mp.value = 0; sp.value = 0
   }
 
-  fun resetTimer() {
-    handler.removeCallbacksAndMessages(null)
-    timerRunning = false
-    timerPaused = false
-    timerRemaining = 0
-    tvTimeUp.visibility = View.GONE
-    tvTimerCountdown.visibility = View.GONE
-    layoutPickers.visibility = View.VISIBLE
-    btnTimerStart.visibility = View.VISIBLE
-    btnTimerPause.visibility = View.GONE
-    btnTimerStop.visibility = View.GONE
-    btnTimerResume.visibility = View.GONE
-    btnTimerReset.visibility = View.GONE
-    pickerHours.value = 0
-    pickerMinutes.value = 0
-    pickerSeconds.value = 0
-    timerHours = 0; timerMinutes = 0; timerSeconds = 0
-  }
-
-  fun styleNumberPicker(p: NumberPicker) {
+  private fun styleNumberPicker(p: NumberPicker) {
     try {
-      val f = NumberPicker::class.java
-        .getDeclaredField("mSelectorWheelPaint")
+      val f = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
       f.isAccessible = true
-      (f.get(p) as android.graphics.Paint)
-        .color = android.graphics.Color.WHITE
+      (f.get(p) as android.graphics.Paint).color = android.graphics.Color.WHITE
       p.invalidate()
-    } catch (e: Exception) { e.printStackTrace() }
+    } catch (e: Exception) {}
   }
 
   override fun onResume() {
     super.onResume()
-    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
-    val active = prefs.getBoolean("active", false)
-    val endTime = prefs.getLong("end_time", 0)
-    
-    if (active && System.currentTimeMillis() < endTime) {
-      val remaining = (endTime - System.currentTimeMillis()) / 1000
+    StrictModeManager.restoreFromPrefs(this)
+    if (StrictModeManager.isActive()) {
+      val remaining = StrictModeManager.getRemainingMs() / 1000
       strictRemainingSeconds = remaining.toInt()
-      StrictModeService.isStrictModeActive = true
-      StrictModeService.strictEndTimeMs = endTime
       showStrictCountdown()
-    } else if (active) {
-      endStrictMode()
+      resumeCountdown()
     } else {
-      val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
-      val tvStrictDesc = layoutStrictWarning.getChildAt(1) as? TextView
-      if (!isAccessibilityServiceEnabled()) {
-         tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS Minimal Strict Mode'\n3. Toggle it ON\n4. Come back here"
-         btnEnableStrict.text = "Open Settings →"
-      } else {
-         tvStrictDesc?.text = "Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
-         btnEnableStrict.text = "ENABLE STRICT MODE"
-      }
+      updateStrictWarningUI()
     }
   }
 
-  fun isAccessibilityServiceEnabled(): Boolean {
-    val expectedServiceName = "${packageName}/.StrictModeService"
-    val enabledServices = Settings.Secure.getString(
-      contentResolver,
-      Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
-    ) ?: return false
-    return enabledServices.contains(expectedServiceName)
+  private fun updateStrictWarningUI() {
+    val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
+    val tvStrictDesc = layoutStrictWarning.getChildAt(1) as? TextView
+    if (!isAccessibilityServiceEnabled()) {
+      tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS Minimal Strict Mode'\n3. Toggle it ON\n4. Come back here"
+      btnEnableStrict.text = "Open Settings →"
+    } else if (!checkAllStrictPermissions()) {
+      tvStrictDesc?.text = "Additional permissions required for Strict Mode.\nPlease tap below to set up."
+      btnEnableStrict.text = "COMPLETE SETUP"
+    } else {
+      tvStrictDesc?.text = "Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
+      btnEnableStrict.text = "ENABLE STRICT MODE"
+    }
   }
 
-  fun setupStrictMode() {
+  private fun setupStrictMode() {
     btnEnableStrict.setOnClickListener {
-      if (!isAccessibilityServiceEnabled()) {
-        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+      if (!checkAllStrictPermissions()) {
+        startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
         showStrictConfirmDialog()
       }
     }
-  }
-
-  fun showStrictConfirmDialog() {
-    AlertDialog.Builder(this)
-      .setMessage(
-        "25 minutes of complete focus.\n\n" +
-        "No apps can be opened.\n" +
-        "No calls. No messages.\n" +
-        "Cannot be cancelled.\n\n" +
-        "Are you ready?")
-      .setPositiveButton("START") { _, _ ->
-        startStrictMode()
-      }
-      .setNegativeButton("Cancel", null)
-      .show()
-  }
-
-  fun startStrictMode() {
-    val durationMs = 25L * 60L * 1000L // 25 minutes
-    
-    // Enable DND
-    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-    if (nm.isNotificationPolicyAccessGranted) {
-      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+    btnStartAgain.setOnClickListener {
+      showStrictConfirmDialog()
     }
-    
-    // Set strict mode active via companion object
-    StrictModeService.startStrict(durationMs)
-    
-    // Save to SharedPreferences for persistence
-    getSharedPreferences("strict_prefs", MODE_PRIVATE)
-      .edit()
-      .putBoolean("active", true)
-      .putLong("end_time", System.currentTimeMillis() + durationMs)
-      .apply()
-    
-    strictRemainingSeconds = 25 * 60
-    showStrictCountdown()
+    btnExitStrict.setOnClickListener {
+      StrictModeManager.stop(this)
+      finish()
+      val home = Intent(Intent.ACTION_MAIN); home.addCategory(Intent.CATEGORY_HOME)
+      home.flags = Intent.FLAG_ACTIVITY_NEW_TASK; startActivity(home)
+    }
   }
 
-  fun showStrictCountdown() {
-    findViewById<View>(R.id.tabBar).visibility = View.GONE
-    panelStopwatch.visibility = View.GONE
-    panelTimer.visibility = View.GONE
-    panelStrict.visibility = View.GONE
-    panelStrictActive.visibility = View.VISIBLE
-    
-    tvStrictStatus.text = "focus session active"
-    btnExitStrict.visibility = View.GONE
-    tvStrictCountdown.text = "%02d:%02d".format(strictRemainingSeconds / 60, strictRemainingSeconds % 60)
+  private fun showStrictConfirmDialog() {
+    AlertDialog.Builder(this)
+      .setMessage("25 more minutes of strict focus.\nNo apps. No notifications.\nAre you ready?")
+      .setPositiveButton("YES") { _, _ -> startStrictMode() }
+      .setNegativeButton("NO", null).show()
+  }
 
+  private fun startStrictMode() {
+    val durationMs = 25 * 60 * 1000L
+    StrictModeManager.start(this, durationMs)
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    if (nm.isNotificationPolicyAccessGranted) nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+    strictRemainingSeconds = (durationMs / 1000).toInt()
+    showStrictCountdown()
+    resumeCountdown()
+  }
+
+  private fun showStrictCountdown() {
+    findViewById<View>(R.id.tabBar).visibility = View.GONE
+    panelStopwatch.visibility = View.GONE; panelTimer.visibility = View.GONE
+    panelStrict.visibility = View.GONE; panelStrictActive.visibility = View.VISIBLE
+    layoutStrictComplete.visibility = View.GONE
+    tvStrictStatus.text = "focus session active"
+    tvStrictCountdown.text = "%02d:%02d".format(strictRemainingSeconds / 60, strictRemainingSeconds % 60)
+  }
+
+  private fun resumeCountdown() {
     strictCountdownRunnable?.let { handler.removeCallbacks(it) }
     strictCountdownRunnable = object : Runnable {
       override fun run() {
-        if (strictRemainingSeconds <= 0) {
-          endStrictMode()
+        if (!StrictModeManager.isActive()) {
+          onStrictTimerDone()
           return
         }
-        val m = strictRemainingSeconds / 60
-        val s = strictRemainingSeconds % 60
+        val remaining = StrictModeManager.getRemainingMs() / 1000
+        strictRemainingSeconds = remaining.toInt()
+        if (strictRemainingSeconds <= 0) {
+          onStrictTimerDone()
+          return
+        }
+        val m = strictRemainingSeconds / 60; val s = strictRemainingSeconds % 60
         tvStrictCountdown.text = "%02d:%02d".format(m, s)
-        strictRemainingSeconds--
         handler.postDelayed(this, 1000)
       }
     }
     handler.post(strictCountdownRunnable!!)
   }
 
-  fun endStrictMode() {
-    StrictModeService.endStrict()
-    
+  private fun onStrictTimerDone() {
+    StrictModeManager.stop(this)
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-    if (nm.isNotificationPolicyAccessGranted) {
-      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
-    }
+    if (nm.isNotificationPolicyAccessGranted) nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
     
-    getSharedPreferences("strict_prefs", MODE_PRIVATE)
-      .edit().clear().apply()
-    
-    val vibrator = if (Build.VERSION.SDK_INT >= 31) {
-      getSystemService(VibratorManager::class.java).defaultVibrator
-    } else {
-      @Suppress("DEPRECATION")
-      getSystemService(VIBRATOR_SERVICE) as Vibrator
-    }
-    val pattern = longArrayOf(0,300,200,300,200,300)
-    if (Build.VERSION.SDK_INT >= 26) {
-      vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
-    } else {
-      @Suppress("DEPRECATION")
-      vibrator.vibrate(pattern, -1)
-    }
-    
-    tvStrictCountdown.text = "DONE"
+    val pattern = longArrayOf(0, 300, 200, 300, 200, 300)
+    if (Build.VERSION.SDK_INT >= 26) vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
+    else @Suppress("DEPRECATION") vibrator.vibrate(pattern, -1)
+
+    tvStrictCountdown.text = "00:00"
     tvStrictStatus.text = "session complete"
-    
-    btnExitStrict.visibility = View.VISIBLE
-    btnExitStrict.setOnClickListener {
-      showStrictWarningScreen()
-    }
+    layoutStrictComplete.visibility = View.VISIBLE
   }
 
-  fun showStrictWarningScreen() {
-    findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
-    panelStrictActive.visibility = View.GONE
-    
-    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
-    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
-    tabStrict.setTextColor(android.graphics.Color.WHITE)
-    
-    panelStopwatch.visibility = View.GONE
-    panelTimer.visibility = View.GONE
-    panelStrict.visibility = View.VISIBLE
+  private fun checkAllStrictPermissions(): Boolean {
+    return isAccessibilityServiceEnabled() && isUsageStatsGranted() && Settings.canDrawOverlays(this) && isNotificationPolicyGranted() && isBatteryOptimizationIgnored()
+  }
+
+  private fun isUsageStatsGranted(): Boolean {
+    val appOps = getSystemService(APP_OPS_SERVICE) as android.app.AppOpsManager
+    val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        appOps.unsafeCheckOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+    } else {
+        @Suppress("DEPRECATION")
+        appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+    }
+    return mode == android.app.AppOpsManager.MODE_ALLOWED
+  }
+
+  private fun isNotificationPolicyGranted(): Boolean {
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    return nm.isNotificationPolicyAccessGranted
+  }
+
+  private fun isBatteryOptimizationIgnored(): Boolean {
+    val pm = getSystemService(POWER_SERVICE) as android.os.PowerManager
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) pm.isIgnoringBatteryOptimizations(packageName) else true
+  }
+
+  private fun isAccessibilityServiceEnabled(): Boolean {
+    val expected = "$packageName/.StrictModeService"
+    val enabled = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: return false
+    return enabled.contains(expected)
   }
 
   override fun onBackPressed() {
-    val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
-    if (prefs.getBoolean("active", false)) return // Block back during strict
+    if (StrictModeManager.isActive()) return
     super.onBackPressed()
   }
 

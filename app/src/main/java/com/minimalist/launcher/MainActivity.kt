@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (!StrictModeOverlayService.isRunning) {
+        if (!StrictModeManager.isActive()) {
             stopNotificationBlocker()
         }
         getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
@@ -188,33 +188,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.btnExit.setOnClickListener { animateClick(it) {
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setMessage("Switch to system launcher?")
-                .setPositiveButton("Yes") { _, _ ->
-                    // Disable notif blocker first
-                    getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
-                        .edit()
-                        .putBoolean("block_notif_panel", false)
-                        .apply()
-                    // Stop overlay service
-                    try {
-                        stopService(Intent(this,
-                            NotificationBlockerService::class.java))
-                    } catch (e: Exception) {}
-                    // Open Home Settings — only reliable method
-                    // Same approach used by Nova, Niagara, etc.
-                    try {
-                        startActivity(Intent(
-                            Settings.ACTION_HOME_SETTINGS))
-                    } catch (e: Exception) {
-                        startActivity(Intent(Settings.ACTION_SETTINGS))
-                    }
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
-                .window?.setBackgroundDrawableResource(android.R.color.black)
-        }}
+    binding.btnExit.setOnClickListener {
+        try {
+            val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_HOME)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            } catch (e2: Exception) {}
+        }
+    }
 
         binding.btnFocus.setOnClickListener { animateClick(it) {
             startActivity(Intent(this, FocusActivity::class.java))
