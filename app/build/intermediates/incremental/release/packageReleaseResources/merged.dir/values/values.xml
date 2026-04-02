@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="grey_111">#111111</color>
+    <color name="grey_1a1a1a">#1a1a1a</color>
+    <color name="grey_2a2a2a">#2a2a2a</color>
+    <color name="grey_333">#333333</color>
+    <color name="grey_444">#444444</color>
+    <color name="grey_555">#555555</color>
+    <color name="grey_666">#666666</color>
+    <color name="grey_aaa">#aaaaaa</color>
+    <color name="grey_ccc">#cccccc</color>
+    <color name="white">#FFFFFF</color>
+    <string name="accessibility_desc">Keeps MISS Minimal in focus by blocking system panel when launcher is active.</string>
+    <string name="strict_mode_description">MISS Minimal Strict Mode — blocks all apps during focus session</string>
+    <style name="Theme.MinimalistLauncher" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:navigationBarColor">#000000</item>
+    </style>
+</resources>

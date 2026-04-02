@@ -3228,6 +3228,7 @@ int id btnAllowDnd 0x7f08006a
 int id btnAllowOverlay 0x7f08006b
 int id btnAllowUsage 0x7f08006c
 int id btnAutoBrightness 0x7f08006d
+int id btnBack 0x7f08026c
 int id btnBluetooth 0x7f08006e
 int id btnBsAddHome 0x7f08006f
 int id btnBsAppInfo 0x7f080070
@@ -3696,6 +3697,7 @@ int id tvFontSizeState 0x7f08023e
 int id tvFullscreenDate 0x7f08023f
 int id tvFullscreenTime 0x7f080240
 int id tvHeader 0x7f080241
+int id tvLinktree 0x7f08026d
 int id tvOverlayTimer 0x7f080242
 int id tvStatusAccessibility 0x7f080243
 int id tvStatusBattery 0x7f080244
@@ -3706,6 +3708,7 @@ int id tvStopwatch 0x7f080248
 int id tvStrictCountdown 0x7f080249
 int id tvStrictStatus 0x7f08024a
 int id tvSubtitle 0x7f08024b
+int id tvTermsLink 0x7f08026e
 int id tvTime 0x7f08024c
 int id tvTimeCount 0x7f08024d
 int id tvTimeUp 0x7f08024e
@@ -3860,6 +3863,7 @@ int layout activity_main 0x7f0b0020
 int layout activity_notification_panel 0x7f0b0021
 int layout activity_permission_onboarding 0x7f0b0022
 int layout activity_quick_settings 0x7f0b0023
+int layout activity_terms 0x7f0b0079
 int layout activity_time_limit 0x7f0b0024
 int layout bottom_sheet_app_options 0x7f0b0025
 int layout bottom_sheet_home_options 0x7f0b0026

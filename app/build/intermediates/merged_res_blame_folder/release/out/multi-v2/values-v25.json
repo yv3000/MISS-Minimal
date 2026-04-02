@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.minimalist.launcher.app-mergeReleaseResources-31:/values-v25/values-v25.xml",
+            "map": [
+                {
+                    "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\caches\\9.0-milestone-1\\transforms\\067fd224697f47bf71b5649652ac6a15\\transformed\\appcompat-1.6.1\\res\\values-v25\\values-v25.xml",
+                    "from": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,126,209,308",
+                        "endLines": "2,3,5,7",
+                        "endColumns": "70,82,12,12",
+                        "endOffsets": "121,204,303,414"
+                    }
+                }
+            ]
+        }
+    ]
+}

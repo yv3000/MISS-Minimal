@@ -61,6 +61,10 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setupDisplay()
         setupSound()
         setupAppearance()
+
+        findViewById<TextView>(R.id.tvTermsLink).setOnClickListener {
+            startActivity(Intent(this, TermsActivity::class.java))
+        }
     }
 
     private fun setupAppearance() {

@@ -44,6 +44,7 @@
         android:label="MISS Minimal"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/Theme.MinimalistLauncher" >
         <receiver
             android:name="com.minimalist.launcher.BootReceiver"
@@ -105,6 +106,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.minimalist.launcher.PermissionOnboardingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.minimalist.launcher.TermsActivity"
             android:screenOrientation="portrait" />
 
         <service
