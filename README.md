@@ -98,6 +98,18 @@ Everything still works underneath. Your apps are all there in the drawer. Your n
 4. After install, press your Home button
 5. Select **MISS Minimal** → tap **Always**
 
+---
+
+### ⚠️ Installation Issues?
+
+Some users may face issues while installing the APK (especially with unknown sources or permissions).
+
+If that happens, just follow this quick video guide:
+
+▶️ [Watch Installation Guide](https://res.cloudinary.com/dpuitsxuh/video/upload/v1775188805/lv_0_20260403091318_xrhkeq.mp4)
+
+---
+
 ### Option 2 — Build from Source
 
 Requirements:
