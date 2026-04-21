@@ -13,11 +13,15 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.ContactsContract
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.abs
+
+
 
 class PomodoroActivity : AppCompatActivity() {
 
@@ -43,6 +47,8 @@ class PomodoroActivity : AppCompatActivity() {
     private lateinit var tvSessionCount: TextView
     private lateinit var btnCallContact: TextView
     private lateinit var btnCancelBreak: TextView
+    private lateinit var gestureDetector: GestureDetector
+
 
     private var selectedDurationMins = 25
     private val selectedApps = mutableListOf<String>()
@@ -79,7 +85,9 @@ class PomodoroActivity : AppCompatActivity() {
 
         bindViews()
         setupListeners()
+        setupGestures()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -135,6 +143,37 @@ class PomodoroActivity : AppCompatActivity() {
         btnCancelBreak = findViewById(R.id.btnCancelBreak)
     }
 
+    private fun setupGestures() {
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_THRESHOLD = 100
+            private val SWIPE_VELOCITY_THRESHOLD = 100
+
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (e1 == null) return false
+                val diffX = e2.x - e1.x
+                val diffY = e2.y - e1.y
+                if (abs(diffX) > abs(diffY) && abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        // Swipe right -> Previous tab (Strict mode in FocusActivity)
+                        val intent = Intent(this@PomodoroActivity, FocusActivity::class.java)
+                        intent.putExtra("tab", "strict")
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        startActivity(intent)
+                        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
+
     private fun setupListeners() {
         btnDur25.setOnClickListener { updateDurationSelection(25) }
         btnDur50.setOnClickListener { updateDurationSelection(50) }
@@ -171,9 +210,10 @@ class PomodoroActivity : AppCompatActivity() {
     private fun updateDurationSelection(mins: Int) {
         selectedDurationMins = mins
         val bgNormal = R.drawable.btn_border
-        val bgActive = R.drawable.btn_border_active
-        val cNormal = android.graphics.Color.parseColor("#666666")
-        val cActive = android.graphics.Color.WHITE
+        val bgActive = R.drawable.bg_pill
+        val cNormal = android.graphics.Color.parseColor("#8E8E93")
+        val cActive = android.graphics.Color.BLACK
+
 
         btnDur25.setBackgroundResource(if (mins == 25) bgActive else bgNormal)
         btnDur25.setTextColor(if (mins == 25) cActive else cNormal)
@@ -310,13 +350,19 @@ class PomodoroActivity : AppCompatActivity() {
     }
 
     private fun showSetupScreen() {
+        val root = findViewById<ViewGroup>(android.R.id.content)
+        TransitionManager.beginDelayedTransition(root, Fade())
         layoutSetup.visibility = View.VISIBLE
         layoutActive.visibility = View.GONE
     }
 
+
     private fun showActiveScreen() {
+        val root = findViewById<ViewGroup>(android.R.id.content)
+        TransitionManager.beginDelayedTransition(root, Fade())
         layoutSetup.visibility = View.GONE
         layoutActive.visibility = View.VISIBLE
+
 
         tvSessionCount.text = "session ${PomodoroManager.sessionCount} of ∞"
         

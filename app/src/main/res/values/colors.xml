@@ -12,11 +12,13 @@
     <color name="grey_111">#111111</color>
     <color name="grey_333">#333333</color>
 
-    <!-- Premium Palette -->
-    <color name="spotify_green">#1DB954</color>
-    <color name="apple_blue">#007AFF</color>
+    <!-- Monochromatic Palette (Premium Grey Scale) -->
+    <color name="accent_white">#FFFFFF</color>
     <color name="surface_dark">#121212</color>
     <color name="surface_card">#1C1C1E</color>
     <color name="text_secondary">#8E8E93</color>
+    <color name="grey_dark">#2C2C2E</color>
+    <color name="grey_light">#AEAEB2</color>
+
 
 </resources>

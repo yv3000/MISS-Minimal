@@ -12,9 +12,11 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.Settings
+import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+
 
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -62,9 +64,23 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var vibrator: Vibrator
   private lateinit var gestureDetector: GestureDetector
   private var currentTabIndex = 0
-  private val TABS = arrayOf("stopwatch", "timer", "strict")
+  private val TABS = arrayOf("stopwatch", "timer", "strict", "pomodoro")
+
+
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    handleIntent(intent)
+  }
+
+  private fun handleIntent(intent: Intent?) {
+    val tab = intent?.getStringExtra("tab")
+    if (tab != null) {
+      selectTab(tab)
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+
     super.onCreate(savedInstanceState)
     try {
       setContentView(R.layout.activity_focus)
@@ -104,6 +120,8 @@ class FocusActivity : AppCompatActivity() {
             // Swipe left -> Next tab
             if (currentTabIndex < TABS.size - 1) selectTab(TABS[currentTabIndex + 1])
           }
+
+
           return true
         }
         return false
@@ -152,8 +170,7 @@ class FocusActivity : AppCompatActivity() {
     }
 
     val root = findViewById<ViewGroup>(android.R.id.content)
-
-    TransitionManager.beginDelayedTransition(root)
+    TransitionManager.beginDelayedTransition(root, Fade())
 
     tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
     tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
@@ -174,6 +191,13 @@ class FocusActivity : AppCompatActivity() {
         tabTimer.setTextColor(android.graphics.Color.WHITE)
         panelTimer.visibility = View.VISIBLE
       }
+      "pomodoro" -> {
+        currentTabIndex = 3
+        tabPomodoro.setTextColor(android.graphics.Color.WHITE)
+        // Since Pomodoro is an activity, we start it
+        startActivity(Intent(this, PomodoroActivity::class.java))
+      }
+
     }
     savePersistedTab(tab)
   }
@@ -266,22 +290,37 @@ class FocusActivity : AppCompatActivity() {
     val btnStop = findViewById<TextView>(R.id.btnSwStop)
     val btnResume = findViewById<TextView>(R.id.btnSwResume)
 
+    val btnFlag = findViewById<TextView>(R.id.btnSwFlag)
+    val scrollTimestamps = findViewById<View>(R.id.scrollTimestamps)
+    val tvTimestamps = findViewById<TextView>(R.id.tvTimestamps)
+    val timestamps = mutableListOf<String>()
+
     btnStart.setOnClickListener {
       swRunning = true; swPaused = false
       btnStart.visibility = View.GONE
       btnPause.visibility = View.VISIBLE
       btnStop.visibility = View.VISIBLE
+      btnFlag.visibility = View.VISIBLE
+      scrollTimestamps.visibility = View.VISIBLE
       runStopwatch()
     }
     btnPause.setOnClickListener {
       swPaused = true
       handler.removeCallbacksAndMessages(null)
       btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE
+      btnFlag.visibility = View.GONE
     }
     btnResume.setOnClickListener {
       swPaused = false
       btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE
+      btnFlag.visibility = View.VISIBLE
       runStopwatch()
+    }
+    btnFlag.setOnClickListener {
+      val m = swSeconds / 60; val s = swSeconds % 60
+      val ts = "%02d:%02d".format(m, s)
+      timestamps.add(ts)
+      tvTimestamps.text = timestamps.joinToString("\n")
     }
     btnStop.setOnClickListener {
       handler.removeCallbacksAndMessages(null)
@@ -289,10 +328,15 @@ class FocusActivity : AppCompatActivity() {
       val elapsedSeconds = swSeconds
       swSeconds = 0
       tvStopwatch.text = "00:00"
+      timestamps.clear()
+      tvTimestamps.text = ""
       btnStart.visibility = View.VISIBLE; btnPause.visibility = View.GONE
       btnStop.visibility = View.GONE; btnResume.visibility = View.GONE
+      btnFlag.visibility = View.GONE
+      scrollTimestamps.visibility = View.GONE
       SotActivity.saveModeSession(this, "stopwatch", elapsedSeconds / 60)
     }
+
   }
 
   private fun runStopwatch() {
