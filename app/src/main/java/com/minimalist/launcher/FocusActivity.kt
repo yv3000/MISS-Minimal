@@ -16,6 +16,10 @@ import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.IntentFilter
 
 
 import android.view.GestureDetector
@@ -60,6 +64,54 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var btnStartAgain: TextView
   private lateinit var btnExitStrict: TextView
   private lateinit var btnEnableStrict: TextView
+
+  // Pomodoro Fields
+  private var selectedDurationMins = 25
+  private val selectedApps = mutableListOf<String>()
+  private var contactName: String? = null
+  private var contactNumber: String? = null
+
+  private lateinit var panelPomodoro: FrameLayout
+  private lateinit var pom_layoutSetup: LinearLayout
+  private lateinit var pom_layoutActive: LinearLayout
+  private lateinit var pom_btnDur25: TextView
+  private lateinit var pom_btnDur50: TextView
+  private lateinit var pom_btnDur75: TextView
+  private lateinit var pom_btnDur100: TextView
+  private lateinit var pom_slotApp1: TextView
+  private lateinit var pom_slotApp2: TextView
+  private lateinit var pom_slotApp3: TextView
+  private lateinit var pom_tvContactName: TextView
+  private lateinit var pom_btnRemoveContact: View
+  private lateinit var pom_btnStartPomodoro: View
+  private lateinit var pom_tvPhaseLabel: TextView
+  private lateinit var pom_tvCountdown: TextView
+  private lateinit var pom_tvSessionCount: TextView
+  private lateinit var pom_btnCallContact: View
+  private lateinit var pom_btnCancelBreak: View
+
+  private lateinit var tabIndicator: View
+
+  private val timerReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+      if (intent == null) return
+      when (intent.action) {
+        PomodoroTimerService.BROADCAST_TICK -> {
+          val remaining = intent.getIntExtra("remaining", 0)
+          val isWork = intent.getBooleanExtra("is_work", true)
+          updatePomTimerUI(remaining, isWork)
+        }
+        PomodoroTimerService.BROADCAST_PHASE_CHANGE -> {
+          val isWork = intent.getBooleanExtra("is_work", true)
+          val session = intent.getIntExtra("session", 1)
+          onPomPhaseChanged(isWork, session)
+        }
+        PomodoroTimerService.BROADCAST_COMPLETE -> {
+          onPomodoroCompleted()
+        }
+      }
+    }
+  }
 
   private lateinit var vibrator: Vibrator
   private lateinit var gestureDetector: GestureDetector
@@ -109,6 +161,7 @@ class FocusActivity : AppCompatActivity() {
       setupStopwatch()
       setupTimer()
       setupStrictMode()
+      setupPomodoro()
 
       handleIntent(intent)
     } catch (e: Exception) {
@@ -129,13 +182,15 @@ class FocusActivity : AppCompatActivity() {
         if (abs(diffX) > abs(diffY) && abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
           if (diffX > 0) {
             // Swipe right -> Previous tab
-            if (currentTabIndex > 0) selectTab(TABS[currentTabIndex - 1])
+            if (currentTabIndex > 0) {
+                selectTab(TABS[currentTabIndex - 1])
+            }
           } else {
             // Swipe left -> Next tab
-            if (currentTabIndex < TABS.size - 1) selectTab(TABS[currentTabIndex + 1])
+            if (currentTabIndex < TABS.size - 1) {
+                selectTab(TABS[currentTabIndex + 1])
+            }
           }
-
-
           return true
         }
         return false
@@ -157,6 +212,20 @@ class FocusActivity : AppCompatActivity() {
     panelStrict.visibility = View.VISIBLE
     panelStopwatch.visibility = View.GONE
     panelTimer.visibility = View.GONE
+    panelPomodoro.visibility = View.GONE
+    
+    moveTabIndicator(tabStrict)
+  }
+
+  private fun moveTabIndicator(targetView: View) {
+    tabIndicator.post {
+      val targetX = targetView.x + (targetView.width / 2f) - (tabIndicator.width / 2f)
+      tabIndicator.animate()
+        .x(targetX)
+        .setDuration(250)
+        .setInterpolator(AccelerateDecelerateInterpolator())
+        .start()
+    }
   }
 
   fun selectTab(tab: String) {
@@ -171,29 +240,32 @@ class FocusActivity : AppCompatActivity() {
     tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
     tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
     tabStrict.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+    tabPomodoro.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
 
     panelStopwatch.visibility = View.GONE
     panelTimer.visibility = View.GONE
     panelStrict.visibility = View.GONE
+    panelPomodoro.visibility = View.GONE
 
     when (tab) {
       "stopwatch" -> {
         currentTabIndex = 0
         tabStopwatch.setTextColor(android.graphics.Color.WHITE)
         panelStopwatch.visibility = View.VISIBLE
+        moveTabIndicator(tabStopwatch)
       }
       "timer" -> {
         currentTabIndex = 1
         tabTimer.setTextColor(android.graphics.Color.WHITE)
         panelTimer.visibility = View.VISIBLE
+        moveTabIndicator(tabTimer)
       }
       "pomodoro" -> {
         currentTabIndex = 3
         tabPomodoro.setTextColor(android.graphics.Color.WHITE)
-        // Since Pomodoro is an activity, we start it
-        startActivity(Intent(this, PomodoroActivity::class.java))
+        panelPomodoro.visibility = View.VISIBLE
+        moveTabIndicator(tabPomodoro)
       }
-
     }
     savePersistedTab(tab)
   }
@@ -234,22 +306,29 @@ class FocusActivity : AppCompatActivity() {
     btnEnableStrict.visibility = View.VISIBLE
   }
 
-  private fun bindViews() {
-    tabStopwatch = findViewById(R.id.tabStopwatch)
-    tabTimer = findViewById(R.id.tabTimer)
-    tabStrict = findViewById(R.id.tabStrict)
-    tabPomodoro = findViewById(R.id.tabPomodoro)
-    panelStopwatch = findViewById(R.id.panelStopwatch)
-    panelTimer = findViewById(R.id.panelTimer)
-    panelStrict = findViewById(R.id.panelStrict)
-    panelStrictActive = findViewById(R.id.panelStrictActive)
-    tvStopwatch = findViewById(R.id.tvStopwatch)
-    tvStrictCountdown = findViewById(R.id.tvStrictCountdown)
-    tvStrictStatus = findViewById(R.id.tvStrictStatus)
-    layoutStrictComplete = findViewById(R.id.layoutStrictComplete)
-    btnStartAgain = findViewById(R.id.btnStartAgain)
     btnExitStrict = findViewById(R.id.btnExitStrict)
     btnEnableStrict = findViewById(R.id.btnEnableStrict)
+
+    tabIndicator = findViewById(R.id.tabIndicator)
+
+    panelPomodoro = findViewById(R.id.panelPomodoro)
+    pom_layoutSetup = findViewById(R.id.pom_layoutSetup)
+    pom_layoutActive = findViewById(R.id.pom_layoutActive)
+    pom_btnDur25 = findViewById(R.id.pom_btnDur25)
+    pom_btnDur50 = findViewById(R.id.pom_btnDur50)
+    pom_btnDur75 = findViewById(R.id.pom_btnDur75)
+    pom_btnDur100 = findViewById(R.id.pom_btnDur100)
+    pom_slotApp1 = findViewById(R.id.pom_slotApp1)
+    pom_slotApp2 = findViewById(R.id.pom_slotApp2)
+    pom_slotApp3 = findViewById(R.id.pom_slotApp3)
+    pom_tvContactName = findViewById(R.id.pom_tvContactName)
+    pom_btnRemoveContact = findViewById(R.id.pom_btnRemoveContact)
+    pom_btnStartPomodoro = findViewById(R.id.pom_btnStartPomodoro)
+    pom_tvPhaseLabel = findViewById(R.id.pom_tvPhaseLabel)
+    pom_tvCountdown = findViewById(R.id.pom_tvCountdown)
+    pom_tvSessionCount = findViewById(R.id.pom_tvSessionCount)
+    pom_btnCallContact = findViewById(R.id.pom_btnCallContact)
+    pom_btnCancelBreak = findViewById(R.id.pom_btnCancelBreak)
   }
 
   private fun setupTabs() {
@@ -276,8 +355,8 @@ class FocusActivity : AppCompatActivity() {
     }
     tabPomodoro.setOnClickListener {
         selectTab("pomodoro")
-        startActivity(Intent(this, PomodoroActivity::class.java))
     }
+  }
   }
 
   private fun setupStopwatch() {
@@ -494,6 +573,30 @@ class FocusActivity : AppCompatActivity() {
         updateStrictWarningUI()
       }
     }
+
+    // Pomodoro restoration
+    val filter = IntentFilter().apply {
+      addAction(PomodoroTimerService.BROADCAST_TICK)
+      addAction(PomodoroTimerService.BROADCAST_PHASE_CHANGE)
+      addAction(PomodoroTimerService.BROADCAST_COMPLETE)
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      registerReceiver(timerReceiver, filter, RECEIVER_NOT_EXPORTED)
+    } else {
+      registerReceiver(timerReceiver, filter)
+    }
+
+    if (PomodoroManager.isActive) {
+      showPomActiveScreen()
+    } else {
+      showPomSetupScreen()
+      updatePomDurationSelection(selectedDurationMins)
+    }
+  }
+
+  override fun onPause() {
+    super.onPause()
+    unregisterReceiver(timerReceiver)
   }
 
   private fun updateStrictWarningUI() {
@@ -625,8 +728,189 @@ class FocusActivity : AppCompatActivity() {
     return enabled.contains(expected)
   }
 
+  private fun setupPomodoro() {
+    pom_btnDur25.setOnClickListener { updatePomDurationSelection(25) }
+    pom_btnDur50.setOnClickListener { updatePomDurationSelection(50) }
+    pom_btnDur75.setOnClickListener { updatePomDurationSelection(75) }
+    pom_btnDur100.setOnClickListener { updatePomDurationSelection(100) }
+
+    pom_slotApp1.setOnClickListener { handlePomAppSlotTap(0) }
+    pom_slotApp2.setOnClickListener { handlePomAppSlotTap(1) }
+    pom_slotApp3.setOnClickListener { handlePomAppSlotTap(2) }
+
+    pom_slotApp1.setOnLongClickListener { selectedApps.getOrNull(0)?.let { selectedApps.removeAt(0); updatePomAppSlotsUI() }; true }
+    pom_slotApp2.setOnLongClickListener { selectedApps.getOrNull(1)?.let { selectedApps.removeAt(1); updatePomAppSlotsUI() }; true }
+    pom_slotApp3.setOnLongClickListener { selectedApps.getOrNull(2)?.let { selectedApps.removeAt(2); updatePomAppSlotsUI() }; true }
+
+    pom_tvContactName.setOnClickListener { openPomContactPicker() }
+    pom_btnRemoveContact.setOnClickListener { removePomContact() }
+    pom_btnStartPomodoro.setOnClickListener { startPomodoro() }
+
+    pom_btnCallContact.setOnClickListener {
+      contactNumber?.let { num ->
+        startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num")))
+      }
+    }
+    pom_btnCancelBreak.setOnClickListener { endPomodoroSession() }
+  }
+
+  private fun updatePomDurationSelection(mins: Int) {
+    selectedDurationMins = mins
+    val buttons = listOf(pom_btnDur25, pom_btnDur50, pom_btnDur75, pom_btnDur100)
+    val durations = listOf(25, 50, 75, 100)
+    buttons.forEachIndexed { index, btn ->
+      val isSelected = durations[index] == mins
+      if (isSelected) {
+        btn.setBackgroundResource(R.drawable.bg_pill)
+        btn.backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE)
+        btn.setTextColor(android.graphics.Color.BLACK)
+      } else {
+        btn.setBackgroundResource(R.drawable.btn_border)
+        btn.backgroundTintList = null
+        btn.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+      }
+    }
+  }
+
+  private fun handlePomAppSlotTap(index: Int) {
+    if (index < selectedApps.size) {
+      Toast.makeText(this, "Long press to remove app", Toast.LENGTH_SHORT).show()
+    } else {
+      val intent = Intent(this, AppPickerActivity::class.java)
+      intent.putExtra("pomodoro_mode", true)
+      startActivityForResult(intent, 2001)
+    }
+  }
+
+  private fun updatePomAppSlotsUI() {
+    fun style(slot: TextView, pkg: String?) {
+      if (pkg != null) {
+        slot.text = pkg.substringAfterLast(".").take(6)
+        slot.setBackgroundResource(R.drawable.bg_pill)
+        slot.backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#222222"))
+        slot.setTextColor(android.graphics.Color.WHITE)
+      } else {
+        slot.text = "+ add"
+        slot.setBackgroundResource(R.drawable.btn_border)
+        slot.backgroundTintList = null
+        slot.setTextColor(android.graphics.Color.parseColor("#666666"))
+      }
+    }
+    style(pom_slotApp1, selectedApps.getOrNull(0))
+    style(pom_slotApp2, selectedApps.getOrNull(1))
+    style(pom_slotApp3, selectedApps.getOrNull(2))
+  }
+
+  private fun openPomContactPicker() {
+    val intent = Intent(Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+    startActivityForResult(intent, 2002)
+  }
+
+  private fun removePomContact() {
+    contactName = null; contactNumber = null
+    updatePomContactUI()
+  }
+
+  private fun updatePomContactUI() {
+    if (contactName != null) {
+      pom_tvContactName.text = contactName
+      pom_tvContactName.setTextColor(android.graphics.Color.WHITE)
+      pom_btnRemoveContact.visibility = View.VISIBLE
+    } else {
+      pom_tvContactName.text = "+ select contact"
+      pom_tvContactName.setTextColor(android.graphics.Color.parseColor("#666666"))
+      pom_btnRemoveContact.visibility = View.GONE
+    }
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (resultCode == RESULT_OK && data != null) {
+      if (requestCode == 2001) {
+        val pkg = data.getStringExtra("package_name") ?: return
+        if (selectedApps.size < 3 && !selectedApps.contains(pkg)) {
+          selectedApps.add(pkg)
+          updatePomAppSlotsUI()
+        }
+      } else if (requestCode == 2002) {
+        handlePomContactResult(data)
+      }
+    }
+  }
+
+  private fun handlePomContactResult(data: Intent) {
+    val uri = data.data ?: return
+    val cursor = contentResolver.query(uri, null, null, null, null)
+    if (cursor?.moveToFirst() == true) {
+      val nameIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+      val numIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+      contactName = cursor.getString(nameIdx)
+      contactNumber = cursor.getString(numIdx)
+      updatePomContactUI()
+    }
+    cursor?.close()
+  }
+
+  private fun startPomodoro() {
+    PomodoroManager.start(this, selectedDurationMins, selectedApps, contactName)
+    val intent = Intent(this, PomodoroTimerService::class.java)
+    intent.action = PomodoroTimerService.ACTION_START
+    intent.putExtra(PomodoroTimerService.EXTRA_DURATION, selectedDurationMins * 60)
+    startService(intent)
+    showPomActiveScreen()
+  }
+
+  private fun endPomodoroSession() {
+    PomodoroManager.stop(this)
+    val intent = Intent(this, PomodoroTimerService::class.java)
+    stopService(intent)
+    showPomSetupScreen()
+  }
+
+  private fun onPomodoroCompleted() {
+    vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 500, 200, 500), -1))
+    AlertDialog.Builder(this)
+      .setTitle("Session Complete")
+      .setMessage("Well done! Do you want to start another session or finish?")
+      .setCancelable(false)
+      .setPositiveButton("CONTINUE") { _, _ -> showPomSetupScreen(); PomodoroManager.stop(this) }
+      .setNegativeButton("FINISH") { _, _ -> endPomodoroSession() }
+      .show()
+  }
+
+  private fun showPomSetupScreen() {
+    TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
+    pom_layoutSetup.visibility = View.VISIBLE
+    pom_layoutActive.visibility = View.GONE
+    findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
+    tabIndicator.visibility = View.VISIBLE
+  }
+
+  private fun showPomActiveScreen() {
+    TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
+    pom_layoutSetup.visibility = View.GONE
+    pom_layoutActive.visibility = View.VISIBLE
+    findViewById<View>(R.id.tabBar).visibility = View.GONE
+    tabIndicator.visibility = View.GONE
+    pom_btnCallContact.visibility = if (contactNumber != null) View.VISIBLE else View.GONE
+  }
+
+  private fun updatePomTimerUI(remaining: Int, isWork: Boolean) {
+    val mins = remaining / 60
+    val secs = remaining % 60
+    pom_tvCountdown.text = "%02d:%02d".format(mins, secs)
+    pom_tvPhaseLabel.text = if (isWork) "WORK PHASE" else "BREAK TIME"
+    pom_tvPhaseLabel.setTextColor(if (isWork) android.graphics.Color.WHITE else android.graphics.Color.parseColor("#4CAF50"))
+    pom_btnCancelBreak.visibility = if (!isWork) View.VISIBLE else View.GONE
+  }
+
+  private fun onPomPhaseChanged(isWork: Boolean, session: Int) {
+    vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+    pom_tvSessionCount.text = "session $session"
+  }
+
   override fun onBackPressed() {
-    if (StrictModeManager.isActive()) return
+    if (StrictModeManager.isActive() || (PomodoroManager.isActive && PomodoroManager.isWorkPhase)) return
     super.onBackPressed()
   }
 
@@ -635,3 +919,4 @@ class FocusActivity : AppCompatActivity() {
     super.onDestroy()
   }
 }
+

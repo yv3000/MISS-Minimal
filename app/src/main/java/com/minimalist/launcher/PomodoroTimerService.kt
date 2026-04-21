@@ -24,6 +24,7 @@ class PomodoroTimerService : Service() {
         const val EXTRA_DURATION = "duration_seconds"
         const val BROADCAST_TICK = "com.minimalist.launcher.POMODORO_TICK"
         const val BROADCAST_PHASE_CHANGE = "com.minimalist.launcher.POMODORO_PHASE"
+        const val BROADCAST_COMPLETE = "com.minimalist.launcher.POMODORO_COMPLETE"
         var isRunning = false
     }
 
@@ -32,9 +33,10 @@ class PomodoroTimerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
-                remainingSeconds = intent.getIntExtra(EXTRA_DURATION, 25 * 60)
+                val totalSecs = intent.getIntExtra(EXTRA_DURATION, 25 * 60)
                 isWorkPhase = true
                 isRunning = true
+                remainingSeconds = minOf(totalSecs, PomodoroManager.workChunkSeconds)
                 startForegroundNotification()
                 startTicking()
             }
@@ -63,18 +65,39 @@ class PomodoroTimerService : Service() {
             } else {
                 // Phase complete
                 if (isWorkPhase) {
-                    isWorkPhase = false
-                    remainingSeconds = 5 * 60 // 5 min break
+                    // Work phase ended
+                    PomodoroManager.remainingWorkSeconds -= PomodoroManager.workChunkSeconds
+                    
+                    if (PomodoroManager.remainingWorkSeconds > 0) {
+                        // More work to do -> Break
+                        isWorkPhase = false
+                        remainingSeconds = 5 * 60 // 5 min break
+                        
+                        val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
+                        phaseIntent.putExtra("is_work", isWorkPhase)
+                        phaseIntent.putExtra("session", PomodoroManager.sessionCount)
+                        sendBroadcast(phaseIntent)
+                        handler.post(this)
+                    } else {
+                        // All work done -> Finish
+                        isRunning = false
+                        val completeIntent = Intent(BROADCAST_COMPLETE)
+                        sendBroadcast(completeIntent)
+                        stopForeground(STOP_FOREGROUND_REMOVE)
+                        stopSelf()
+                    }
                 } else {
+                    // Break phase ended -> Start next work chunk
                     isWorkPhase = true
                     PomodoroManager.sessionCount++
-                    remainingSeconds = PomodoroManager.workDurationSeconds
+                    remainingSeconds = minOf(PomodoroManager.workChunkSeconds, PomodoroManager.remainingWorkSeconds)
+                    
+                    val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
+                    phaseIntent.putExtra("is_work", isWorkPhase)
+                    phaseIntent.putExtra("session", PomodoroManager.sessionCount)
+                    sendBroadcast(phaseIntent)
+                    handler.post(this)
                 }
-                val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
-                phaseIntent.putExtra("is_work", isWorkPhase)
-                phaseIntent.putExtra("session", PomodoroManager.sessionCount)
-                sendBroadcast(phaseIntent)
-                handler.post(this)
             }
         }
     }
@@ -100,10 +123,13 @@ class PomodoroTimerService : Service() {
         val title = if (isWork) "Focus Session" else "Break"
         val text = "%02d:%02d remaining".format(m, s)
 
-        val notifIntent = Intent(this, PomodoroActivity::class.java)
+        val intent = Intent(this, FocusActivity::class.java).apply {
+            putExtra("tab", "pomodoro")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, notifIntent,
-            PendingIntent.FLAG_IMMUTABLE
+            this, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         return NotificationCompat.Builder(this, "pomodoro")

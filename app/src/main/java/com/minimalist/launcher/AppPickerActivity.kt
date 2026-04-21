@@ -14,14 +14,17 @@ class AppPickerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppPickerBinding
     private val apps = mutableListOf<AppItem>()
     private var slot = -1
+    private var isPomodoroMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppPickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        isPomodoroMode = intent.getBooleanExtra("pomodoro_mode", false)
         slot = intent.getIntExtra("slot", -1)
-        if (slot == -1) {
+
+        if (!isPomodoroMode && slot == -1) {
             finish()
             return
         }
@@ -71,7 +74,13 @@ class AppPickerActivity : AppCompatActivity() {
             holder.b.root.setOnClickListener {
                 it.animate().scaleX(0.95f).scaleY(0.95f).setDuration(80).withEndAction {
                     it.animate().scaleX(1f).scaleY(1f).setDuration(80).withEndAction {
-                        PrefsManager.setHomeApp(slot, app.packageName)
+                        if (isPomodoroMode) {
+                            val data = android.content.Intent()
+                            data.putExtra("package_name", app.packageName)
+                            setResult(RESULT_OK, data)
+                        } else {
+                            PrefsManager.setHomeApp(slot, app.packageName)
+                        }
                         finish()
                     }.start()
                 }.start()

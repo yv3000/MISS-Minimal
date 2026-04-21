@@ -8,7 +8,9 @@ object PomodoroManager {
     var allowedPackages = mutableSetOf<String>()
     var sessionCount = 0
     var totalFocusMinutes = 0
-    var workDurationSeconds = 25 * 60
+    var totalWorkSeconds = 0
+    var remainingWorkSeconds = 0
+    var workChunkSeconds = 25 * 60
 
     fun start(
         context: Context,
@@ -19,7 +21,8 @@ object PomodoroManager {
         isActive = true
         isWorkPhase = true
         sessionCount = 1
-        workDurationSeconds = durationMinutes * 60
+        totalWorkSeconds = durationMinutes * 60
+        remainingWorkSeconds = totalWorkSeconds
         allowedPackages.clear()
         allowedPackages.addAll(allowedApps)
         
