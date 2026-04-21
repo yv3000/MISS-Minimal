@@ -3538,6 +3538,7 @@ int id open_search_view_search_prefix 0x7f090190
 int id open_search_view_status_bar_spacer 0x7f090191
 int id open_search_view_toolbar 0x7f090192
 int id open_search_view_toolbar_container 0x7f090193
+int id original_text_size 0x7f090292
 int id outline 0x7f090194
 int id outward 0x7f090195
 int id overshoot 0x7f090196

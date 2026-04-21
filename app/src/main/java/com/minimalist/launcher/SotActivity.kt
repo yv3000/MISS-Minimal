@@ -70,7 +70,13 @@ class SotActivity : AppCompatActivity() {
         btnGrantUsage = findViewById(R.id.btnGrantUsage)
 
         btnRefresh.setOnClickListener {
-            loadData()
+            btnRefresh.text = "REFRESHING..."
+            btnRefresh.isEnabled = false
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                loadData()
+                btnRefresh.text = "REFRESH"
+                btnRefresh.isEnabled = true
+            }, 3000)
         }
 
         btnGrantUsage.setOnClickListener {

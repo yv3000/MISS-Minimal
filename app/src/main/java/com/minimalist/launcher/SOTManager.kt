@@ -14,20 +14,20 @@ object SOTManager {
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        val startTime = calendar.timeInMillis
+        val midnight = calendar.timeInMillis
         val endTime = System.currentTimeMillis()
 
-        val events = usageStatsManager.queryEvents(startTime, endTime)
+        // Bootstrap from 2 hours before midnight to catch sessions already in progress
+        val bootstrapStart = midnight - (2 * 60 * 60 * 1000)
+        val events = usageStatsManager.queryEvents(bootstrapStart, endTime)
         val allEvents = mutableListOf<SimpleEvent>()
         
-        val launcherPkg = context.packageName
-        val ignorePackages = setOf("android", "com.android.systemui", launcherPkg)
+        val ignorePackages = setOf("android", "com.android.systemui")
 
         val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
             val type = event.eventType
-            // We only care about Resumed (1), Paused (2), Stopped (23), Screen On (15), Screen Off (16)
             if (type == 1 || type == 2 || type == 23 || type == 15 || type == 16) {
                 allEvents.add(SimpleEvent(event.packageName ?: "", type, event.timeStamp))
             }
@@ -37,8 +37,8 @@ object SOTManager {
         
         var totalSot = 0L
         var isAnyAppActive = false
-        var isScreenOn = false // Start as false to be safe, first event will correct it
-        var segmentStartTime = 0L
+        var isScreenOn = true 
+        var segmentStartTime = midnight
         val activeApps = mutableSetOf<String>()
         
         for (e in allEvents) {
@@ -55,20 +55,24 @@ object SOTManager {
             val shouldBeCounting = isScreenOn && activeApps.isNotEmpty()
             
             if (shouldBeCounting && !isAnyAppActive) {
-                segmentStartTime = e.timestamp
+                // Segment started. If it started before midnight, clamp to midnight.
+                segmentStartTime = Math.max(e.timestamp, midnight)
                 isAnyAppActive = true
             } else if (!shouldBeCounting && isAnyAppActive) {
-                totalSot += (e.timestamp - segmentStartTime)
+                // Segment ended. If it ended before midnight, it contributes 0.
+                val segmentEndTime = e.timestamp
+                if (segmentEndTime > midnight) {
+                    totalSot += (segmentEndTime - Math.max(segmentStartTime, midnight))
+                }
                 isAnyAppActive = false
             }
         }
         
         if (isAnyAppActive) {
-            totalSot += (endTime - segmentStartTime)
+            totalSot += (endTime - Math.max(segmentStartTime, midnight))
         }
         
-        // Final sanity check: cannot exceed time since midnight
-        val maxPossible = endTime - startTime
+        val maxPossible = endTime - midnight
         return totalSot.coerceIn(0L, maxPossible)
     }
 

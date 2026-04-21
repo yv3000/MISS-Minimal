@@ -3539,6 +3539,7 @@ id open_search_view_search_prefix
 id open_search_view_status_bar_spacer
 id open_search_view_toolbar
 id open_search_view_toolbar_container
+id original_text_size
 id outline
 id outward
 id overshoot
