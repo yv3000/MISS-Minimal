@@ -177,14 +177,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateTime() {
         val now = Date()
-        val timeFormat = SimpleDateFormat("HH\nmm", Locale.getDefault())
-        val fullTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val timeFormatVertical = SimpleDateFormat("HH\nmm", Locale.getDefault())
         val dateFormat = SimpleDateFormat("EEE · dd MMMM", Locale.getDefault()).format(now).uppercase()
 
-        binding.tvTime.text = timeFormat.format(now)
+        binding.tvTime.text = timeFormatVertical.format(now)
         binding.tvDate.text = dateFormat
 
-        binding.tvFullscreenTime.text = fullTimeFormat.format(now)
+        binding.tvFullscreenTime.text = timeFormatVertical.format(now)
         binding.tvFullscreenDate.text = dateFormat
     }
 
@@ -243,10 +242,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnTime.setOnClickListener { animateClick(it) {
             binding.fullscreenTimeOverlay.visibility = View.VISIBLE
+            window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }}
 
         binding.fullscreenTimeOverlay.setOnClickListener {
             binding.fullscreenTimeOverlay.visibility = View.GONE
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
         binding.tvAppPhone.setOnClickListener {

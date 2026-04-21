@@ -18,8 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.minimalist.launcher.databinding.ActivityQuickSettingsBinding
 import android.graphics.drawable.GradientDrawable
-import android.os.Handler
-import android.os.Looper
+import android.database.ContentObserver
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
 
 class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuickSettingsBinding
@@ -29,11 +30,18 @@ class QuickSettingsActivity : AppCompatActivity() {
     private var torchState = false
     private var cameraId: String? = null
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val stateUpdateRunnable = object : Runnable {
-        override fun run() {
+    private val volumeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == "android.media.VOLUME_CHANGED_ACTION") {
+                updateSoundUI()
+            }
+        }
+    }
+
+    private val brightnessObserver = object : ContentObserver(android.os.Handler(Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) {
+            updateDisplayUI()
             updateAllStates()
-            handler.postDelayed(this, 1000)
         }
     }
 
@@ -68,13 +76,24 @@ class QuickSettingsActivity : AppCompatActivity() {
         super.onResume()
         AppFont.applyToActivity(this)
         updateSoundUI()
+        updateDisplayUI()
         updateAllStates()
-        handler.post(stateUpdateRunnable)
+        
+        registerReceiver(volumeReceiver, IntentFilter("android.media.VOLUME_CHANGED_ACTION"))
+        contentResolver.registerContentObserver(
+            Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS),
+            false, brightnessObserver
+        )
+        contentResolver.registerContentObserver(
+            Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS_MODE),
+            false, brightnessObserver
+        )
     }
 
     override fun onPause() {
         super.onPause()
-        handler.removeCallbacks(stateUpdateRunnable)
+        unregisterReceiver(volumeReceiver)
+        contentResolver.unregisterContentObserver(brightnessObserver)
     }
 
     private fun setupConnectivity() {
@@ -95,7 +114,12 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // DATA
         binding.btnData.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+                startActivity(intent)
+            } else {
+                startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+            }
         }
         binding.btnData.setOnLongClickListener {
             startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
@@ -132,7 +156,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
 
         // FLASHLIGHT
-        binding.btnFlashlight.setOnClickListener {
+        binding.btnFlashlightText.setOnClickListener {
             try {
                 cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
             } catch (e: Exception) {}
@@ -171,20 +195,20 @@ class QuickSettingsActivity : AppCompatActivity() {
             setButtonState(binding.btnAutoBrightness, isAuto, dpToPx)
         } catch (e: Exception) {}
 
-        // Flashlight (ImageView special case)
+        // Flashlight
         val flashBg = GradientDrawable()
         flashBg.shape = GradientDrawable.RECTANGLE
         flashBg.cornerRadius = 8f * dpToPx
         if (torchState) {
             flashBg.setColor(0xFF1A1A2E.toInt())
             flashBg.setStroke((1 * dpToPx).toInt(), 0xFF4444AA.toInt())
-            binding.btnFlashlight.setColorFilter(0xFFAAAAFF.toInt())
+            binding.btnFlashlightText.setTextColor(0xFFAAAAFF.toInt())
         } else {
             flashBg.setColor(0xFF000000.toInt())
             flashBg.setStroke((1 * dpToPx).toInt(), 0xFF2A2A2A.toInt())
-            binding.btnFlashlight.setColorFilter(0xFF666666.toInt())
+            binding.btnFlashlightText.setTextColor(0xFF666666.toInt())
         }
-        binding.btnFlashlight.background = flashBg
+        binding.btnFlashlightText.background = flashBg
     }
 
     private fun setButtonState(view: TextView, isActive: Boolean, density: Float) {
@@ -208,18 +232,12 @@ class QuickSettingsActivity : AppCompatActivity() {
         binding.btnSoundVibrate.setOnClickListener { setRingerMode(AudioManager.RINGER_MODE_VIBRATE) }
         binding.btnSoundSilent.setOnClickListener { setRingerMode(AudioManager.RINGER_MODE_SILENT) }
 
-        val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        val curVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        
-        binding.seekVolume.max = maxVol
-        binding.seekVolume.progress = curVol
-        binding.tvVolumeVal.text = "${(curVol * 100) / maxVol}%"
-
         binding.seekVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_SHOW_UI)
-                    binding.tvVolumeVal.text = "${(progress * 100) / maxVol}%"
+                    val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                    val targetVol = (progress * maxVol) / 100
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVol, 0)
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -245,6 +263,12 @@ class QuickSettingsActivity : AppCompatActivity() {
         binding.btnSoundNormal.setTextColor(if (mode == AudioManager.RINGER_MODE_NORMAL) activeColor else inactiveColor)
         binding.btnSoundVibrate.setTextColor(if (mode == AudioManager.RINGER_MODE_VIBRATE) activeColor else inactiveColor)
         binding.btnSoundSilent.setTextColor(if (mode == AudioManager.RINGER_MODE_SILENT) activeColor else inactiveColor)
+
+        // Update Volume SeekBar
+        val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        val curVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val progress = if (maxVol > 0) (curVol * 100) / maxVol else 0
+        binding.seekVolume.progress = progress
     }
 
     private fun setupDisplay() {
@@ -268,20 +292,18 @@ class QuickSettingsActivity : AppCompatActivity() {
                 })
             }
         }
-        
-        try {
-            val curBrightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS)
-            binding.seekBrightness.progress = curBrightness
-        } catch (e: Exception) {}
 
         binding.seekBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     if (Settings.System.canWrite(this@QuickSettingsActivity)) {
                         Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
-                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, progress)
+                        val targetBrightness = (progress * 255) / 100
+                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, targetBrightness)
+                        
+                        // Apply to current window too
                         val lp = window.attributes
-                        lp.screenBrightness = progress / 255f
+                        lp.screenBrightness = progress / 100f
                         window.attributes = lp
                     } else {
                         startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
@@ -293,6 +315,14 @@ class QuickSettingsActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+    }
+
+    private fun updateDisplayUI() {
+        try {
+            val curBrightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS)
+            val progress = (curBrightness * 100) / 255
+            binding.seekBrightness.progress = progress
+        } catch (e: Exception) {}
     }
 
     override fun onBackPressed() {
