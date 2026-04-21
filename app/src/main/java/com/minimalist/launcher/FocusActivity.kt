@@ -306,6 +306,23 @@ class FocusActivity : AppCompatActivity() {
     btnEnableStrict.visibility = View.VISIBLE
   }
 
+  private fun bindViews() {
+    tabStopwatch = findViewById(R.id.tabStopwatch)
+    tabTimer = findViewById(R.id.tabTimer)
+    tabStrict = findViewById(R.id.tabStrict)
+    tabPomodoro = findViewById(R.id.tabPomodoro)
+
+    panelStopwatch = findViewById(R.id.panelStopwatch)
+    panelTimer = findViewById(R.id.panelTimer)
+    panelStrict = findViewById(R.id.panelStrict)
+    panelStrictActive = findViewById(R.id.panelStrictActive)
+
+    tvStopwatch = findViewById(R.id.tvStopwatch)
+    tvStrictCountdown = findViewById(R.id.tvStrictCountdown)
+    tvStrictStatus = findViewById(R.id.tvStrictStatus)
+    layoutStrictComplete = findViewById(R.id.layoutStrictComplete)
+
+    btnStartAgain = findViewById(R.id.btnStartAgain)
     btnExitStrict = findViewById(R.id.btnExitStrict)
     btnEnableStrict = findViewById(R.id.btnEnableStrict)
 
@@ -356,7 +373,6 @@ class FocusActivity : AppCompatActivity() {
     tabPomodoro.setOnClickListener {
         selectTab("pomodoro")
     }
-  }
   }
 
   private fun setupStopwatch() {
@@ -919,4 +935,3 @@ class FocusActivity : AppCompatActivity() {
     super.onDestroy()
   }
 }
-

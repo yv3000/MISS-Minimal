@@ -71,6 +71,9 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final LinearLayout layoutStrictWarning;
 
   @NonNull
+  public final FrameLayout panelPomodoro;
+
+  @NonNull
   public final LinearLayout panelStopwatch;
 
   @NonNull
@@ -92,6 +95,60 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final NumberPicker pickerSeconds;
 
   @NonNull
+  public final TextView pomBtnCallContact;
+
+  @NonNull
+  public final TextView pomBtnCancelBreak;
+
+  @NonNull
+  public final TextView pomBtnDur100;
+
+  @NonNull
+  public final TextView pomBtnDur25;
+
+  @NonNull
+  public final TextView pomBtnDur50;
+
+  @NonNull
+  public final TextView pomBtnDur75;
+
+  @NonNull
+  public final TextView pomBtnRemoveContact;
+
+  @NonNull
+  public final TextView pomBtnStartPomodoro;
+
+  @NonNull
+  public final LinearLayout pomLayoutActive;
+
+  @NonNull
+  public final LinearLayout pomLayoutContact;
+
+  @NonNull
+  public final LinearLayout pomLayoutSetup;
+
+  @NonNull
+  public final TextView pomSlotApp1;
+
+  @NonNull
+  public final TextView pomSlotApp2;
+
+  @NonNull
+  public final TextView pomSlotApp3;
+
+  @NonNull
+  public final TextView pomTvContactName;
+
+  @NonNull
+  public final TextView pomTvCountdown;
+
+  @NonNull
+  public final TextView pomTvPhaseLabel;
+
+  @NonNull
+  public final TextView pomTvSessionCount;
+
+  @NonNull
   public final ScrollView scrollTimestamps;
 
   @NonNull
@@ -99,6 +156,9 @@ public final class ActivityFocusBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout tabBar;
+
+  @NonNull
+  public final View tabIndicator;
 
   @NonNull
   public final TextView tabPomodoro;
@@ -140,11 +200,20 @@ public final class ActivityFocusBinding implements ViewBinding {
       @NonNull TextView btnTimerResume, @NonNull TextView btnTimerStart,
       @NonNull TextView btnTimerStop, @NonNull LinearLayout layoutPickers,
       @NonNull LinearLayout layoutStrictComplete, @NonNull LinearLayout layoutStrictWarning,
-      @NonNull LinearLayout panelStopwatch, @NonNull LinearLayout panelStrict,
-      @NonNull FrameLayout panelStrictActive, @NonNull LinearLayout panelTimer,
-      @NonNull NumberPicker pickerHours, @NonNull NumberPicker pickerMinutes,
-      @NonNull NumberPicker pickerSeconds, @NonNull ScrollView scrollTimestamps,
-      @NonNull LinearLayout swBtnRow, @NonNull LinearLayout tabBar, @NonNull TextView tabPomodoro,
+      @NonNull FrameLayout panelPomodoro, @NonNull LinearLayout panelStopwatch,
+      @NonNull LinearLayout panelStrict, @NonNull FrameLayout panelStrictActive,
+      @NonNull LinearLayout panelTimer, @NonNull NumberPicker pickerHours,
+      @NonNull NumberPicker pickerMinutes, @NonNull NumberPicker pickerSeconds,
+      @NonNull TextView pomBtnCallContact, @NonNull TextView pomBtnCancelBreak,
+      @NonNull TextView pomBtnDur100, @NonNull TextView pomBtnDur25, @NonNull TextView pomBtnDur50,
+      @NonNull TextView pomBtnDur75, @NonNull TextView pomBtnRemoveContact,
+      @NonNull TextView pomBtnStartPomodoro, @NonNull LinearLayout pomLayoutActive,
+      @NonNull LinearLayout pomLayoutContact, @NonNull LinearLayout pomLayoutSetup,
+      @NonNull TextView pomSlotApp1, @NonNull TextView pomSlotApp2, @NonNull TextView pomSlotApp3,
+      @NonNull TextView pomTvContactName, @NonNull TextView pomTvCountdown,
+      @NonNull TextView pomTvPhaseLabel, @NonNull TextView pomTvSessionCount,
+      @NonNull ScrollView scrollTimestamps, @NonNull LinearLayout swBtnRow,
+      @NonNull LinearLayout tabBar, @NonNull View tabIndicator, @NonNull TextView tabPomodoro,
       @NonNull TextView tabStopwatch, @NonNull TextView tabStrict, @NonNull TextView tabTimer,
       @NonNull LinearLayout timerBtnRow, @NonNull TextView tvStopwatch,
       @NonNull TextView tvStrictCountdown, @NonNull TextView tvStrictStatus,
@@ -167,6 +236,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.layoutPickers = layoutPickers;
     this.layoutStrictComplete = layoutStrictComplete;
     this.layoutStrictWarning = layoutStrictWarning;
+    this.panelPomodoro = panelPomodoro;
     this.panelStopwatch = panelStopwatch;
     this.panelStrict = panelStrict;
     this.panelStrictActive = panelStrictActive;
@@ -174,9 +244,28 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.pickerHours = pickerHours;
     this.pickerMinutes = pickerMinutes;
     this.pickerSeconds = pickerSeconds;
+    this.pomBtnCallContact = pomBtnCallContact;
+    this.pomBtnCancelBreak = pomBtnCancelBreak;
+    this.pomBtnDur100 = pomBtnDur100;
+    this.pomBtnDur25 = pomBtnDur25;
+    this.pomBtnDur50 = pomBtnDur50;
+    this.pomBtnDur75 = pomBtnDur75;
+    this.pomBtnRemoveContact = pomBtnRemoveContact;
+    this.pomBtnStartPomodoro = pomBtnStartPomodoro;
+    this.pomLayoutActive = pomLayoutActive;
+    this.pomLayoutContact = pomLayoutContact;
+    this.pomLayoutSetup = pomLayoutSetup;
+    this.pomSlotApp1 = pomSlotApp1;
+    this.pomSlotApp2 = pomSlotApp2;
+    this.pomSlotApp3 = pomSlotApp3;
+    this.pomTvContactName = pomTvContactName;
+    this.pomTvCountdown = pomTvCountdown;
+    this.pomTvPhaseLabel = pomTvPhaseLabel;
+    this.pomTvSessionCount = pomTvSessionCount;
     this.scrollTimestamps = scrollTimestamps;
     this.swBtnRow = swBtnRow;
     this.tabBar = tabBar;
+    this.tabIndicator = tabIndicator;
     this.tabPomodoro = tabPomodoro;
     this.tabStopwatch = tabStopwatch;
     this.tabStrict = tabStrict;
@@ -313,6 +402,12 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.panelPomodoro;
+      FrameLayout panelPomodoro = ViewBindings.findChildViewById(rootView, id);
+      if (panelPomodoro == null) {
+        break missingId;
+      }
+
       id = R.id.panelStopwatch;
       LinearLayout panelStopwatch = ViewBindings.findChildViewById(rootView, id);
       if (panelStopwatch == null) {
@@ -355,6 +450,114 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.pom_btnCallContact;
+      TextView pomBtnCallContact = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnCallContact == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnCancelBreak;
+      TextView pomBtnCancelBreak = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnCancelBreak == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnDur100;
+      TextView pomBtnDur100 = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnDur100 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnDur25;
+      TextView pomBtnDur25 = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnDur25 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnDur50;
+      TextView pomBtnDur50 = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnDur50 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnDur75;
+      TextView pomBtnDur75 = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnDur75 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnRemoveContact;
+      TextView pomBtnRemoveContact = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnRemoveContact == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_btnStartPomodoro;
+      TextView pomBtnStartPomodoro = ViewBindings.findChildViewById(rootView, id);
+      if (pomBtnStartPomodoro == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_layoutActive;
+      LinearLayout pomLayoutActive = ViewBindings.findChildViewById(rootView, id);
+      if (pomLayoutActive == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_layoutContact;
+      LinearLayout pomLayoutContact = ViewBindings.findChildViewById(rootView, id);
+      if (pomLayoutContact == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_layoutSetup;
+      LinearLayout pomLayoutSetup = ViewBindings.findChildViewById(rootView, id);
+      if (pomLayoutSetup == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_slotApp1;
+      TextView pomSlotApp1 = ViewBindings.findChildViewById(rootView, id);
+      if (pomSlotApp1 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_slotApp2;
+      TextView pomSlotApp2 = ViewBindings.findChildViewById(rootView, id);
+      if (pomSlotApp2 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_slotApp3;
+      TextView pomSlotApp3 = ViewBindings.findChildViewById(rootView, id);
+      if (pomSlotApp3 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_tvContactName;
+      TextView pomTvContactName = ViewBindings.findChildViewById(rootView, id);
+      if (pomTvContactName == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_tvCountdown;
+      TextView pomTvCountdown = ViewBindings.findChildViewById(rootView, id);
+      if (pomTvCountdown == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_tvPhaseLabel;
+      TextView pomTvPhaseLabel = ViewBindings.findChildViewById(rootView, id);
+      if (pomTvPhaseLabel == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_tvSessionCount;
+      TextView pomTvSessionCount = ViewBindings.findChildViewById(rootView, id);
+      if (pomTvSessionCount == null) {
+        break missingId;
+      }
+
       id = R.id.scrollTimestamps;
       ScrollView scrollTimestamps = ViewBindings.findChildViewById(rootView, id);
       if (scrollTimestamps == null) {
@@ -370,6 +573,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       id = R.id.tabBar;
       LinearLayout tabBar = ViewBindings.findChildViewById(rootView, id);
       if (tabBar == null) {
+        break missingId;
+      }
+
+      id = R.id.tabIndicator;
+      View tabIndicator = ViewBindings.findChildViewById(rootView, id);
+      if (tabIndicator == null) {
         break missingId;
       }
 
@@ -442,8 +651,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       return new ActivityFocusBinding((FrameLayout) rootView, btnEnableStrict, btnExitStrict,
           btnStartAgain, btnSwFlag, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause,
           btnTimerReset, btnTimerResume, btnTimerStart, btnTimerStop, layoutPickers,
-          layoutStrictComplete, layoutStrictWarning, panelStopwatch, panelStrict, panelStrictActive,
-          panelTimer, pickerHours, pickerMinutes, pickerSeconds, scrollTimestamps, swBtnRow, tabBar,
+          layoutStrictComplete, layoutStrictWarning, panelPomodoro, panelStopwatch, panelStrict,
+          panelStrictActive, panelTimer, pickerHours, pickerMinutes, pickerSeconds,
+          pomBtnCallContact, pomBtnCancelBreak, pomBtnDur100, pomBtnDur25, pomBtnDur50, pomBtnDur75,
+          pomBtnRemoveContact, pomBtnStartPomodoro, pomLayoutActive, pomLayoutContact,
+          pomLayoutSetup, pomSlotApp1, pomSlotApp2, pomSlotApp3, pomTvContactName, pomTvCountdown,
+          pomTvPhaseLabel, pomTvSessionCount, scrollTimestamps, swBtnRow, tabBar, tabIndicator,
           tabPomodoro, tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch,
           tvStrictCountdown, tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
     }

@@ -244,27 +244,36 @@
         android:visibility="gone"
         android:clickable="true"
         android:focusable="true">
-        <TextView
-            android:id="@+id/tvFullscreenTime"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/plus_jakarta_sans_medium"
-
-            android:text="00:00"
-            android:textColor="#FFFFFF"
-            android:textSize="96sp" />
-        <TextView
-            android:id="@+id/tvFullscreenDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/plus_jakarta_sans_medium"
-
-            android:text="DATE"
-            android:textColor="#AAAAAA"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:gravity="center">
+            
+            <TextView
+                android:id="@+id/tvFullscreenTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans_light"
+                android:lineSpacingExtra="-24dp"
+                android:text="00\n00"
+                android:textColor="#FFFFFF"
+                android:textSize="120sp"
+                android:gravity="center"
+                android:tag="fixed_size" />
+                
+            <TextView
+                android:id="@+id/tvFullscreenDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:text="DATE"
+                android:textColor="#AAAAAA"
+                android:textSize="18sp"
+                android:tag="fixed_size" />
+        </LinearLayout>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

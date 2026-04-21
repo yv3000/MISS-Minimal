@@ -10,6 +10,7 @@ import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.widget.SeekBar
@@ -295,21 +296,9 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         binding.seekBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    if (Settings.System.canWrite(this@QuickSettingsActivity)) {
-                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
-                        val targetBrightness = (progress * 255) / 100
-                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, targetBrightness)
-                        
-                        // Apply to current window too
-                        val lp = window.attributes
-                        lp.screenBrightness = progress / 100f
-                        window.attributes = lp
-                    } else {
-                        startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-                            data = Uri.parse("package:$packageName")
-                        })
-                    }
+                if (fromUser && Settings.System.canWrite(this@QuickSettingsActivity)) {
+                    val brightness = (progress * 255) / 100
+                    Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightness)
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -320,20 +309,7 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun updateDisplayUI() {
         try {
             val curBrightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS)
-            val progress = (curBrightness * 100) / 255
-            binding.seekBrightness.progress = progress
+            binding.seekBrightness.progress = (curBrightness * 100) / 255
         } catch (e: Exception) {}
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(0, R.anim.slide_up_exit)
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(0, R.anim.slide_up_exit)
-    }
-
-    // Moved font logic to AppFont.kt
 }

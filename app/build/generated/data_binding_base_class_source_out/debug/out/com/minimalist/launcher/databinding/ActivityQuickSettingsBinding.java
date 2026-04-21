@@ -4,7 +4,6 @@ package com.minimalist.launcher.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,7 +33,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
   public final TextView btnDnd;
 
   @NonNull
-  public final ImageView btnFlashlight;
+  public final TextView btnFlashlightText;
 
   @NonNull
   public final TextView btnSoundNormal;
@@ -54,28 +53,24 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
   @NonNull
   public final SeekBar seekVolume;
 
-  @NonNull
-  public final TextView tvVolumeVal;
-
   private ActivityQuickSettingsBinding(@NonNull LinearLayout rootView,
       @NonNull TextView btnAutoBrightness, @NonNull TextView btnBluetooth,
-      @NonNull TextView btnData, @NonNull TextView btnDnd, @NonNull ImageView btnFlashlight,
+      @NonNull TextView btnData, @NonNull TextView btnDnd, @NonNull TextView btnFlashlightText,
       @NonNull TextView btnSoundNormal, @NonNull TextView btnSoundSilent,
       @NonNull TextView btnSoundVibrate, @NonNull TextView btnWifi, @NonNull SeekBar seekBrightness,
-      @NonNull SeekBar seekVolume, @NonNull TextView tvVolumeVal) {
+      @NonNull SeekBar seekVolume) {
     this.rootView = rootView;
     this.btnAutoBrightness = btnAutoBrightness;
     this.btnBluetooth = btnBluetooth;
     this.btnData = btnData;
     this.btnDnd = btnDnd;
-    this.btnFlashlight = btnFlashlight;
+    this.btnFlashlightText = btnFlashlightText;
     this.btnSoundNormal = btnSoundNormal;
     this.btnSoundSilent = btnSoundSilent;
     this.btnSoundVibrate = btnSoundVibrate;
     this.btnWifi = btnWifi;
     this.seekBrightness = seekBrightness;
     this.seekVolume = seekVolume;
-    this.tvVolumeVal = tvVolumeVal;
   }
 
   @Override
@@ -129,9 +124,9 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.btnFlashlight;
-      ImageView btnFlashlight = ViewBindings.findChildViewById(rootView, id);
-      if (btnFlashlight == null) {
+      id = R.id.btnFlashlightText;
+      TextView btnFlashlightText = ViewBindings.findChildViewById(rootView, id);
+      if (btnFlashlightText == null) {
         break missingId;
       }
 
@@ -171,15 +166,9 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tvVolumeVal;
-      TextView tvVolumeVal = ViewBindings.findChildViewById(rootView, id);
-      if (tvVolumeVal == null) {
-        break missingId;
-      }
-
       return new ActivityQuickSettingsBinding((LinearLayout) rootView, btnAutoBrightness,
-          btnBluetooth, btnData, btnDnd, btnFlashlight, btnSoundNormal, btnSoundSilent,
-          btnSoundVibrate, btnWifi, seekBrightness, seekVolume, tvVolumeVal);
+          btnBluetooth, btnData, btnDnd, btnFlashlightText, btnSoundNormal, btnSoundSilent,
+          btnSoundVibrate, btnWifi, seekBrightness, seekVolume);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
