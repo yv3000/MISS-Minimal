@@ -76,15 +76,15 @@
 32-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:22-86
 33
 34    <permission
-34-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+34-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
 35        android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-35-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+35-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
 36        android:protectionLevel="signature" />
-36-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+36-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
 37
 38    <uses-permission android:name="com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-38-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
-38-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+38-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+38-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
 39
 40    <application
 40-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:5-121:19
@@ -93,7 +93,7 @@
 42        android:allowBackup="true"
 42-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-35
 43        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-43-->[androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+43-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 44        android:debuggable="true"
 45        android:extractNativeLibs="false"
 46        android:fontFamily="monospace"
@@ -310,68 +310,68 @@
 155        </service>
 156
 157        <provider
-157-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+157-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
 158            android:name="androidx.startup.InitializationProvider"
-158-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+158-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
 159            android:authorities="com.minimalist.launcher.androidx-startup"
-159-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+159-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
 160            android:exported="false" >
-160-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+160-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
 161            <meta-data
-161-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+161-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
 162                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-162-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+162-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
 163                android:value="androidx.startup" />
-163-->[androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+163-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
 164            <meta-data
-164-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+164-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
 165                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-165-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+165-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
 166                android:value="androidx.startup" />
-166-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+166-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
 167            <meta-data
-167-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+167-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
 168                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-168-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+168-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
 169                android:value="androidx.startup" />
-169-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+169-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
 170        </provider>
 171
 172        <receiver
-172-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+172-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
 173            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-173-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+173-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
 174            android:directBootAware="false"
-174-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+174-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
 175            android:enabled="true"
-175-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+175-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
 176            android:exported="true"
-176-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+176-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
 177            android:permission="android.permission.DUMP" >
-177-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+177-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
 178            <intent-filter>
-178-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+178-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
 179                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-179-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-179-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+179-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+179-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
 180            </intent-filter>
 181            <intent-filter>
-181-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+181-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
 182                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-182-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-182-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+182-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+182-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
 183            </intent-filter>
 184            <intent-filter>
-184-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+184-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
 185                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-185-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-185-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+185-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+185-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
 186            </intent-filter>
 187            <intent-filter>
-187-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+187-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
 188                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-188-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-188-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+188-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+188-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
 189            </intent-filter>
 190        </receiver>
 191    </application>

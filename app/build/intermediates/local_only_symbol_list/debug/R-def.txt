@@ -6,7 +6,7 @@ anim slide_down_enter
 anim slide_down_exit
 anim slide_up_enter
 anim slide_up_exit
-color apple_blue
+color accent_white
 color black
 color grey_111
 color grey_1a1a1a
@@ -17,7 +17,8 @@ color grey_555
 color grey_666
 color grey_aaa
 color grey_ccc
-color spotify_green
+color grey_dark
+color grey_light
 color surface_card
 color surface_dark
 color text_secondary
@@ -85,6 +86,7 @@ id btnSoundSilent
 id btnSoundVibrate
 id btnStartAgain
 id btnStartPomodoro
+id btnSwFlag
 id btnSwPause
 id btnSwResume
 id btnSwStart
@@ -124,6 +126,7 @@ id rowOverlay
 id rowUsage
 id rvApps
 id rvNotifications
+id scrollTimestamps
 id seekBrightness
 id seekVolume
 id slotApp1
@@ -176,6 +179,7 @@ id tvTime
 id tvTimeCount
 id tvTimeUp
 id tvTimerCountdown
+id tvTimestamps
 id tvTitle
 id tvTotalTime
 id tvVolumeState

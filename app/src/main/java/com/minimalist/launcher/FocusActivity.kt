@@ -67,15 +67,29 @@ class FocusActivity : AppCompatActivity() {
   private val TABS = arrayOf("stopwatch", "timer", "strict", "pomodoro")
 
 
-  override fun onNewIntent(intent: Intent) {
+  override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
     handleIntent(intent)
   }
 
   private fun handleIntent(intent: Intent?) {
-    val tab = intent?.getStringExtra("tab")
+    intent ?: return
+    
+    val tab = intent.getStringExtra("tab")
     if (tab != null) {
       selectTab(tab)
+    }
+
+    if (intent.getBooleanExtra("show_strict_timer", false)) {
+      showStrictCountdown()
+    }
+
+    val openTab = intent.getStringExtra("open_tab")
+    if (openTab == "strict") {
+      // Switch to strict tab
+      selectStrictTab()
+      // Show the warning screen with ENABLE button
+      showStrictWarningScreen()
     }
   }
 
@@ -132,24 +146,6 @@ class FocusActivity : AppCompatActivity() {
   override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
     gestureDetector.onTouchEvent(ev)
     return super.dispatchTouchEvent(ev)
-  }
-
-  override fun onNewIntent(intent: Intent?) {
-    super.onNewIntent(intent)
-    intent?.let { handleIntent(it) }
-  }
-
-  private fun handleIntent(intent: Intent) {
-    if (intent.getBooleanExtra("show_strict_timer", false)) {
-      showStrictCountdown()
-    }
-    val tab = intent.getStringExtra("open_tab")
-    if (tab == "strict") {
-      // Switch to strict tab
-      selectStrictTab()
-      // Show the warning screen with ENABLE button
-      showStrictWarningScreen()
-    }
   }
 
   private fun selectStrictTab() {

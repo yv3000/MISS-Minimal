@@ -179,8 +179,6 @@
     </ScrollView>
   </LinearLayout>
 
-  </LinearLayout>
-
   <!-- TIMER PANEL -->
   <LinearLayout
     android:id="@+id/panelTimer"

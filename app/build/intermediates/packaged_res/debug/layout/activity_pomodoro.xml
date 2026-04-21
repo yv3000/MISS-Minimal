@@ -41,12 +41,11 @@
                 android:layout_height="wrap_content"
                 android:text="25 min"
                 android:gravity="center"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 android:fontFamily="@font/plus_jakarta_sans_medium"
-
                 android:background="@drawable/bg_pill"
-                android:backgroundTint="@color/apple_blue"
+                android:backgroundTint="@color/white"
                 android:padding="10dp"/>
 
 
@@ -226,12 +225,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="START POMODORO"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
             android:textSize="14sp"
             android:fontFamily="@font/plus_jakarta_sans_extra_bold"
-
             android:background="@drawable/bg_pill"
-            android:backgroundTint="@color/spotify_green"
+            android:backgroundTint="@color/white"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
             android:paddingTop="16dp"

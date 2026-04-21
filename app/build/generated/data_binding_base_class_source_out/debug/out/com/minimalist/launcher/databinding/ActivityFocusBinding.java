@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,9 @@ public final class ActivityFocusBinding implements ViewBinding {
 
   @NonNull
   public final TextView btnStartAgain;
+
+  @NonNull
+  public final TextView btnSwFlag;
 
   @NonNull
   public final TextView btnSwPause;
@@ -88,6 +92,9 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final NumberPicker pickerSeconds;
 
   @NonNull
+  public final ScrollView scrollTimestamps;
+
+  @NonNull
   public final LinearLayout swBtnRow;
 
   @NonNull
@@ -123,8 +130,11 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final TextView tvTimerCountdown;
 
+  @NonNull
+  public final TextView tvTimestamps;
+
   private ActivityFocusBinding(@NonNull FrameLayout rootView, @NonNull TextView btnEnableStrict,
-      @NonNull TextView btnExitStrict, @NonNull TextView btnStartAgain,
+      @NonNull TextView btnExitStrict, @NonNull TextView btnStartAgain, @NonNull TextView btnSwFlag,
       @NonNull TextView btnSwPause, @NonNull TextView btnSwResume, @NonNull TextView btnSwStart,
       @NonNull TextView btnSwStop, @NonNull TextView btnTimerPause, @NonNull TextView btnTimerReset,
       @NonNull TextView btnTimerResume, @NonNull TextView btnTimerStart,
@@ -133,16 +143,18 @@ public final class ActivityFocusBinding implements ViewBinding {
       @NonNull LinearLayout panelStopwatch, @NonNull LinearLayout panelStrict,
       @NonNull FrameLayout panelStrictActive, @NonNull LinearLayout panelTimer,
       @NonNull NumberPicker pickerHours, @NonNull NumberPicker pickerMinutes,
-      @NonNull NumberPicker pickerSeconds, @NonNull LinearLayout swBtnRow,
-      @NonNull LinearLayout tabBar, @NonNull TextView tabPomodoro, @NonNull TextView tabStopwatch,
-      @NonNull TextView tabStrict, @NonNull TextView tabTimer, @NonNull LinearLayout timerBtnRow,
-      @NonNull TextView tvStopwatch, @NonNull TextView tvStrictCountdown,
-      @NonNull TextView tvStrictStatus, @NonNull TextView tvTimeUp,
-      @NonNull TextView tvTimerCountdown) {
+      @NonNull NumberPicker pickerSeconds, @NonNull ScrollView scrollTimestamps,
+      @NonNull LinearLayout swBtnRow, @NonNull LinearLayout tabBar, @NonNull TextView tabPomodoro,
+      @NonNull TextView tabStopwatch, @NonNull TextView tabStrict, @NonNull TextView tabTimer,
+      @NonNull LinearLayout timerBtnRow, @NonNull TextView tvStopwatch,
+      @NonNull TextView tvStrictCountdown, @NonNull TextView tvStrictStatus,
+      @NonNull TextView tvTimeUp, @NonNull TextView tvTimerCountdown,
+      @NonNull TextView tvTimestamps) {
     this.rootView = rootView;
     this.btnEnableStrict = btnEnableStrict;
     this.btnExitStrict = btnExitStrict;
     this.btnStartAgain = btnStartAgain;
+    this.btnSwFlag = btnSwFlag;
     this.btnSwPause = btnSwPause;
     this.btnSwResume = btnSwResume;
     this.btnSwStart = btnSwStart;
@@ -162,6 +174,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.pickerHours = pickerHours;
     this.pickerMinutes = pickerMinutes;
     this.pickerSeconds = pickerSeconds;
+    this.scrollTimestamps = scrollTimestamps;
     this.swBtnRow = swBtnRow;
     this.tabBar = tabBar;
     this.tabPomodoro = tabPomodoro;
@@ -174,6 +187,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.tvStrictStatus = tvStrictStatus;
     this.tvTimeUp = tvTimeUp;
     this.tvTimerCountdown = tvTimerCountdown;
+    this.tvTimestamps = tvTimestamps;
   }
 
   @Override
@@ -218,6 +232,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       id = R.id.btnStartAgain;
       TextView btnStartAgain = ViewBindings.findChildViewById(rootView, id);
       if (btnStartAgain == null) {
+        break missingId;
+      }
+
+      id = R.id.btnSwFlag;
+      TextView btnSwFlag = ViewBindings.findChildViewById(rootView, id);
+      if (btnSwFlag == null) {
         break missingId;
       }
 
@@ -335,6 +355,12 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.scrollTimestamps;
+      ScrollView scrollTimestamps = ViewBindings.findChildViewById(rootView, id);
+      if (scrollTimestamps == null) {
+        break missingId;
+      }
+
       id = R.id.swBtnRow;
       LinearLayout swBtnRow = ViewBindings.findChildViewById(rootView, id);
       if (swBtnRow == null) {
@@ -407,13 +433,19 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvTimestamps;
+      TextView tvTimestamps = ViewBindings.findChildViewById(rootView, id);
+      if (tvTimestamps == null) {
+        break missingId;
+      }
+
       return new ActivityFocusBinding((FrameLayout) rootView, btnEnableStrict, btnExitStrict,
-          btnStartAgain, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause,
+          btnStartAgain, btnSwFlag, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause,
           btnTimerReset, btnTimerResume, btnTimerStart, btnTimerStop, layoutPickers,
           layoutStrictComplete, layoutStrictWarning, panelStopwatch, panelStrict, panelStrictActive,
-          panelTimer, pickerHours, pickerMinutes, pickerSeconds, swBtnRow, tabBar, tabPomodoro,
-          tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch, tvStrictCountdown,
-          tvStrictStatus, tvTimeUp, tvTimerCountdown);
+          panelTimer, pickerHours, pickerMinutes, pickerSeconds, scrollTimestamps, swBtnRow, tabBar,
+          tabPomodoro, tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch,
+          tvStrictCountdown, tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

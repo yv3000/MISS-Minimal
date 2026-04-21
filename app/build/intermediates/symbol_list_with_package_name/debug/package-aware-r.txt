@@ -1376,9 +1376,9 @@ color abc_tint_spinner
 color abc_tint_switch_track
 color accent_material_dark
 color accent_material_light
+color accent_white
 color androidx_core_ripple_material_light
 color androidx_core_secondary_text_default_material_light
-color apple_blue
 color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
@@ -1453,6 +1453,8 @@ color grey_555
 color grey_666
 color grey_aaa
 color grey_ccc
+color grey_dark
+color grey_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
 color m3_appbar_overlay_color
@@ -2122,7 +2124,6 @@ color secondary_text_default_material_dark
 color secondary_text_default_material_light
 color secondary_text_disabled_material_dark
 color secondary_text_disabled_material_light
-color spotify_green
 color surface_card
 color surface_dark
 color switch_thumb_disabled_material_dark
@@ -3279,6 +3280,7 @@ id btnSoundSilent
 id btnSoundVibrate
 id btnStartAgain
 id btnStartPomodoro
+id btnSwFlag
 id btnSwPause
 id btnSwResume
 id btnSwStart
@@ -3603,6 +3605,7 @@ id screen
 id scroll
 id scrollIndicatorDown
 id scrollIndicatorUp
+id scrollTimestamps
 id scrollView
 id scrollable
 id search_badge
@@ -3757,6 +3760,7 @@ id tvTime
 id tvTimeCount
 id tvTimeUp
 id tvTimerCountdown
+id tvTimestamps
 id tvTitle
 id tvTotalTime
 id tvVolumeState
