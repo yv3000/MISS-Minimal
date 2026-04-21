@@ -32,14 +32,6 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout\\activity_quick_settings.xml"
     },
     {
-        "merged": "com.minimalist.launcher.app-mergeDebugResources-33:/layout/activity_quick_settings.xml",
-        "source": "com.minimalist.launcher.app-main-36:/layout/activity_quick_settings.xml"
-    },
-    {
-        "merged": "com.minimalist.launcher.app-mergeDebugResources-33:/layout/activity_main.xml",
-        "source": "com.minimalist.launcher.app-main-36:/layout/activity_main.xml"
-    },
-    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-mergeDebugResources-33:\\layout\\activity_app_drawer.xml",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout\\activity_app_drawer.xml"
     },

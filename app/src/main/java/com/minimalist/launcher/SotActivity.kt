@@ -116,7 +116,7 @@ class SotActivity : AppCompatActivity() {
         
         layoutApps.removeAllViews()
         for (item in usageList) {
-            val proportion = if (totalMs > 0) item.totalMs.toFloat() / totalMs else 0f
+            val proportion = if (totalSotMs > 0) item.totalMs.toFloat() / totalSotMs else 0f
             layoutApps.addView(createAppRow(item, proportion))
             layoutApps.addView(createDivider())
         }

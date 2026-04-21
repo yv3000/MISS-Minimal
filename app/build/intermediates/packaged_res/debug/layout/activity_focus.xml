@@ -8,66 +8,68 @@
 
 
   <!-- TAB BAR -->
-  <LinearLayout
-    android:id="@+id/tabBar"
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:layout_gravity="top"
     android:layout_marginTop="24dp"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp">
-    <TextView android:id="@+id/tabStopwatch"
+
+    <View android:id="@+id/tabIndicator"
       android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Stopwatch"
-      android:textColor="@color/white"
-      android:fontFamily="@font/plus_jakarta_sans_medium"
+      android:layout_height="36dp"
+      android:background="@drawable/bg_tab_bubble"
+      android:layout_gravity="center_vertical"
+      android:visibility="visible"/>
 
-      android:textSize="14sp"
-      android:gravity="center"/>
+    <LinearLayout
+      android:id="@+id/tabBar"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:orientation="horizontal"
+      android:gravity="center_vertical">
+      <TextView android:id="@+id/tabStopwatch"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Stopwatch"
+        android:textColor="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="13sp"
+        android:gravity="center"/>
 
-    <TextView android:id="@+id/tabTimer"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Timer"
-      android:textColor="@color/text_secondary"
-      android:fontFamily="@font/plus_jakarta_sans_medium"
+      <TextView android:id="@+id/tabTimer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Timer"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="13sp"
+        android:gravity="center"/>
 
-      android:textSize="14sp"
-      android:gravity="center"/>
+      <TextView android:id="@+id/tabStrict"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Strict"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="13sp"
+        android:gravity="center"/>
 
-    <TextView android:id="@+id/tabStrict"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Strict"
-      android:textColor="@color/text_secondary"
-      android:fontFamily="@font/plus_jakarta_sans_medium"
-
-      android:textSize="14sp"
-      android:gravity="center"/>
-
-    <TextView android:id="@+id/tabPomodoro"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="Pomodoro"
-      android:textColor="@color/text_secondary"
-      android:fontFamily="@font/plus_jakarta_sans"
-      android:textSize="14sp"
-      android:gravity="center"/>
-  </LinearLayout>
-
-  <View android:id="@+id/tabIndicator"
-    android:layout_width="20dp"
-    android:layout_height="2dp"
-    android:background="@color/white"
-    android:layout_gravity="top"
-    android:layout_marginTop="52dp"
-    android:visibility="visible"/>
+      <TextView android:id="@+id/tabPomodoro"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Pomodoro"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="13sp"
+        android:gravity="center"/>
+    </LinearLayout>
+  </FrameLayout>
 
   <!-- STOPWATCH PANEL -->
   <LinearLayout

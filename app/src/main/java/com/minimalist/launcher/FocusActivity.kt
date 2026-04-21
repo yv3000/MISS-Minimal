@@ -18,7 +18,6 @@ import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter

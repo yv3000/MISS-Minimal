@@ -3015,6 +3015,7 @@ int drawable avd_show_password 0x7f070078
 int drawable bg_border_dark 0x7f070079
 int drawable bg_card_premium 0x7f07007a
 int drawable bg_pill 0x7f07007b
+int drawable bg_tab_bubble 0x7f0700ec
 int drawable border_box 0x7f07007c
 int drawable btn_border 0x7f07007d
 int drawable btn_border_active 0x7f07007e

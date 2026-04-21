@@ -3016,6 +3016,7 @@ drawable avd_show_password
 drawable bg_border_dark
 drawable bg_card_premium
 drawable bg_pill
+drawable bg_tab_bubble
 drawable border_box
 drawable btn_border
 drawable btn_border_active
