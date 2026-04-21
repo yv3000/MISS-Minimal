@@ -36,7 +36,8 @@
         android:text="Stopwatch"
         android:textColor="@color/white"
         android:fontFamily="@font/plus_jakarta_sans_medium"
-        android:textSize="13sp"
+        android:textSize="12sp"
+        android:tag="fixed_size"
         android:gravity="center"/>
 
       <TextView android:id="@+id/tabTimer"
@@ -46,7 +47,8 @@
         android:text="Timer"
         android:textColor="@color/text_secondary"
         android:fontFamily="@font/plus_jakarta_sans_medium"
-        android:textSize="13sp"
+        android:textSize="12sp"
+        android:tag="fixed_size"
         android:gravity="center"/>
 
       <TextView android:id="@+id/tabStrict"
@@ -56,7 +58,8 @@
         android:text="Strict"
         android:textColor="@color/text_secondary"
         android:fontFamily="@font/plus_jakarta_sans_medium"
-        android:textSize="13sp"
+        android:textSize="12sp"
+        android:tag="fixed_size"
         android:gravity="center"/>
 
       <TextView android:id="@+id/tabPomodoro"
@@ -66,7 +69,8 @@
         android:text="Pomodoro"
         android:textColor="@color/text_secondary"
         android:fontFamily="@font/plus_jakarta_sans_medium"
-        android:textSize="13sp"
+        android:textSize="12sp"
+        android:tag="fixed_size"
         android:gravity="center"/>
     </LinearLayout>
   </FrameLayout>

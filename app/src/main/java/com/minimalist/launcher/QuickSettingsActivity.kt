@@ -46,6 +46,8 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var gestureDetector: GestureDetector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuickSettingsBinding.inflate(layoutInflater)
@@ -54,6 +56,8 @@ class QuickSettingsActivity : AppCompatActivity() {
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+
+        setupGestures()
 
         try {
             cameraId = cameraManager.cameraIdList.firstOrNull()
@@ -71,6 +75,25 @@ class QuickSettingsActivity : AppCompatActivity() {
         setupConnectivity()
         setupSound()
         setupDisplay()
+    }
+
+    private fun setupGestures() {
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(e1: android.view.MotionEvent?, e2: android.view.MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (e1 == null) return false
+                val diffY = e2.y - e1.y
+                if (diffY < -100 && Math.abs(velocityY) > 100) {
+                    finish()
+                    overridePendingTransition(0, R.anim.slide_up_exit)
+                    return true
+                }
+                return false
+            }
+        })
+    }
+
+    override fun onTouchEvent(event: android.view.MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
 
     override fun onResume() {

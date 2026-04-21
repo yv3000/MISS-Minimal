@@ -36,10 +36,24 @@ class AppDrawerActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var gestureDetector: android.view.GestureDetector
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        gestureDetector = android.view.GestureDetector(this, object : android.view.GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(e1: android.view.MotionEvent?, e2: android.view.MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+                if (e1 == null) return false
+                val diffY = e2.y - e1.y
+                if (diffY > 100 && Math.abs(velocityY) > 100) {
+                    finish()
+                    return true
+                }
+                return false
+            }
+        })
 
         adapter = AppAdapter()
         binding.rvApps.layoutManager = LinearLayoutManager(this)
@@ -65,6 +79,11 @@ class AppDrawerActivity : AppCompatActivity() {
         registerReceiver(packageReceiver, filter)
 
         loadApps()
+    }
+
+    override fun dispatchTouchEvent(ev: android.view.MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onDestroy() {
