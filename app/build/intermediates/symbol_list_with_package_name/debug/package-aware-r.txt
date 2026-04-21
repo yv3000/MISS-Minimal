@@ -3435,6 +3435,7 @@ id layoutModes
 id layoutPickers
 id layoutStrictComplete
 id layoutStrictWarning
+id layoutSyncing
 id left
 id leftToRight
 id legacy

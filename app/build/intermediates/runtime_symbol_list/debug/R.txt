@@ -3434,6 +3434,7 @@ int id layoutModes 0x7f090128
 int id layoutPickers 0x7f090129
 int id layoutStrictComplete 0x7f09012a
 int id layoutStrictWarning 0x7f09012b
+int id layoutSyncing 0x7f090293
 int id left 0x7f09012c
 int id leftToRight 0x7f09012d
 int id legacy 0x7f09012e

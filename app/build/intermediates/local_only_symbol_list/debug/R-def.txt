@@ -102,6 +102,7 @@ id layoutModes
 id layoutPickers
 id layoutStrictComplete
 id layoutStrictWarning
+id layoutSyncing
 id original_text_size
 id panelPomodoro
 id panelStopwatch

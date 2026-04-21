@@ -4,6 +4,7 @@ package com.minimalist.launcher.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ import java.lang.String;
 
 public final class ActivitySotBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final FrameLayout rootView;
 
   @NonNull
   public final TextView btnGrantUsage;
@@ -32,6 +33,9 @@ public final class ActivitySotBinding implements ViewBinding {
   public final LinearLayout layoutModes;
 
   @NonNull
+  public final FrameLayout layoutSyncing;
+
+  @NonNull
   public final TextView tvDate;
 
   @NonNull
@@ -40,15 +44,16 @@ public final class ActivitySotBinding implements ViewBinding {
   @NonNull
   public final TextView tvTotalTime;
 
-  private ActivitySotBinding(@NonNull LinearLayout rootView, @NonNull TextView btnGrantUsage,
+  private ActivitySotBinding(@NonNull FrameLayout rootView, @NonNull TextView btnGrantUsage,
       @NonNull TextView btnRefresh, @NonNull LinearLayout layoutApps,
-      @NonNull LinearLayout layoutModes, @NonNull TextView tvDate, @NonNull TextView tvNoSessions,
-      @NonNull TextView tvTotalTime) {
+      @NonNull LinearLayout layoutModes, @NonNull FrameLayout layoutSyncing,
+      @NonNull TextView tvDate, @NonNull TextView tvNoSessions, @NonNull TextView tvTotalTime) {
     this.rootView = rootView;
     this.btnGrantUsage = btnGrantUsage;
     this.btnRefresh = btnRefresh;
     this.layoutApps = layoutApps;
     this.layoutModes = layoutModes;
+    this.layoutSyncing = layoutSyncing;
     this.tvDate = tvDate;
     this.tvNoSessions = tvNoSessions;
     this.tvTotalTime = tvTotalTime;
@@ -56,7 +61,7 @@ public final class ActivitySotBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public FrameLayout getRoot() {
     return rootView;
   }
 
@@ -105,6 +110,12 @@ public final class ActivitySotBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.layoutSyncing;
+      FrameLayout layoutSyncing = ViewBindings.findChildViewById(rootView, id);
+      if (layoutSyncing == null) {
+        break missingId;
+      }
+
       id = R.id.tvDate;
       TextView tvDate = ViewBindings.findChildViewById(rootView, id);
       if (tvDate == null) {
@@ -123,8 +134,8 @@ public final class ActivitySotBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivitySotBinding((LinearLayout) rootView, btnGrantUsage, btnRefresh, layoutApps,
-          layoutModes, tvDate, tvNoSessions, tvTotalTime);
+      return new ActivitySotBinding((FrameLayout) rootView, btnGrantUsage, btnRefresh, layoutApps,
+          layoutModes, layoutSyncing, tvDate, tvNoSessions, tvTotalTime);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
