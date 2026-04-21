@@ -79,7 +79,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
                 .setSingleChoiceItems(sizes, currentIndex) { dialog, which ->
                     val selected = sizes[which].toFloat()
                     PrefsManager.setFontSize(this, selected)
-                    applyFontSize()
+                    AppFont.applyToActivity(this)
                     binding.tvFontSizeState.text = selected.toString()
                     dialog.dismiss()
                 }.show()
@@ -88,7 +88,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        applyFontSize()
+        AppFont.applyToActivity(this)
         updateAllStates()
         handler.post(stateRunnable)
     }
@@ -265,19 +265,5 @@ class LauncherSettingsActivity : AppCompatActivity() {
         overridePendingTransition(0, R.anim.slide_down_exit)
     }
 
-    fun applyFontSize() {
-        val size = AppFont.get(this)
-        applyToAllTextViews(window.decorView, size)
-    }
-
-    fun applyToAllTextViews(view: android.view.View, size: Float) {
-        if (view is android.widget.TextView) {
-            if (view.tag == "fixed_size") return
-            view.textSize = size
-        } else if (view is android.view.ViewGroup) {
-            for (i in 0 until view.childCount) {
-                applyToAllTextViews(view.getChildAt(i), size)
-            }
-        }
-    }
+    // Moved font logic to AppFont.kt
 }

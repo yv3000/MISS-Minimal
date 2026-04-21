@@ -26,6 +26,7 @@ class PermissionOnboardingActivity : AppCompatActivity() {
     private lateinit var rowOverlay: View
     private lateinit var rowDnd: View
     private lateinit var rowBattery: View
+    private lateinit var rowNotificationListener: View
     private lateinit var btnContinue: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,7 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         rowOverlay = findViewById(R.id.rowOverlay)
         rowDnd = findViewById(R.id.rowDnd)
         rowBattery = findViewById(R.id.rowBattery)
+        rowNotificationListener = findViewById(R.id.rowNotificationListener)
         btnContinue = findViewById(R.id.btnContinue)
 
         setupClickListeners()
@@ -44,6 +46,7 @@ class PermissionOnboardingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        AppFont.applyToActivity(this)
         refreshAllPermissions()
     }
 
@@ -77,11 +80,13 @@ class PermissionOnboardingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        rowNotificationListener.findViewById<View>(R.id.btnAllowNotifListener).setOnClickListener {
+            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        }
+
         btnContinue.setOnClickListener {
-            val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
-            prefs.edit()
-                .putBoolean("start_immediately", true)
-                .apply()
+            val prefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
+            prefs.edit().putBoolean("proceed", true).apply()
             finish()
         }
     }
@@ -92,12 +97,14 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         updateRow(rowOverlay, R.id.btnAllowOverlay, R.id.tvStatusOverlay, Settings.canDrawOverlays(this))
         updateRow(rowDnd, R.id.btnAllowDnd, R.id.tvStatusDnd, isNotificationPolicyGranted())
         updateRow(rowBattery, R.id.btnAllowBattery, R.id.tvStatusBattery, isBatteryOptimizationIgnored())
+        updateRow(rowNotificationListener, R.id.btnAllowNotifListener, R.id.tvStatusNotifListener, isNotificationListenerGranted())
 
         val allGranted = isAccessibilityServiceEnabled() &&
                 isUsageStatsGranted() &&
                 Settings.canDrawOverlays(this) &&
                 isNotificationPolicyGranted() &&
-                isBatteryOptimizationIgnored()
+                isBatteryOptimizationIgnored() &&
+                isNotificationListenerGranted()
 
         btnContinue.isEnabled = allGranted
         btnContinue.alpha = if (allGranted) 1f else 0.3f
@@ -167,5 +174,10 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         } else {
             true
         }
+    }
+
+    private fun isNotificationListenerGranted(): Boolean {
+        val enabledListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        return enabledListeners != null && enabledListeners.contains(packageName)
     }
 }

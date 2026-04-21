@@ -2,7 +2,12 @@ package com.minimalist.launcher
 
 import android.content.Context
 
+enum class StrictUiState {
+    SETUP, RUNNING, COMPLETE
+}
+
 object StrictModeManager {
+  var uiState = StrictUiState.SETUP
   var serviceRef: StrictModeService? = null
   private var active = false
   private var endTimeMs = 0L
@@ -15,6 +20,7 @@ object StrictModeManager {
       .putBoolean("active", true)
       .putLong("end", endTimeMs)
       .apply()
+    TopBarBlockerService.start(context)
     serviceRef?.startBlocking()
   }
 
@@ -23,10 +29,8 @@ object StrictModeManager {
     endTimeMs = 0L
     context.getSharedPreferences("strict",
       Context.MODE_PRIVATE).edit().clear().apply()
-    // Stop the shade blocker loop
+    TopBarBlockerService.stop(context)
     serviceRef?.stopBlocking()
-    // Service stays connected (needed for future 
-    // sessions) but does nothing until next start
   }
 
   fun isActive(): Boolean {
@@ -47,6 +51,7 @@ object StrictModeManager {
         System.currentTimeMillis() < savedEnd) {
       active = true
       endTimeMs = savedEnd
+      TopBarBlockerService.start(context)
       serviceRef?.startBlocking()
     } else if (savedActive) {
       context.getSharedPreferences("strict",

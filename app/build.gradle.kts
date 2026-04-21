@@ -42,4 +42,5 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
 }

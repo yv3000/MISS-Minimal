@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.minimalist.launcher.databinding.ActivityNotificationPanelBinding
 import com.minimalist.launcher.databinding.RowNotificationBinding
 
@@ -36,6 +37,25 @@ class NotificationPanelActivity : AppCompatActivity() {
 
         binding.rvNotifications.layoutManager = LinearLayoutManager(this)
         binding.rvNotifications.adapter = adapter
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                if (position >= 0 && position < NotificationService.notifications.size) {
+                    val item = NotificationService.notifications[position]
+                    NotificationService.instance?.dismissNotifications(item.keys)
+                    // The updateList broadcast will refresh the RecyclerView anyway,
+                    // but we can proactively notify item removal for smoother anims
+                    NotificationService.notifications.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                }
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.rvNotifications)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED))
     }

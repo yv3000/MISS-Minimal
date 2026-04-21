@@ -1,0 +1,571 @@
+-- Merging decision tree log ---
+manifest
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-123:12
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-123:12
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-123:12
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:1-123:12
+MERGED from [androidx.databinding:viewbinding:8.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\627a51687e53848977afe0b4ef0ecaac\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.material:material:1.11.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\0e64ddf3c5011049343263c15c2d5074\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\067fd224697f47bf71b5649652ac6a15\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e534915c7389389d898aa1fd82039315\transformed\recyclerview-1.3.2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4f7f881cd4bb31ff7dc146fd9a7e5f1f\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45e4c4cb5b7ff6956c889ae898927f19\transformed\fragment-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.8.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a19759639ad3d7f7bb9848078fb5da7a\transformed\jetified-activity-1.8.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\858e4b4173d95bfa958e938cd451a028\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a9f1d543fb5122647167a2478ac4cbd2\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\705bd4a1412358763f072d166f9d3b23\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\cb71eebd681a6535727d41ccf470214d\transformed\drawerlayout-1.1.1\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\504753c8b01378df0bcdba0d081ee719\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a1277f41e02dcdef1f5de5c950da0350\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\31845ad92334976b0dc23c821a4daf7f\transformed\transition-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\b1c5199db447d5b97a304d10a533bd84\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\1d0cce852fe967b7fd17c9a7471d1320\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e1da6c30076808e683e7eced37428bf8\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\6dd5de599a158078339e3dd64e459180\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\475d508e34eb4150fedd0f70a39654a6\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8746503f6c869bced8752c1b4e0959af\transformed\customview-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\9cd3d278f793e71174557aeff230dd78\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d95d6e05fe98f5b6e6a65d4b8f38e725\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4145b9e79588bbe3441d1c15b6089bac\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\5adb513a015e2afc899dd82608066219\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\3eed160e5e1f3573dedb4b3f655b80b4\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45b6f8382eba0a21586080819e785e7e\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c03cf708e7f48e24f2be96f4207af53d\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\7f476dd4309ac4243a8c92cc1a7efe50\transformed\localbroadcastmanager-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\ac0879341e600122d443e1c489540656\transformed\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\60664b395013b3376d4b47f13d3ddafa\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c9731e88264decd125420fbcd5b4d039\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\697f841a85e8602a977d7f3724799a35\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\43a98697c65445bc58b35db784ccc54e\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d7d37687df0033b78a678f862967034b\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\13e4d346d77c4b756e354ecdee0a0905\transformed\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\05bbbc4268f63d7197036f8fa58a375f\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d2e000746f0af26c877328d1e2437fb5\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:5:5-80
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:5:22-78
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:6:5-76
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:6:22-74
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:5-109
+	tools:ignore
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:71-106
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:7:22-70
+uses-permission#android.permission.CAMERA
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:8:5-64
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:8:22-62
+uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:9:5-79
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:9:22-77
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:10:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:10:22-73
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:11:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:11:22-73
+uses-permission#android.permission.BLUETOOTH
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:12:5-67
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:12:22-65
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:13:5-75
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:13:22-73
+uses-permission#android.permission.QUERY_ALL_PACKAGES
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:5-119
+	tools:ignore
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:75-116
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:14:22-74
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:15:5-78
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:15:22-76
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:16:5-78
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:16:22-76
+uses-permission#android.permission.ACCESS_NOTIFICATION_POLICY
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:17:5-84
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:17:22-82
+uses-permission#android.permission.VIBRATE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:18:5-65
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:18:22-63
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:19:5-77
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:19:22-75
+uses-permission#android.permission.BIND_ACCESSIBILITY_SERVICE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:5-84
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:20:22-82
+uses-permission#android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:5-94
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:21:22-92
+uses-permission#android.permission.PACKAGE_USAGE_STATS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:5-113
+	tools:ignore
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:76-111
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:22:22-75
+uses-permission#android.permission.READ_CONTACTS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:5-71
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:23:22-69
+uses-permission#android.permission.CALL_PHONE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:5-68
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:24:22-66
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:5-76
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:25:22-74
+uses-permission#android.permission.FOREGROUND_SERVICE_SPECIAL_USE
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:5-88
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:26:22-86
+application
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:5-121:19
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:28:5-121:19
+MERGED from [com.google.android.material:material:1.11.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.11.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\697f841a85e8602a977d7f3724799a35\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\697f841a85e8602a977d7f3724799a35\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+	android:fontFamily
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:36:9-39
+	android:extractNativeLibs
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:34:9-35
+	android:label
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:33:9-37
+	android:roundIcon
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:32:9-54
+	android:icon
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:31:9-43
+	android:allowBackup
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:9-35
+	android:theme
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:35:9-56
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:29:9-40
+receiver#com.minimalist.launcher.BootReceiver
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:38:9-45:20
+	android:enabled
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:40:13-35
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:41:13-36
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:39:13-41
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:42:13-44:29
+action#android.intent.action.BOOT_COMPLETED
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:17-78
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:43:25-76
+receiver#com.minimalist.launcher.MissDeviceAdmin
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:47:9-57:20
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:50:13-36
+	android:permission
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:49:13-70
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:48:13-44
+meta-data#android.app.device_admin
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:51:13-53:62
+	android:resource
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:53:17-59
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:52:17-56
+intent-filter#action:name:android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:54:13-56:29
+action#android.app.action.DEVICE_ADMIN_ENABLED
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:17-82
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:55:25-79
+activity#com.minimalist.launcher.MainActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:59:9-73:20
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:65:13-49
+	android:clearTaskOnLaunch
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:62:13-45
+	android:stateNotNeeded
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:63:13-42
+	android:launchMode
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:61:13-44
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:66:13-36
+	android:resumeWhilePausing
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:64:13-46
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:60:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.DEFAULT+category:name:android.intent.category.HOME+category:name:android.intent.category.LAUNCHER
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:67:13-72:29
+action#android.intent.action.MAIN
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:68:17-69
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:68:25-66
+category#android.intent.category.HOME
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:17-73
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:69:27-70
+category#android.intent.category.DEFAULT
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:17-76
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:70:27-73
+category#android.intent.category.LAUNCHER
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:17-77
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:71:27-74
+activity#com.minimalist.launcher.AppPickerActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:75:19-52
+activity#com.minimalist.launcher.QuickSettingsActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:9-95
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:57-93
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:76:19-56
+activity#com.minimalist.launcher.AppDrawerActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:19-52
+activity#com.minimalist.launcher.LauncherSettingsActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:9-98
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:60-96
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:19-59
+activity#com.minimalist.launcher.TimeLimitActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:9-91
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:53-89
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:19-52
+activity#com.minimalist.launcher.FocusActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:9-87
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:49-85
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:19-48
+activity#com.minimalist.launcher.NotificationPanelActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:9-99
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:61-97
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:19-60
+activity#com.minimalist.launcher.PermissionOnboardingActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:9-102
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:64-100
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:19-63
+activity#com.minimalist.launcher.TermsActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:9-87
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:49-85
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:19-48
+activity#com.minimalist.launcher.PomodoroActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:9-90
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:52-88
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:19-51
+activity#com.minimalist.launcher.SotActivity
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:9-85
+	android:screenOrientation
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:47-83
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:19-46
+service#com.minimalist.launcher.NotificationService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:9-93:19
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:13-36
+	android:permission
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:13-87
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:18-53
+intent-filter#action:name:android.service.notification.NotificationListenerService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:13-92:29
+action#android.service.notification.NotificationListenerService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:17-99
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:25-96
+service#com.minimalist.launcher.StrictModeOverlayService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:9-99:39
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:99:13-37
+	android:foregroundServiceType
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:98:13-55
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:97:18-58
+service#com.minimalist.launcher.PomodoroTimerService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:9-103:39
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:103:13-37
+	android:foregroundServiceType
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-55
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:18-54
+service#com.minimalist.launcher.TopBarBlockerService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:105:9-106:39
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:106:13-37
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:105:18-54
+service#com.minimalist.launcher.StrictModeService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:108:9-119:19
+	android:label
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:111:13-53
+	android:exported
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:110:13-36
+	android:permission
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:112:13-79
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:109:13-46
+intent-filter#action:name:android.accessibilityservice.AccessibilityService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:113:13-115:29
+action#android.accessibilityservice.AccessibilityService
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:114:17-91
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:114:25-89
+meta-data#android.accessibilityservice
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:116:13-118:62
+	android:resource
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:118:17-60
+	android:name
+		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:117:17-60
+uses-sdk
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+MERGED from [androidx.databinding:viewbinding:8.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\627a51687e53848977afe0b4ef0ecaac\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.databinding:viewbinding:8.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\627a51687e53848977afe0b4ef0ecaac\transformed\jetified-viewbinding-8.2.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.material:material:1.11.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.11.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\793205836a99412d80353f324bc2d9d6\transformed\material-1.11.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c67f4676c391931bfea0e81e47f23156\transformed\constraintlayout-2.1.4\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\0e64ddf3c5011049343263c15c2d5074\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\0e64ddf3c5011049343263c15c2d5074\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\067fd224697f47bf71b5649652ac6a15\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\067fd224697f47bf71b5649652ac6a15\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e534915c7389389d898aa1fd82039315\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.2] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e534915c7389389d898aa1fd82039315\transformed\recyclerview-1.3.2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4f7f881cd4bb31ff7dc146fd9a7e5f1f\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:5:5-44
+MERGED from [androidx.viewpager2:viewpager2:1.1.0-beta02] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4f7f881cd4bb31ff7dc146fd9a7e5f1f\transformed\jetified-viewpager2-1.1.0-beta02\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45e4c4cb5b7ff6956c889ae898927f19\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45e4c4cb5b7ff6956c889ae898927f19\transformed\fragment-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.8.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a19759639ad3d7f7bb9848078fb5da7a\transformed\jetified-activity-1.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a19759639ad3d7f7bb9848078fb5da7a\transformed\jetified-activity-1.8.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\858e4b4173d95bfa958e938cd451a028\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\858e4b4173d95bfa958e938cd451a028\transformed\jetified-customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a9f1d543fb5122647167a2478ac4cbd2\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a9f1d543fb5122647167a2478ac4cbd2\transformed\jetified-core-ktx-1.12.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\705bd4a1412358763f072d166f9d3b23\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\705bd4a1412358763f072d166f9d3b23\transformed\jetified-emoji2-views-helper-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\cb71eebd681a6535727d41ccf470214d\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\cb71eebd681a6535727d41ccf470214d\transformed\drawerlayout-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\504753c8b01378df0bcdba0d081ee719\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\504753c8b01378df0bcdba0d081ee719\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a1277f41e02dcdef1f5de5c950da0350\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a1277f41e02dcdef1f5de5c950da0350\transformed\dynamicanimation-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\31845ad92334976b0dc23c821a4daf7f\transformed\transition-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\31845ad92334976b0dc23c821a4daf7f\transformed\transition-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\b1c5199db447d5b97a304d10a533bd84\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\b1c5199db447d5b97a304d10a533bd84\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\1d0cce852fe967b7fd17c9a7471d1320\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\1d0cce852fe967b7fd17c9a7471d1320\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e1da6c30076808e683e7eced37428bf8\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\e1da6c30076808e683e7eced37428bf8\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\6dd5de599a158078339e3dd64e459180\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\6dd5de599a158078339e3dd64e459180\transformed\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\475d508e34eb4150fedd0f70a39654a6\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\475d508e34eb4150fedd0f70a39654a6\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8746503f6c869bced8752c1b4e0959af\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8746503f6c869bced8752c1b4e0959af\transformed\customview-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\9cd3d278f793e71174557aeff230dd78\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\9cd3d278f793e71174557aeff230dd78\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d95d6e05fe98f5b6e6a65d4b8f38e725\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d95d6e05fe98f5b6e6a65d4b8f38e725\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4145b9e79588bbe3441d1c15b6089bac\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\4145b9e79588bbe3441d1c15b6089bac\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\5adb513a015e2afc899dd82608066219\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\5adb513a015e2afc899dd82608066219\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\3eed160e5e1f3573dedb4b3f655b80b4\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\3eed160e5e1f3573dedb4b3f655b80b4\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45b6f8382eba0a21586080819e785e7e\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\45b6f8382eba0a21586080819e785e7e\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c03cf708e7f48e24f2be96f4207af53d\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.flexbox:flexbox:3.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c03cf708e7f48e24f2be96f4207af53d\transformed\jetified-flexbox-3.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\7f476dd4309ac4243a8c92cc1a7efe50\transformed\localbroadcastmanager-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.1.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\7f476dd4309ac4243a8c92cc1a7efe50\transformed\localbroadcastmanager-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\ac0879341e600122d443e1c489540656\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\ac0879341e600122d443e1c489540656\transformed\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\60664b395013b3376d4b47f13d3ddafa\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\60664b395013b3376d4b47f13d3ddafa\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c9731e88264decd125420fbcd5b4d039\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\c9731e88264decd125420fbcd5b4d039\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\697f841a85e8602a977d7f3724799a35\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\697f841a85e8602a977d7f3724799a35\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\43a98697c65445bc58b35db784ccc54e\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\43a98697c65445bc58b35db784ccc54e\transformed\jetified-tracing-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d7d37687df0033b78a678f862967034b\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d7d37687df0033b78a678f862967034b\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\13e4d346d77c4b756e354ecdee0a0905\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\13e4d346d77c4b756e354ecdee0a0905\transformed\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\05bbbc4268f63d7197036f8fa58a375f\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\05bbbc4268f63d7197036f8fa58a375f\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d2e000746f0af26c877328d1e2437fb5\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\d2e000746f0af26c877328d1e2437fb5\transformed\jetified-annotation-experimental-1.3.0\AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\8c75c14c5695827d609ecd5d2823288e\transformed\jetified-startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+permission#com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+uses-permission#com.minimalist.launcher.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.12.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\yashv\.gradle\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92

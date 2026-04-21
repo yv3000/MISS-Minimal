@@ -11,4 +11,12 @@
     <color name="grey_1a1a1a">#1a1a1a</color>
     <color name="grey_111">#111111</color>
     <color name="grey_333">#333333</color>
+
+    <!-- Premium Palette -->
+    <color name="spotify_green">#1DB954</color>
+    <color name="apple_blue">#007AFF</color>
+    <color name="surface_dark">#121212</color>
+    <color name="surface_card">#1C1C1E</color>
+    <color name="text_secondary">#8E8E93</color>
+
 </resources>

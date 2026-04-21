@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val timeRunnable = object : Runnable {
         override fun run() {
             updateTime()
+            updateSOT()
             handler.postDelayed(this, 1000)
         }
     }
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        applyFontSize()
+        AppFont.applyToActivity(this)
         updateHomescreenApps()
         startNotificationBlocker()
         hideSystemUI()
@@ -187,6 +188,33 @@ class MainActivity : AppCompatActivity() {
         binding.tvFullscreenDate.text = dateFormat
     }
 
+    private fun updateSOT() {
+        if (!hasUsageStatsPermission()) {
+            binding.tvSOT.text = "SOT unavailable (grant usage access)"
+            return
+        }
+        val sotMs = SOTManager.getScreenOnTimeToday(this)
+        val sotMins = sotMs / (1000 * 60)
+        val h = sotMins / 60
+        val m = sotMins % 60
+        if (h > 0) {
+            binding.tvSOT.text = "${h}h ${m}m screen time"
+        } else {
+            binding.tvSOT.text = "${m}m screen time"
+        }
+    }
+
+    private fun hasUsageStatsPermission(): Boolean {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
+        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            appOps.unsafeCheckOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+        } else {
+            @Suppress("DEPRECATION")
+            appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+        }
+        return mode == android.app.AppOpsManager.MODE_ALLOWED
+    }
+
     private fun setupClickListeners() {
     binding.btnExit.setOnClickListener {
         try {
@@ -205,6 +233,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnFocus.setOnClickListener { animateClick(it) {
             startActivity(Intent(this, FocusActivity::class.java))
+            overridePendingTransition(R.anim.slide_up_enter, 0)
+        }}
+
+        binding.btnSot.setOnClickListener { animateClick(it) {
+            startActivity(Intent(this, SotActivity::class.java))
             overridePendingTransition(R.anim.slide_up_enter, 0)
         }}
 
@@ -401,21 +434,7 @@ class MainActivity : AppCompatActivity() {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
 
-    fun applyFontSize() {
-        val size = AppFont.get(this)
-        applyToAllTextViews(window.decorView, size)
-    }
-
-    fun applyToAllTextViews(view: android.view.View, size: Float) {
-        if (view is android.widget.TextView) {
-            if (view.tag == "fixed_size") return
-            view.textSize = size
-        } else if (view is android.view.ViewGroup) {
-            for (i in 0 until view.childCount) {
-                applyToAllTextViews(view.getChildAt(i), size)
-            }
-        }
-    }
+    // Moved font logic to AppFont.kt
 
     fun startNotificationBlocker() {
         if (Build.VERSION.SDK_INT >= 23) {

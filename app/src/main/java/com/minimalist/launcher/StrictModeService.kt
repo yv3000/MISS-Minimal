@@ -11,25 +11,35 @@ import android.view.accessibility.AccessibilityEvent
 class StrictModeService : AccessibilityService() {
 
   private val handler = Handler(Looper.getMainLooper())
+  private var phoneAppStartTimeMs = 0L
+  
+  private val phoneApps = setOf(
+    "com.android.server.telecom", 
+    "com.google.android.dialer", 
+    "com.samsung.android.dialer", 
+    "com.android.dialer",
+    "com.android.phone"
+  )
   
   companion object {
     var instance: StrictModeService? = null
   }
 
-  // Runs every 100ms — continuously dismiss 
-  // notification shade if it opens
   private val shadeBlocker = object : Runnable {
     override fun run() {
-      // Only dismiss if strict mode is active
-      if (StrictModeManager.isActive()) {
+      val strictActive = StrictModeManager.isActive()
+      val pomodoroActive = PomodoroManager.isActive
+      
+      if (strictActive || pomodoroActive) {
         if (Build.VERSION.SDK_INT >= 31) {
           performGlobalAction(
             GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+        } else {
+          // Pre-Android 12: use back action
+          performGlobalAction(GLOBAL_ACTION_BACK)
         }
-        handler.postDelayed(this, 200)
+        handler.postDelayed(this, 100)
       }
-      // If not active — runnable stops automatically
-      // by not re-posting itself
     }
   }
 
@@ -57,9 +67,24 @@ class StrictModeService : AccessibilityService() {
   override fun onAccessibilityEvent(
       event: AccessibilityEvent) {
     
-    // CRITICAL: Do absolutely nothing if 
-    // strict mode is not active
-    if (!StrictModeManager.isActive()) return
+    val strictActive = StrictModeManager.isActive()
+    val pomodoroActive = PomodoroManager.isActive
+    
+    if (!strictActive && !pomodoroActive) return
+
+    val windowsInfo = windows
+    if (strictActive || pomodoroActive) {
+      windowsInfo?.forEach { window ->
+        val title = window.title?.toString() ?: ""
+        if (title.contains("Notification", ignoreCase = true) ||
+            title.contains("Quick Settings", ignoreCase = true) ||
+            window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM) {
+          if (Build.VERSION.SDK_INT >= 31) {
+            performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+          }
+        }
+      }
+    }
     
     val pkg = event.packageName?.toString() ?: return
 
@@ -110,20 +135,39 @@ class StrictModeService : AccessibilityService() {
       return
     }
 
-    // BLOCK 3: Any non-allowed app
-    val allowedPackages = setOf(
-      packageName,
-      "com.android.systemui",
-      "android"
-    )
+    // BLOCK 3: Allowed Phone Apps (5 min limit)
+    if (pkg in phoneApps) {
+      if (phoneAppStartTimeMs == 0L) {
+        phoneAppStartTimeMs = System.currentTimeMillis()
+      } else if (System.currentTimeMillis() - phoneAppStartTimeMs > 5 * 60 * 1000L) {
+        performGlobalAction(GLOBAL_ACTION_BACK)
+        handler.postDelayed({ bringStrictTimerToFront() }, 100)
+      }
+      return
+    } else if (pkg != "com.android.systemui" && event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+      phoneAppStartTimeMs = 0L
+    }
 
-    if (event.eventType == 
-        AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
-        pkg !in allowedPackages) {
-      performGlobalAction(GLOBAL_ACTION_BACK)
-      handler.postDelayed({
-        bringStrictTimerToFront()
-      }, 100)
+    // BLOCK 4: Any non-allowed app
+    if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+      if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
+        if (pkg !in PomodoroManager.allowedPackages) {
+            performGlobalAction(GLOBAL_ACTION_HOME)
+            return
+        }
+      } else if (strictActive) {
+        val allowedPackages = setOf(
+          packageName,
+          "com.android.systemui",
+          "android"
+        )
+        if (pkg !in allowedPackages) {
+          performGlobalAction(GLOBAL_ACTION_BACK)
+          handler.postDelayed({
+            bringStrictTimerToFront()
+          }, 100)
+        }
+      }
     }
   }
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvBsAppTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="monospace"
+        android:text="APP NAME"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/btnBsAddHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:paddingVertical="12dp"
+        android:text="Add to home"
+        android:textColor="@color/grey_aaa"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/btnBsTimeLimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:paddingVertical="12dp"
+        android:text="Set time limit"
+        android:textColor="@color/grey_aaa"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/btnBsRename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:paddingVertical="12dp"
+        android:text="Rename"
+        android:textColor="@color/grey_aaa"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/btnBsAppInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:paddingVertical="12dp"
+        android:text="App info"
+        android:textColor="@color/grey_aaa"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/btnBsUninstall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="monospace"
+        android:paddingVertical="12dp"
+        android:text="Uninstall"
+        android:textColor="@color/grey_aaa"
+        android:textSize="12sp" />
+</LinearLayout>

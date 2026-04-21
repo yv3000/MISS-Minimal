@@ -12,13 +12,19 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.Settings
+import android.transition.TransitionManager
 import android.view.View
+import android.view.ViewGroup
+
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.abs
 
 class FocusActivity : AppCompatActivity() {
 
@@ -40,6 +46,7 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var tabStopwatch: TextView
   private lateinit var tabTimer: TextView
   private lateinit var tabStrict: TextView
+  private lateinit var tabPomodoro: TextView
   private lateinit var panelStopwatch: LinearLayout
   private lateinit var panelTimer: LinearLayout
   private lateinit var panelStrict: LinearLayout
@@ -53,6 +60,9 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var btnEnableStrict: TextView
 
   private lateinit var vibrator: Vibrator
+  private lateinit var gestureDetector: GestureDetector
+  private var currentTabIndex = 0
+  private val TABS = arrayOf("stopwatch", "timer", "strict")
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -64,6 +74,7 @@ class FocusActivity : AppCompatActivity() {
         @Suppress("DEPRECATION") getSystemService(VIBRATOR_SERVICE) as Vibrator
 
       bindViews()
+      setupGestures()
       setupTabs()
       setupStopwatch()
       setupTimer()
@@ -74,6 +85,35 @@ class FocusActivity : AppCompatActivity() {
       e.printStackTrace()
       finish()
     }
+  }
+
+  private fun setupGestures() {
+    gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+      private val SWIPE_THRESHOLD = 100
+      private val SWIPE_VELOCITY_THRESHOLD = 100
+
+      override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
+        if (e1 == null) return false
+        val diffX = e2.x - e1.x
+        val diffY = e2.y - e1.y
+        if (abs(diffX) > abs(diffY) && abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+          if (diffX > 0) {
+            // Swipe right -> Previous tab
+            if (currentTabIndex > 0) selectTab(TABS[currentTabIndex - 1])
+          } else {
+            // Swipe left -> Next tab
+            if (currentTabIndex < TABS.size - 1) selectTab(TABS[currentTabIndex + 1])
+          }
+          return true
+        }
+        return false
+      }
+    })
+  }
+
+  override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    gestureDetector.onTouchEvent(ev)
+    return super.dispatchTouchEvent(ev)
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -95,9 +135,11 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun selectStrictTab() {
-    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
-    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
+    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+    tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+    tabPomodoro.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
     tabStrict.setTextColor(android.graphics.Color.WHITE)
+
     panelStrict.visibility = View.VISIBLE
     panelStopwatch.visibility = View.GONE
     panelTimer.visibility = View.GONE
@@ -108,24 +150,32 @@ class FocusActivity : AppCompatActivity() {
       onStrictTabSelected()
       return
     }
-    
-    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#666666"))
-    tabTimer.setTextColor(android.graphics.Color.parseColor("#666666"))
-    tabStrict.setTextColor(android.graphics.Color.parseColor("#666666"))
+
+    val root = findViewById<ViewGroup>(android.R.id.content)
+
+    TransitionManager.beginDelayedTransition(root)
+
+    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+    tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+    tabStrict.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
+
     panelStopwatch.visibility = View.GONE
     panelTimer.visibility = View.GONE
     panelStrict.visibility = View.GONE
 
     when (tab) {
       "stopwatch" -> {
+        currentTabIndex = 0
         tabStopwatch.setTextColor(android.graphics.Color.WHITE)
         panelStopwatch.visibility = View.VISIBLE
       }
       "timer" -> {
+        currentTabIndex = 1
         tabTimer.setTextColor(android.graphics.Color.WHITE)
         panelTimer.visibility = View.VISIBLE
       }
     }
+    savePersistedTab(tab)
   }
 
   fun onStrictTabSelected() {
@@ -140,8 +190,23 @@ class FocusActivity : AppCompatActivity() {
       return
     }
     
-    selectStrictTab()
-    showStrictWarningScreen()
+    currentTabIndex = 2
+    savePersistedTab("strict")
+    
+    if (StrictModeManager.isActive()) {
+      val remaining = StrictModeManager.getRemainingMs() / 1000
+      strictRemainingSeconds = remaining.toInt()
+      showStrictCountdown()
+      resumeCountdown()
+    } else {
+      selectStrictTab()
+      showStrictWarningScreen()
+    }
+  }
+
+  private fun savePersistedTab(tab: String) {
+    getSharedPreferences("miss_prefs", MODE_PRIVATE)
+        .edit().putString("last_focus_tab", tab).apply()
   }
 
   private fun showStrictWarningScreen() {
@@ -153,6 +218,7 @@ class FocusActivity : AppCompatActivity() {
     tabStopwatch = findViewById(R.id.tabStopwatch)
     tabTimer = findViewById(R.id.tabTimer)
     tabStrict = findViewById(R.id.tabStrict)
+    tabPomodoro = findViewById(R.id.tabPomodoro)
     panelStopwatch = findViewById(R.id.panelStopwatch)
     panelTimer = findViewById(R.id.panelTimer)
     panelStrict = findViewById(R.id.panelStrict)
@@ -167,23 +233,30 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun setupTabs() {
-    fun selectTab(tab: Int) {
+    fun resolveTab(tab: Int) {
       when (tab) {
         0 -> selectTab("stopwatch")
         1 -> selectTab("timer")
         2 -> selectTab("strict")
+        3 -> selectTab("pomodoro")
       }
     }
 
-    selectTab(0)
-    tabStopwatch.setOnClickListener { selectTab(0) }
-    tabTimer.setOnClickListener { selectTab(1) }
+    val lastTab = getSharedPreferences("miss_prefs", MODE_PRIVATE).getString("last_focus_tab", "stopwatch")
+    selectTab(lastTab ?: "stopwatch")
+    
+    tabStopwatch.setOnClickListener { resolveTab(0) }
+    tabTimer.setOnClickListener { resolveTab(1) }
     tabStrict.setOnClickListener {
       if (!checkAllStrictPermissions()) {
         startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
         onStrictTabSelected()
       }
+    }
+    tabPomodoro.setOnClickListener {
+        selectTab("pomodoro")
+        startActivity(Intent(this, PomodoroActivity::class.java))
     }
   }
 
@@ -212,10 +285,13 @@ class FocusActivity : AppCompatActivity() {
     }
     btnStop.setOnClickListener {
       handler.removeCallbacksAndMessages(null)
-      swRunning = false; swPaused = false; swSeconds = 0
+      swRunning = false; swPaused = false
+      val elapsedSeconds = swSeconds
+      swSeconds = 0
       tvStopwatch.text = "00:00"
       btnStart.visibility = View.VISIBLE; btnPause.visibility = View.GONE
       btnStop.visibility = View.GONE; btnResume.visibility = View.GONE
+      SotActivity.saveModeSession(this, "stopwatch", elapsedSeconds / 60)
     }
   }
 
@@ -276,6 +352,11 @@ class FocusActivity : AppCompatActivity() {
           val pattern = longArrayOf(0, 300, 200, 300, 200, 300, 200)
           if (Build.VERSION.SDK_INT >= 26) vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
           else @Suppress("DEPRECATION") vibrator.vibrate(pattern, -1)
+          val hPicker = findViewById<NumberPicker>(R.id.pickerHours)
+          val mPicker = findViewById<NumberPicker>(R.id.pickerMinutes)
+          val sPicker = findViewById<NumberPicker>(R.id.pickerSeconds)
+          val totalMins = (hPicker.value * 3600 + mPicker.value * 60 + sPicker.value) / 60
+          SotActivity.saveModeSession(this@FocusActivity, "timer", totalMins)
           return
         }
         val h = timerRemaining / 3600; val m = (timerRemaining % 3600) / 60; val s = timerRemaining % 60
@@ -301,9 +382,44 @@ class FocusActivity : AppCompatActivity() {
     } catch (e: Exception) {}
   }
 
+  fun applyStrictUiState(state: StrictUiState) {
+    val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
+    StrictModeManager.uiState = state
+    when (state) {
+      StrictUiState.SETUP -> {
+        layoutStrictWarning.visibility = View.VISIBLE
+        panelStrictActive.visibility = View.GONE
+        layoutStrictComplete.visibility = View.GONE
+        findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
+      }
+      StrictUiState.RUNNING -> {
+        layoutStrictWarning.visibility = View.GONE
+        panelStrictActive.visibility = View.VISIBLE
+        layoutStrictComplete.visibility = View.GONE
+        findViewById<View>(R.id.tabBar).visibility = View.GONE
+      }
+      StrictUiState.COMPLETE -> {
+        layoutStrictWarning.visibility = View.GONE
+        panelStrictActive.visibility = View.VISIBLE
+        layoutStrictComplete.visibility = View.VISIBLE
+        findViewById<View>(R.id.tabBar).visibility = View.GONE
+        tvStrictStatus.text = "session complete"
+      }
+    }
+  }
+
   override fun onResume() {
     super.onResume()
     
+    val navPrefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
+    val proceed = navPrefs.getBoolean("proceed", false)
+    if (proceed) {
+      navPrefs.edit().remove("proceed").apply()
+      selectTab("strict")
+      startStrictMode()
+      return
+    }
+
     // Check if returning from permission screen
     val prefs = getSharedPreferences("strict_prefs", MODE_PRIVATE)
     val startNow = prefs.getBoolean("start_immediately", false)
@@ -320,14 +436,23 @@ class FocusActivity : AppCompatActivity() {
     
     // Restore timer if already running
     StrictModeManager.restoreFromPrefs(this)
-    if (StrictModeManager.isActive()) {
-      selectTab("strict")
-      val remaining = StrictModeManager.getRemainingMs() / 1000
-      strictRemainingSeconds = remaining.toInt()
-      showStrictCountdown()
-      resumeCountdown()
-    } else {
-      updateStrictWarningUI()
+    when {
+      StrictModeManager.isActive() -> {
+        selectTab("strict")
+        applyStrictUiState(StrictUiState.RUNNING)
+        val remaining = StrictModeManager.getRemainingMs() / 1000
+        strictRemainingSeconds = remaining.toInt()
+        showStrictCountdown()
+        resumeCountdown()
+      }
+      StrictModeManager.uiState == StrictUiState.COMPLETE -> {
+        selectTab("strict")
+        applyStrictUiState(StrictUiState.COMPLETE)
+      }
+      else -> {
+        applyStrictUiState(StrictUiState.SETUP)
+        updateStrictWarningUI()
+      }
     }
   }
 
@@ -359,6 +484,7 @@ class FocusActivity : AppCompatActivity() {
     }
     btnExitStrict.setOnClickListener {
       StrictModeManager.stop(this)
+      applyStrictUiState(StrictUiState.SETUP)
       finish()
       val home = Intent(Intent.ACTION_MAIN); home.addCategory(Intent.CATEGORY_HOME)
       home.flags = Intent.FLAG_ACTIVITY_NEW_TASK; startActivity(home)
@@ -378,15 +504,12 @@ class FocusActivity : AppCompatActivity() {
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     if (nm.isNotificationPolicyAccessGranted) nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
     strictRemainingSeconds = (durationMs / 1000).toInt()
+    applyStrictUiState(StrictUiState.RUNNING)
     showStrictCountdown()
     resumeCountdown()
   }
 
   private fun showStrictCountdown() {
-    findViewById<View>(R.id.tabBar).visibility = View.GONE
-    panelStopwatch.visibility = View.GONE; panelTimer.visibility = View.GONE
-    panelStrict.visibility = View.GONE; panelStrictActive.visibility = View.VISIBLE
-    layoutStrictComplete.visibility = View.GONE
     tvStrictStatus.text = "focus session active"
     tvStrictCountdown.text = "%02d:%02d".format(strictRemainingSeconds / 60, strictRemainingSeconds % 60)
   }
@@ -414,6 +537,9 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun onStrictTimerDone() {
+    val completedMs = 25 * 60 * 1000 - StrictModeManager.getRemainingMs()
+    val completedMins = (completedMs.toInt() / 60_000).coerceAtLeast(0)
+    
     StrictModeManager.stop(this)
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     if (nm.isNotificationPolicyAccessGranted) nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
@@ -423,8 +549,9 @@ class FocusActivity : AppCompatActivity() {
     else @Suppress("DEPRECATION") vibrator.vibrate(pattern, -1)
 
     tvStrictCountdown.text = "00:00"
-    tvStrictStatus.text = "session complete"
-    layoutStrictComplete.visibility = View.VISIBLE
+    applyStrictUiState(StrictUiState.COMPLETE)
+    
+    SotActivity.saveModeSession(this, "strict", completedMins)
   }
 
   private fun checkAllStrictPermissions(): Boolean {

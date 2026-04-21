@@ -35,7 +35,14 @@ class AppPickerActivity : AppCompatActivity() {
         val pm = packageManager
         val installedApps = pm.getInstalledApplications(PackageManager.GET_META_DATA)
         for (app in installedApps) {
-            if (pm.getLaunchIntentForPackage(app.packageName) != null) {
+            val isGame = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                app.category == android.content.pm.ApplicationInfo.CATEGORY_GAME
+            } else {
+                @Suppress("DEPRECATION")
+                (app.flags and android.content.pm.ApplicationInfo.FLAG_IS_GAME) != 0
+            }
+            
+            if (!isGame && pm.getLaunchIntentForPackage(app.packageName) != null) {
                 val name = pm.getApplicationLabel(app).toString()
                 apps.add(AppItem(app.packageName, name))
             }

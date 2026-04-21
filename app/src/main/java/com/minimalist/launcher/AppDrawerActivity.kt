@@ -181,6 +181,8 @@ class AppDrawerActivity : AppCompatActivity() {
                     true
                 }
             }
+            val size = AppFont.get(holder.itemView.context)
+            AppFont.applyToAllTextViews(holder.itemView, size)
         }
 
         override fun getItemCount() = items.size
@@ -257,24 +259,10 @@ class AppDrawerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        applyFontSize()
+        AppFont.applyToActivity(this)
     }
 
-    fun applyFontSize() {
-        val size = AppFont.get(this)
-        applyToAllTextViews(window.decorView, size)
-    }
-
-    fun applyToAllTextViews(view: android.view.View, size: Float) {
-        if (view is android.widget.TextView) {
-            if (view.tag == "fixed_size") return
-            view.textSize = size
-        } else if (view is android.view.ViewGroup) {
-            for (i in 0 until view.childCount) {
-                applyToAllTextViews(view.getChildAt(i), size)
-            }
-        }
-    }
+    // Moved font logic to AppFont.kt
 }
 
 data class AppItem(val packageName: String, val name: String)

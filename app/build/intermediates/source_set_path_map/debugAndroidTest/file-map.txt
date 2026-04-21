@@ -1,0 +1,4 @@
+com.minimalist.launcher.test.app-androidTest-0 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\generated\res\resValues\androidTest\debug
+com.minimalist.launcher.test.app-mergeDebugAndroidTestResources-1 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.minimalist.launcher.test.app-mergeDebugAndroidTestResources-2 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.minimalist.launcher.test.app-merged_res-3 X:\ALL FOLDER\PROJECTTTTTT\MINIMALIST APP\V1\app\build\intermediates\merged_res\debugAndroidTest

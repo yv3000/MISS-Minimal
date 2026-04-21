@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp">
+
+        <TextView
+            android:text="STRICT MODE ACTIVE"
+            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.15"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvOverlayTimer"
+            android:text="25:00"
+            android:textColor="#ffffff"
+            android:textSize="56sp"
+            android:fontFamily="monospace"
+            android:fontWeight="200"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:text="all distractions blocked"
+            android:textColor="#333333"
+            android:textSize="10sp"
+            android:fontFamily="monospace"/>
+
+    </LinearLayout>
+
+</FrameLayout>
