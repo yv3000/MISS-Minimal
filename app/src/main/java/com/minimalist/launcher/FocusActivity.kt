@@ -579,6 +579,7 @@ class FocusActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
+    AppFont.applyToActivity(this)
     
     val navPrefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
     val proceed = navPrefs.getBoolean("proceed", false)

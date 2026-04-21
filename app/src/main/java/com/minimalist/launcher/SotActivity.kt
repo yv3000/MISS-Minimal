@@ -26,6 +26,7 @@ class SotActivity : AppCompatActivity() {
     private lateinit var tvNoSessions: TextView
     private lateinit var btnRefresh: TextView
     private lateinit var btnGrantUsage: TextView
+    private lateinit var layoutSyncing: View
 
     data class AppUsageItem(
         val packageName: String,
@@ -68,15 +69,10 @@ class SotActivity : AppCompatActivity() {
         tvNoSessions = findViewById(R.id.tvNoSessions)
         btnRefresh = findViewById(R.id.btnRefresh)
         btnGrantUsage = findViewById(R.id.btnGrantUsage)
+        layoutSyncing = findViewById(R.id.layoutSyncing)
 
         btnRefresh.setOnClickListener {
-            btnRefresh.text = "REFRESHING..."
-            btnRefresh.isEnabled = false
-            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-                loadData()
-                btnRefresh.text = "REFRESH"
-                btnRefresh.isEnabled = true
-            }, 3000)
+            performSync()
         }
 
         btnGrantUsage.setOnClickListener {
@@ -85,12 +81,29 @@ class SotActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("EEE · dd MMM", Locale.getDefault())
         tvDate.text = dateFormat.format(Date()).uppercase()
+        
+        // Initial sync
+        if (isUsageStatsGranted()) {
+            performSync()
+        }
+    }
+
+    private fun performSync() {
+        layoutSyncing.visibility = View.VISIBLE
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+            loadData()
+            layoutSyncing.visibility = View.GONE
+        }, 3000)
     }
 
     override fun onResume() {
         super.onResume()
         AppFont.applyToActivity(this)
-        loadData()
+        if (!isUsageStatsGranted()) {
+            btnGrantUsage.visibility = View.VISIBLE
+        } else {
+            btnGrantUsage.visibility = View.GONE
+        }
     }
 
     private fun isUsageStatsGranted(): Boolean {
@@ -105,22 +118,28 @@ class SotActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        if (!isUsageStatsGranted()) {
-            btnGrantUsage.visibility = View.VISIBLE
-            return
-        }
-        btnGrantUsage.visibility = View.GONE
+        if (!isUsageStatsGranted()) return
 
         // Load mode stats
         loadModeStats()
 
-        // Load app usage
-        val usageList = getTodayAppUsage()
-        val totalSotMs = SOTManager.getScreenOnTimeToday(this)
+        // NEW LOGIC: Calculate everything from the same event-based segments
+        val usageMap = SOTManager.getTodayAppUsageFromEvents(this)
+        val totalSotMs = usageMap.values.sum()
         
         tvTotalTime.text = formatTimeFriendly(totalSotMs)
         
         layoutApps.removeAllViews()
+        
+        // Filter and sort
+        val usageList = usageMap.entries
+            .filter { it.value > 10_000L } // min 10s
+            .sortedByDescending { it.value }
+            .take(20)
+            .map { 
+                AppUsageItem(it.key, getAppName(it.key), it.value)
+            }
+
         for (item in usageList) {
             val proportion = if (totalSotMs > 0) item.totalMs.toFloat() / totalSotMs else 0f
             layoutApps.addView(createAppRow(item, proportion))
