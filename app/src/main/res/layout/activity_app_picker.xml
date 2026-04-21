@@ -12,7 +12,7 @@
         android:text="Select App"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
-        android:fontFamily="monospace" />
+        android:fontFamily="@font/plus_jakarta_sans" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvApps"

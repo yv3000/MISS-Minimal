@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvTimeCount"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvAppName"
         app:layout_constraintBottom_toBottomOf="@+id/tvAppName" />
