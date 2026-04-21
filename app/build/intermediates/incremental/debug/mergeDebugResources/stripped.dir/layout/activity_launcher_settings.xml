@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="CONNECTIVITY"
             android:textColor="#444444"
             android:textSize="12sp"
@@ -32,14 +32,14 @@
                 android:layout_weight="1"
                 android:text="WiFi"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvWifiState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OFF"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,14 +55,14 @@
                 android:layout_weight="1"
                 android:text="Bluetooth"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvBluetoothState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OFF"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,14 +78,14 @@
                 android:layout_weight="1"
                 android:text="Mobile Data"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvDataState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OFF"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <View
@@ -97,7 +97,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="APPEARANCE"
             android:textColor="#444444"
             android:textSize="12sp"
@@ -116,14 +116,14 @@
                 android:layout_weight="1"
                 android:text="Font Size"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvFontSizeState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="14.0"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <View
@@ -135,7 +135,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
+            android:fontFamily="@font/plus_jakarta_sans"
             android:text="SYSTEM"
             android:textColor="#444444"
             android:textSize="12sp"
@@ -154,14 +154,14 @@
                 android:layout_weight="1"
                 android:text="Do Not Disturb"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvDndState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OFF"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <LinearLayout
@@ -177,14 +177,14 @@
                 android:layout_weight="1"
                 android:text="Flashlight"
                 android:textColor="#FFFFFF"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
             <TextView
                 android:id="@+id/tvFlashlightState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OFF"
                 android:textColor="#444444"
-                android:fontFamily="monospace" />
+                android:fontFamily="@font/plus_jakarta_sans" />
         </LinearLayout>
 
         <LinearLayout
@@ -202,14 +202,14 @@
                     android:layout_weight="1"
                     android:text="Brightness"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="monospace" />
+                    android:fontFamily="@font/plus_jakarta_sans" />
                 <TextView
                     android:id="@+id/tvBrightnessState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Auto"
                     android:textColor="#444444"
-                    android:fontFamily="monospace" />
+                    android:fontFamily="@font/plus_jakarta_sans" />
             </LinearLayout>
             <SeekBar
                 android:id="@+id/seekBrightness"
@@ -236,14 +236,14 @@
                     android:layout_weight="1"
                     android:text="Volume"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="monospace" />
+                    android:fontFamily="@font/plus_jakarta_sans" />
                 <TextView
                     android:id="@+id/tvVolumeState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="15/15"
                     android:textColor="#444444"
-                    android:fontFamily="monospace" />
+                    android:fontFamily="@font/plus_jakarta_sans" />
             </LinearLayout>
             <SeekBar
                 android:id="@+id/seekVolume"
@@ -280,7 +280,7 @@
                 android:layout_height="wrap_content"
                 android:text="MISS Minimal"
                 android:textColor="#333333"
-                android:fontFamily="monospace"
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textSize="11sp"
                 android:letterSpacing="0.1"/>
 
@@ -290,7 +290,7 @@
                 android:layout_marginTop="4dp"
                 android:text="built by YV"
                 android:textColor="#2a2a2a"
-                android:fontFamily="monospace"
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textSize="10sp"/>
 
             <TextView
@@ -300,7 +300,7 @@
                 android:layout_marginTop="10dp"
                 android:text="terms &amp; conditions"
                 android:textColor="#3a3a3a"
-                android:fontFamily="monospace"
+                android:fontFamily="@font/plus_jakarta_sans"
                 android:textSize="10sp"
                 android:paddingBottom="1dp"
                 android:clickable="true"

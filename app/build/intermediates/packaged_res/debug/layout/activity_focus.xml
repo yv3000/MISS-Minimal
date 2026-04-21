@@ -23,7 +23,8 @@
       android:layout_weight="1"
       android:text="Stopwatch"
       android:textColor="@color/white"
-      android:fontFamily="sans-serif-medium"
+      android:fontFamily="@font/plus_jakarta_sans_medium"
+
       android:textSize="14sp"
       android:gravity="center"/>
 
@@ -33,7 +34,8 @@
       android:layout_weight="1"
       android:text="Timer"
       android:textColor="@color/text_secondary"
-      android:fontFamily="sans-serif-medium"
+      android:fontFamily="@font/plus_jakarta_sans_medium"
+
       android:textSize="14sp"
       android:gravity="center"/>
 
@@ -43,7 +45,8 @@
       android:layout_weight="1"
       android:text="Strict"
       android:textColor="@color/text_secondary"
-      android:fontFamily="sans-serif-medium"
+      android:fontFamily="@font/plus_jakarta_sans_medium"
+
       android:textSize="14sp"
       android:gravity="center"/>
 
@@ -53,7 +56,7 @@
       android:layout_weight="1"
       android:text="Pomodoro"
       android:textColor="@color/text_secondary"
-      android:fontFamily="sans-serif-medium"
+      android:fontFamily="@font/plus_jakarta_sans"
       android:textSize="14sp"
       android:gravity="center"/>
   </LinearLayout>
@@ -72,7 +75,8 @@
       android:text="00:00"
       android:textColor="#ffffff"
       android:textSize="64sp"
-      android:fontFamily="sans-serif-light"
+      android:fontFamily="@font/plus_jakarta_sans_light"
+
       android:fontWeight="200"/>
 
     <LinearLayout
@@ -86,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="START"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -99,7 +103,7 @@
         android:layout_height="wrap_content"
         android:text="PAUSE"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -113,7 +117,7 @@
         android:layout_height="wrap_content"
         android:text="STOP"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -127,7 +131,7 @@
         android:layout_height="wrap_content"
         android:text="RESUME"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -160,7 +164,7 @@
         android:layout_height="wrap_content"/>
       <TextView android:text=" H  "
         android:textColor="#444444"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -169,7 +173,7 @@
         android:layout_height="wrap_content"/>
       <TextView android:text=" M  "
         android:textColor="#444444"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -178,7 +182,7 @@
         android:layout_height="wrap_content"/>
       <TextView android:text=" S"
         android:textColor="#444444"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -191,7 +195,7 @@
       android:text="00:00:00"
       android:textColor="#ffffff"
       android:textSize="48sp"
-      android:fontFamily="monospace"
+      android:fontFamily="@font/plus_jakarta_sans"
       android:fontWeight="200"
       android:visibility="gone"/>
 
@@ -201,7 +205,7 @@
       android:text="TIME UP"
       android:textColor="#ffffff"
       android:textSize="24sp"
-      android:fontFamily="monospace"
+      android:fontFamily="@font/plus_jakarta_sans"
       android:visibility="gone"
       android:layout_marginTop="8dp"/>
 
@@ -216,7 +220,7 @@
         android:layout_height="wrap_content"
         android:text="START"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -228,7 +232,7 @@
         android:layout_height="wrap_content"
         android:text="PAUSE"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -242,7 +246,7 @@
         android:layout_height="wrap_content"
         android:text="STOP"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -256,7 +260,7 @@
         android:layout_height="wrap_content"
         android:text="RESUME"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -270,7 +274,7 @@
         android:layout_height="wrap_content"
         android:text="RESET"
         android:textColor="#888888"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="12sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -310,7 +314,8 @@
         android:layout_height="wrap_content"
         android:text="STRICT MODE"
         android:textColor="@color/white"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/plus_jakarta_sans_extra_bold"
+
         android:textSize="16sp"
 
         android:layout_gravity="center"
@@ -322,7 +327,7 @@
         android:layout_height="wrap_content"
         android:text="Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
         android:textColor="@color/text_secondary"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="13sp"
         android:gravity="center"
         android:textAlignment="center"
@@ -335,7 +340,7 @@
       android:layout_height="wrap_content"
       android:text="ENABLE STRICT MODE"
       android:textColor="#888888"
-      android:fontFamily="monospace"
+      android:fontFamily="@font/plus_jakarta_sans"
       android:textSize="12sp"
       android:paddingStart="24dp"
       android:paddingEnd="24dp"
@@ -365,7 +370,8 @@
         android:layout_height="wrap_content"
         android:text="STRICT MODE"
         android:textColor="#444444"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans_light"
+
         android:textSize="11sp"
         android:letterSpacing="0.4"
         android:tag="fixed_size"
@@ -375,7 +381,7 @@
         android:layout_height="wrap_content"
         android:text="25:00"
         android:textColor="#ffffff"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="64sp"
         android:fontWeight="200"
         android:tag="fixed_size"/>
@@ -385,7 +391,7 @@
         android:layout_height="wrap_content"
         android:text="focus session active"
         android:textColor="#333333"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="9sp"
         android:layout_marginTop="12dp"/>
       
@@ -400,7 +406,7 @@
           android:layout_height="wrap_content"
           android:text="START AGAIN"
           android:textColor="#ffffff"
-          android:fontFamily="monospace"
+          android:fontFamily="@font/plus_jakarta_sans"
           android:textSize="12sp"
           android:paddingStart="24dp"
           android:paddingEnd="24dp"
@@ -413,7 +419,7 @@
           android:layout_height="wrap_content"
           android:text="EXIT"
           android:textColor="#333333"
-          android:fontFamily="monospace"
+          android:fontFamily="@font/plus_jakarta_sans"
           android:textSize="12sp"
           android:paddingStart="24dp"
           android:paddingEnd="24dp"

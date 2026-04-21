@@ -3126,6 +3126,12 @@ int drawable notify_panel_notification_icon_bg 0x7f0700e8
 int drawable test_level_drawable 0x7f0700e9
 int drawable tooltip_frame_dark 0x7f0700ea
 int drawable tooltip_frame_light 0x7f0700eb
+int font plus_jakarta_sans 0x7f130000
+int font plus_jakarta_sans_bold 0x7f130001
+int font plus_jakarta_sans_extra_bold 0x7f130002
+int font plus_jakarta_sans_light 0x7f130003
+int font plus_jakarta_sans_medium 0x7f130004
+int font plus_jakarta_sans_regular 0x7f130005
 int id ALT 0x7f080000
 int id BOTTOM_END 0x7f080001
 int id BOTTOM_START 0x7f080002

@@ -3127,6 +3127,12 @@ drawable notify_panel_notification_icon_bg
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+font plus_jakarta_sans
+font plus_jakarta_sans_bold
+font plus_jakarta_sans_extra_bold
+font plus_jakarta_sans_light
+font plus_jakarta_sans_medium
+font plus_jakarta_sans_regular
 id ALT
 id BOTTOM_END
 id BOTTOM_START

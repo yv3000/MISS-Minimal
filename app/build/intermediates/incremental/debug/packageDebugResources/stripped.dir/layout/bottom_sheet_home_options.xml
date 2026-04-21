@@ -14,7 +14,7 @@
         android:text="Change app"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:background="?android:attr/selectableItemBackground" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:text="Remove from home"
         android:textColor="#FF5555"
         android:textSize="18sp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/plus_jakarta_sans"
         android:background="?android:attr/selectableItemBackground" />
 
 </LinearLayout>

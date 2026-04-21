@@ -31,6 +31,12 @@ drawable btn_border_active
 drawable ic_flashlight
 drawable ic_launcher_background
 drawable ic_settings
+font plus_jakarta_sans
+font plus_jakarta_sans_bold
+font plus_jakarta_sans_extra_bold
+font plus_jakarta_sans_light
+font plus_jakarta_sans_medium
+font plus_jakarta_sans_regular
 id appList
 id bottomBar
 id btn10m
