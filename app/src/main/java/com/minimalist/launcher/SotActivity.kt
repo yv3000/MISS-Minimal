@@ -110,9 +110,9 @@ class SotActivity : AppCompatActivity() {
 
         // Load app usage
         val usageList = getTodayAppUsage()
-        val totalMs = usageList.sumOf { it.totalMs }
+        val totalSotMs = SOTManager.getScreenOnTimeToday(this)
         
-        tvTotalTime.text = formatTimeFriendly(totalMs)
+        tvTotalTime.text = formatTimeFriendly(totalSotMs)
         
         layoutApps.removeAllViews()
         for (item in usageList) {

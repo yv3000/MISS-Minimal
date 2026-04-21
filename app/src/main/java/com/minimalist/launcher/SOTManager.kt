@@ -18,41 +18,62 @@ object SOTManager {
         val endTime = System.currentTimeMillis()
 
         val events = usageStatsManager.queryEvents(startTime, endTime)
-        var totalSot = 0L
-        val lastEventTime = mutableMapOf<String, Long>()
-
+        val allEvents = mutableListOf<SimpleEvent>()
+        
         val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
-            val packageName = event.packageName
-            val timestamp = event.timeStamp
-
-            // Filter out system UI issues or launcher itself if needed, 
-            // but standard SOT includes all apps basically except launcher maybe?
-            // Actually, SOT usually means screen on time across all apps.
-            // When ACTIVITY_RESUMED, app came to foreground.
-            // When ACTIVITY_PAUSED or ACTIVITY_STOPPED, app went to background.
-            
-            when (event.eventType) {
-                UsageEvents.Event.ACTIVITY_RESUMED -> {
-                    lastEventTime[packageName] = timestamp
-                }
-                UsageEvents.Event.ACTIVITY_PAUSED,
-                UsageEvents.Event.ACTIVITY_STOPPED -> {
-                    val start = lastEventTime.remove(packageName)
-                    if (start != null) {
-                        totalSot += (timestamp - start)
-                    }
-                }
+            val type = event.eventType
+            if (type == 1 || type == 2 || type == 23 || type == 15 || type == 16) {
+                allEvents.add(SimpleEvent(event.packageName ?: "", type, event.timeStamp))
             }
         }
         
-        // Add currently foregrounded apps
-        val now = System.currentTimeMillis()
-        for ((_, start) in lastEventTime) {
-            totalSot += (now - start)
-        }
+        allEvents.sortBy { it.timestamp }
+        
+        var totalSot = 0L
+        var isAnyAppActive = false
+        var isScreenOn = true 
+        var segmentStartTime = 0L
+        val activeApps = mutableSetOf<String>()
+        
+        // Filter out launcher if desired, but for raw SOT we usually keep it.
+        // However, if launcher is "always active" in background it might mess up.
+        // Let's filter out known system packages that stay resumed.
+        val ignorePackages = setOf("android", "com.android.systemui")
 
-        return totalSot
+        for (e in allEvents) {
+            if (ignorePackages.contains(e.packageName)) continue
+
+            when (e.type) {
+                1 -> activeApps.add(e.packageName)
+                2, 23 -> activeApps.remove(e.packageName)
+                15 -> isScreenOn = true
+                16 -> {
+                    isScreenOn = false
+                    activeApps.clear() // On screen off, consider all apps paused for SOT
+                }
+            }
+            
+            val shouldBeCounting = isScreenOn && activeApps.isNotEmpty()
+            
+            if (shouldBeCounting && !isAnyAppActive) {
+                segmentStartTime = e.timestamp
+                isAnyAppActive = true
+            } else if (!shouldBeCounting && isAnyAppActive) {
+                totalSot += (e.timestamp - segmentStartTime)
+                isAnyAppActive = false
+            }
+        }
+        
+        if (isAnyAppActive) {
+            totalSot += (endTime - segmentStartTime)
+        }
+        
+        // Sanity check: SOT cannot exceed time since midnight
+        val maxPossible = endTime - startTime
+        return if (totalSot > maxPossible) maxPossible else totalSot
     }
+
+    private data class SimpleEvent(val packageName: String, val type: Int, val timestamp: Long)
 }

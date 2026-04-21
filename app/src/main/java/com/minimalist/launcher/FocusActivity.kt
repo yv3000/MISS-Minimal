@@ -1,5 +1,7 @@
 package com.minimalist.launcher
 
+import android.animation.ValueAnimator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.app.AlertDialog
 import android.app.NotificationManager
 import android.content.Intent
@@ -204,27 +206,58 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun selectStrictTab() {
-    tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
-    tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
-    tabPomodoro.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
-    tabStrict.setTextColor(android.graphics.Color.WHITE)
+    updateTabUI(tabStrict)
 
     panelStrict.visibility = View.VISIBLE
     panelStopwatch.visibility = View.GONE
     panelTimer.visibility = View.GONE
     panelPomodoro.visibility = View.GONE
+  }
+
+  private fun updateTabUI(activeTab: TextView) {
+    val inactiveColor = android.graphics.Color.parseColor("#8E8E93")
+    val activeColor = android.graphics.Color.WHITE
+
+    val tabs = listOf(tabStopwatch, tabTimer, tabStrict, tabPomodoro)
+    tabs.forEach { tab ->
+      if (tab == activeTab) {
+        tab.setTextColor(activeColor)
+        tab.animate().alpha(1.0f).setDuration(200).start()
+      } else {
+        tab.setTextColor(inactiveColor)
+        tab.animate().alpha(0.4f).setDuration(200).start()
+      }
+    }
     
-    moveTabIndicator(tabStrict)
+    moveTabIndicator(activeTab)
   }
 
   private fun moveTabIndicator(targetView: View) {
     tabIndicator.post {
-      val targetX = targetView.x + (targetView.width / 2f) - (tabIndicator.width / 2f)
+      val targetX = targetView.x
+      val targetWidth = targetView.width
+      
       tabIndicator.animate()
         .x(targetX)
-        .setDuration(250)
+        .setDuration(300)
         .setInterpolator(AccelerateDecelerateInterpolator())
+        .setUpdateListener {
+            val params = tabIndicator.layoutParams
+            params.width = targetWidth
+            tabIndicator.layoutParams = params
+        }
         .start()
+        
+      // For width animation specifically, ValueAnimator is better
+      val widthAnimator = ValueAnimator.ofInt(tabIndicator.width, targetWidth)
+      widthAnimator.addUpdateListener { animator ->
+          val params = tabIndicator.layoutParams
+          params.width = animator.animatedValue as Int
+          tabIndicator.layoutParams = params
+      }
+      widthAnimator.duration = 300
+      widthAnimator.interpolator = AccelerateDecelerateInterpolator()
+      widthAnimator.start()
     }
   }
 
@@ -250,21 +283,23 @@ class FocusActivity : AppCompatActivity() {
     when (tab) {
       "stopwatch" -> {
         currentTabIndex = 0
-        tabStopwatch.setTextColor(android.graphics.Color.WHITE)
+        updateTabUI(tabStopwatch)
         panelStopwatch.visibility = View.VISIBLE
-        moveTabIndicator(tabStopwatch)
       }
       "timer" -> {
         currentTabIndex = 1
-        tabTimer.setTextColor(android.graphics.Color.WHITE)
+        updateTabUI(tabTimer)
         panelTimer.visibility = View.VISIBLE
-        moveTabIndicator(tabTimer)
+      }
+      "strict" -> {
+        currentTabIndex = 2
+        updateTabUI(tabStrict)
+        panelStrict.visibility = View.VISIBLE
       }
       "pomodoro" -> {
         currentTabIndex = 3
-        tabPomodoro.setTextColor(android.graphics.Color.WHITE)
+        updateTabUI(tabPomodoro)
         panelPomodoro.visibility = View.VISIBLE
-        moveTabIndicator(tabPomodoro)
       }
     }
     savePersistedTab(tab)
