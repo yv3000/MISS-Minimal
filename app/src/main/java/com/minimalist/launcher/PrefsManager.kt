@@ -25,6 +25,6 @@ object PrefsManager {
     
     fun clearLimit(packageName: String) = prefs.edit().remove("limit_ms_$packageName").remove("limit_start_$packageName").apply()
 
-    fun getFontSize(context: Context): Float = prefs.getFloat("font_size", 14f)
+    fun getFontSize(context: Context): Float = prefs.getFloat("font_size", 12f)
     fun setFontSize(context: Context, size: Float) = prefs.edit().putFloat("font_size", size).apply()
 }

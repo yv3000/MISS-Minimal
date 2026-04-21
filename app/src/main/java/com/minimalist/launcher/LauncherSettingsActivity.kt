@@ -69,13 +69,13 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun setupAppearance() {
         binding.btnFontSize.setOnClickListener {
-            val sizes = arrayOf("8","9","10","11","12","13","14","15","16","17","18","19","20")
+            val sizes = arrayOf("12", "14", "16", "18", "20", "22", "24")
             val currentSize = AppFont.get(this).toInt().toString()
             var currentIndex = sizes.indexOf(currentSize)
-            if (currentIndex == -1) currentIndex = sizes.indexOf("14")
+            if (currentIndex == -1) currentIndex = 0 // Default to 12
 
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Font Size")
+                .setTitle("Select Font Size")
                 .setSingleChoiceItems(sizes, currentIndex) { dialog, which ->
                     val selected = sizes[which].toFloat()
                     PrefsManager.setFontSize(this, selected)

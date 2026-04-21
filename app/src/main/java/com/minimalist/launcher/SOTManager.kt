@@ -20,10 +20,14 @@ object SOTManager {
         val events = usageStatsManager.queryEvents(startTime, endTime)
         val allEvents = mutableListOf<SimpleEvent>()
         
+        val launcherPkg = context.packageName
+        val ignorePackages = setOf("android", "com.android.systemui", launcherPkg)
+
         val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
             val type = event.eventType
+            // We only care about Resumed (1), Paused (2), Stopped (23), Screen On (15), Screen Off (16)
             if (type == 1 || type == 2 || type == 23 || type == 15 || type == 16) {
                 allEvents.add(SimpleEvent(event.packageName ?: "", type, event.timeStamp))
             }
@@ -33,25 +37,18 @@ object SOTManager {
         
         var totalSot = 0L
         var isAnyAppActive = false
-        var isScreenOn = true 
+        var isScreenOn = false // Start as false to be safe, first event will correct it
         var segmentStartTime = 0L
         val activeApps = mutableSetOf<String>()
         
-        // Filter out launcher if desired, but for raw SOT we usually keep it.
-        // However, if launcher is "always active" in background it might mess up.
-        // Let's filter out known system packages that stay resumed.
-        val ignorePackages = setOf("android", "com.android.systemui")
-
         for (e in allEvents) {
-            if (ignorePackages.contains(e.packageName)) continue
-
             when (e.type) {
-                1 -> activeApps.add(e.packageName)
+                1 -> if (!ignorePackages.contains(e.packageName)) activeApps.add(e.packageName)
                 2, 23 -> activeApps.remove(e.packageName)
                 15 -> isScreenOn = true
                 16 -> {
                     isScreenOn = false
-                    activeApps.clear() // On screen off, consider all apps paused for SOT
+                    activeApps.clear()
                 }
             }
             
@@ -70,9 +67,9 @@ object SOTManager {
             totalSot += (endTime - segmentStartTime)
         }
         
-        // Sanity check: SOT cannot exceed time since midnight
+        // Final sanity check: cannot exceed time since midnight
         val maxPossible = endTime - startTime
-        return if (totalSot > maxPossible) maxPossible else totalSot
+        return totalSot.coerceIn(0L, maxPossible)
     }
 
     private data class SimpleEvent(val packageName: String, val type: Int, val timestamp: Long)

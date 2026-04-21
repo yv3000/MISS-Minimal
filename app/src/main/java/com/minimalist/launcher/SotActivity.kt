@@ -293,6 +293,7 @@ class SotActivity : AppCompatActivity() {
 
         return merged.entries
             .filter { it.value > 60_000L } // min 1 min
+            .filter { it.key != packageName }
             .filter { hasLaunchIntent(it.key) }
             .sortedByDescending { it.value }
             .take(15) // top 15
