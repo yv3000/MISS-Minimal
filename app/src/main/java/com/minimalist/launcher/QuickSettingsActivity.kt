@@ -22,6 +22,7 @@ import android.graphics.drawable.GradientDrawable
 import android.database.ContentObserver
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
+import android.view.GestureDetector
 
 class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuickSettingsBinding
@@ -272,6 +273,17 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun setRingerMode(mode: Int) {
         try {
             audioManager.ringerMode = mode
+            
+            // Sync DND state with ringer mode for a more predictable 'Mute'
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (nm.isNotificationPolicyAccessGranted) {
+                if (mode == AudioManager.RINGER_MODE_SILENT) {
+                    nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+                } else {
+                    nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+                }
+            }
+            
             updateSoundUI()
         } catch (e: Exception) {
             val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)

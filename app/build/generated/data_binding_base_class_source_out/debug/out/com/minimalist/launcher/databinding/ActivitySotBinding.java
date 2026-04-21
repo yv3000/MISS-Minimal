@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,42 +20,16 @@ public final class ActivitySotBinding implements ViewBinding {
   private final FrameLayout rootView;
 
   @NonNull
-  public final TextView btnGrantUsage;
+  public final TextView btnBack;
 
   @NonNull
-  public final TextView btnRefresh;
+  public final TextView tvGithubLink;
 
-  @NonNull
-  public final LinearLayout layoutApps;
-
-  @NonNull
-  public final LinearLayout layoutModes;
-
-  @NonNull
-  public final FrameLayout layoutSyncing;
-
-  @NonNull
-  public final TextView tvDate;
-
-  @NonNull
-  public final TextView tvNoSessions;
-
-  @NonNull
-  public final TextView tvTotalTime;
-
-  private ActivitySotBinding(@NonNull FrameLayout rootView, @NonNull TextView btnGrantUsage,
-      @NonNull TextView btnRefresh, @NonNull LinearLayout layoutApps,
-      @NonNull LinearLayout layoutModes, @NonNull FrameLayout layoutSyncing,
-      @NonNull TextView tvDate, @NonNull TextView tvNoSessions, @NonNull TextView tvTotalTime) {
+  private ActivitySotBinding(@NonNull FrameLayout rootView, @NonNull TextView btnBack,
+      @NonNull TextView tvGithubLink) {
     this.rootView = rootView;
-    this.btnGrantUsage = btnGrantUsage;
-    this.btnRefresh = btnRefresh;
-    this.layoutApps = layoutApps;
-    this.layoutModes = layoutModes;
-    this.layoutSyncing = layoutSyncing;
-    this.tvDate = tvDate;
-    this.tvNoSessions = tvNoSessions;
-    this.tvTotalTime = tvTotalTime;
+    this.btnBack = btnBack;
+    this.tvGithubLink = tvGithubLink;
   }
 
   @Override
@@ -86,56 +59,19 @@ public final class ActivitySotBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnGrantUsage;
-      TextView btnGrantUsage = ViewBindings.findChildViewById(rootView, id);
-      if (btnGrantUsage == null) {
+      id = R.id.btnBack;
+      TextView btnBack = ViewBindings.findChildViewById(rootView, id);
+      if (btnBack == null) {
         break missingId;
       }
 
-      id = R.id.btnRefresh;
-      TextView btnRefresh = ViewBindings.findChildViewById(rootView, id);
-      if (btnRefresh == null) {
+      id = R.id.tvGithubLink;
+      TextView tvGithubLink = ViewBindings.findChildViewById(rootView, id);
+      if (tvGithubLink == null) {
         break missingId;
       }
 
-      id = R.id.layoutApps;
-      LinearLayout layoutApps = ViewBindings.findChildViewById(rootView, id);
-      if (layoutApps == null) {
-        break missingId;
-      }
-
-      id = R.id.layoutModes;
-      LinearLayout layoutModes = ViewBindings.findChildViewById(rootView, id);
-      if (layoutModes == null) {
-        break missingId;
-      }
-
-      id = R.id.layoutSyncing;
-      FrameLayout layoutSyncing = ViewBindings.findChildViewById(rootView, id);
-      if (layoutSyncing == null) {
-        break missingId;
-      }
-
-      id = R.id.tvDate;
-      TextView tvDate = ViewBindings.findChildViewById(rootView, id);
-      if (tvDate == null) {
-        break missingId;
-      }
-
-      id = R.id.tvNoSessions;
-      TextView tvNoSessions = ViewBindings.findChildViewById(rootView, id);
-      if (tvNoSessions == null) {
-        break missingId;
-      }
-
-      id = R.id.tvTotalTime;
-      TextView tvTotalTime = ViewBindings.findChildViewById(rootView, id);
-      if (tvTotalTime == null) {
-        break missingId;
-      }
-
-      return new ActivitySotBinding((FrameLayout) rootView, btnGrantUsage, btnRefresh, layoutApps,
-          layoutModes, layoutSyncing, tvDate, tvNoSessions, tvTotalTime);
+      return new ActivitySotBinding((FrameLayout) rootView, btnBack, tvGithubLink);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

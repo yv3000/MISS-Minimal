@@ -3265,8 +3265,6 @@ id btnFlashlight
 id btnFlashlightText
 id btnFocus
 id btnFontSize
-id btnGrantUsage
-id btnRefresh
 id btnRemoveApp
 id btnSettings
 id btnSot
@@ -3430,12 +3428,9 @@ id jumpToEnd
 id jumpToStart
 id labeled
 id layout
-id layoutApps
-id layoutModes
 id layoutPickers
 id layoutStrictComplete
 id layoutStrictWarning
-id layoutSyncing
 id left
 id leftToRight
 id legacy
@@ -3746,9 +3741,9 @@ id tvFlashlightState
 id tvFontSizeState
 id tvFullscreenDate
 id tvFullscreenTime
+id tvGithubLink
 id tvHeader
 id tvLinktree
-id tvNoSessions
 id tvOverlayTimer
 id tvSOT
 id tvStatusAccessibility
@@ -3768,7 +3763,6 @@ id tvTimeUp
 id tvTimerCountdown
 id tvTimestamps
 id tvTitle
-id tvTotalTime
 id tvVolumeState
 id tvWifiState
 id unchecked

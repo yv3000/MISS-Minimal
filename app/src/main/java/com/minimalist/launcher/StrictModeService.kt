@@ -35,10 +35,9 @@ class StrictModeService : AccessibilityService() {
           performGlobalAction(
             GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
         } else {
-          // Pre-Android 12: use back action
           performGlobalAction(GLOBAL_ACTION_BACK)
         }
-        handler.postDelayed(this, 100)
+        handler.postDelayed(this, 50)
       }
     }
   }
@@ -64,75 +63,66 @@ class StrictModeService : AccessibilityService() {
     StrictModeManager.serviceRef = this
   }
 
-  override fun onAccessibilityEvent(
-      event: AccessibilityEvent) {
-    
+  override fun onAccessibilityEvent(event: AccessibilityEvent) {
     val strictActive = StrictModeManager.isActive()
     val pomodoroActive = PomodoroManager.isActive
-    
     if (!strictActive && !pomodoroActive) return
 
     val windowsInfo = windows
-    if (strictActive || pomodoroActive) {
-      windowsInfo?.forEach { window ->
-        val title = window.title?.toString() ?: ""
-        if (title.contains("Notification", ignoreCase = true) ||
-            title.contains("Quick Settings", ignoreCase = true) ||
-            window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM) {
-          if (Build.VERSION.SDK_INT >= 31) {
-            performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-          }
+    windowsInfo?.forEach { window ->
+      val title = window.title?.toString() ?: ""
+      // Block System Panels (Notifs, Quick Settings, Sidebars)
+      if (title.contains("Notification", ignoreCase = true) ||
+          title.contains("Quick Settings", ignoreCase = true) ||
+          title.contains("Sidebar", ignoreCase = true) ||
+          title.contains("EasyTouch", ignoreCase = true) ||
+          window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM) {
+        if (Build.VERSION.SDK_INT >= 31) {
+          performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+        } else {
+          performGlobalAction(GLOBAL_ACTION_BACK)
         }
       }
     }
     
     val pkg = event.packageName?.toString() ?: return
 
-    // BLOCK 1: Notification shade / Quick Settings
-    // These are systemui windows — dismiss them
+    // BLOCK 1: Notification shade
     if (pkg == "com.android.systemui") {
       val className = event.className?.toString() ?: ""
-      val title = event.text?.joinToString() ?: ""
-      
-      val isNotifShade = 
-        className.contains("NotificationShade") ||
-        className.contains("StatusBar") ||
-        className.contains("QuickSettings") ||
-        className.contains("NotificationPanel") ||
-        title.contains("Notifications") ||
-        title.contains("Quick settings")
-      
-      if (isNotifShade) {
+      if (className.contains("Notification") || className.contains("StatusBar") || 
+          className.contains("QuickSettings") || className.contains("NotificationPanel")) {
         if (Build.VERSION.SDK_INT >= 31) {
-          performGlobalAction(
-            GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+          performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
         } else {
           performGlobalAction(GLOBAL_ACTION_BACK)
-          performGlobalAction(GLOBAL_ACTION_HOME)
         }
         return
       }
     }
 
-    // BLOCK 2: Floating windows / Sidebar
+    // BLOCK 2: Floating windows
     val floatingPackages = listOf(
-      "com.vivo.easyaccess",
-      "com.iqoo.easyaccess",
-      "com.bbk.easyaccess", 
-      "com.vivo.floatingball",
-      "com.iqoo.secure",
-      "com.miui.personalassistant",
-      "com.samsung.android.app.edgecontent",
-      "com.huawei.works",
-      "com.oppo.assistantscreen",
-      "com.coloros.assistantscreen"
+      "com.vivo.easyaccess", "com.iqoo.easyaccess", "com.bbk.easyaccess", 
+      "com.vivo.floatingball", "com.iqoo.secure", "com.miui.personalassistant",
+      "com.samsung.android.app.edgecontent", "com.huawei.works",
+      "com.oppo.assistantscreen", "com.coloros.assistantscreen"
     )
-    
-    if (floatingPackages.any { pkg.contains(it) || 
-        it.contains(pkg) }) {
+    if (floatingPackages.any { pkg.contains(it) }) {
       performGlobalAction(GLOBAL_ACTION_BACK)
       bringStrictTimerToFront()
       return
+    }
+
+    // Extra Pomodoro enforcement: Iterate through windows
+    if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
+        windows?.forEach { window ->
+            // If window is NOT our app and NOT system UI/phone, close it
+            val winPkg = try { window.rootAccessibilityNodeInWindow?.packageName?.toString() } catch(e: Exception) { null }
+            if (winPkg != null && winPkg != packageName && winPkg != "com.android.systemui" && winPkg !in phoneApps) {
+                performGlobalAction(GLOBAL_ACTION_BACK)
+            }
+        }
     }
 
     // BLOCK 3: Allowed Phone Apps (5 min limit)
@@ -152,7 +142,7 @@ class StrictModeService : AccessibilityService() {
     if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
       if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
         if (pkg !in PomodoroManager.allowedPackages) {
-            performGlobalAction(GLOBAL_ACTION_HOME)
+            bringStrictTimerToFront()
             return
         }
       } else if (strictActive) {
@@ -178,7 +168,11 @@ class StrictModeService : AccessibilityService() {
       Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
       Intent.FLAG_ACTIVITY_SINGLE_TOP
     )
-    intent.putExtra("show_strict_timer", true)
+    if (PomodoroManager.isActive) {
+        intent.putExtra("tab", "pomodoro")
+    } else {
+        intent.putExtra("show_strict_timer", true)
+    }
     startActivity(intent)
   }
 

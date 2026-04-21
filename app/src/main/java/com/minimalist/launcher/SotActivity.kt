@@ -1,5 +1,6 @@
 package com.minimalist.launcher
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -29,5 +30,13 @@ class SotActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+    }
+
+    companion object {
+        fun saveModeSession(context: Context, mode: String, minutes: Int) {
+            val prefs = context.getSharedPreferences("mode_stats", Context.MODE_PRIVATE)
+            val currentTotal = prefs.getInt(mode, 0)
+            prefs.edit().putInt(mode, currentTotal + minutes).apply()
+        }
     }
 }

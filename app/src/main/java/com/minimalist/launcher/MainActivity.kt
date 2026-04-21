@@ -76,6 +76,16 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         AppFont.applyToActivity(this)
+        
+        // AUTO-RETURN TO POMODORO IF ACTIVE
+        if (PomodoroManager.isActive) {
+            val intent = Intent(this, FocusActivity::class.java)
+            intent.putExtra("tab", "pomodoro")
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            return
+        }
+
         updateHomescreenApps()
         startNotificationBlocker()
         hideSystemUI()
