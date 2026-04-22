@@ -122,7 +122,6 @@ id pom_btnDur100
 id pom_btnDur25
 id pom_btnDur50
 id pom_btnDur75
-id pom_btnEndSession
 id pom_btnRemoveContact
 id pom_btnStartPomodoro
 id pom_layoutActive
@@ -156,7 +155,6 @@ id tabStrict
 id tabTimer
 id timeContainer
 id timerBtnRow
-id topBar
 id tvAirplaneState
 id tvAppCamera
 id tvAppName

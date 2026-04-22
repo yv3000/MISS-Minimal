@@ -3574,7 +3574,6 @@ id pom_btnDur100
 id pom_btnDur25
 id pom_btnDur50
 id pom_btnDur75
-id pom_btnEndSession
 id pom_btnRemoveContact
 id pom_btnStartPomodoro
 id pom_layoutActive
@@ -3727,7 +3726,6 @@ id titleDividerNoCustom
 id title_template
 id toggle
 id top
-id topBar
 id topPanel
 id touch_outside
 id transitionToEnd

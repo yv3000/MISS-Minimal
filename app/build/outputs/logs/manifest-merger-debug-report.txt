@@ -270,91 +270,69 @@ ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:73:27-74
 activity#com.minimalist.launcher.AppPickerActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:9-138
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:9-92
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:53-89
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:90-136
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:77:19-52
 activity#com.minimalist.launcher.QuickSettingsActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:9-142
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:9-96
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:57-93
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:94-140
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:78:19-56
 activity#com.minimalist.launcher.AppDrawerActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:9-138
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:9-92
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:53-89
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:90-136
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:79:19-52
 activity#com.minimalist.launcher.LauncherSettingsActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:9-145
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:9-99
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:60-96
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:97-143
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:80:19-59
 activity#com.minimalist.launcher.TimeLimitActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:9-138
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:9-92
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:53-89
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:90-136
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:19-52
 activity#com.minimalist.launcher.FocusActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:9-134
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:9-88
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:49-85
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:86-132
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:19-48
 activity#com.minimalist.launcher.NotificationPanelActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:9-146
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:9-100
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:61-97
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:98-144
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:19-60
 activity#com.minimalist.launcher.PermissionOnboardingActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:9-149
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:9-103
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:64-100
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:101-147
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:19-63
 activity#com.minimalist.launcher.TermsActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:9-134
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:9-88
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:49-85
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:86-132
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:19-48
 activity#com.minimalist.launcher.PomodoroActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:9-137
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:9-91
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:52-88
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:89-135
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:19-51
 activity#com.minimalist.launcher.SotActivity
-ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:9-132
+ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:9-86
 	android:screenOrientation
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:47-83
-	android:configChanges
-		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:84-130
 	android:name
 		ADDED from X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:19-46
 service#com.minimalist.launcher.NotificationService

@@ -3573,7 +3573,6 @@ int id pom_btnDur100 0x7f0901b3
 int id pom_btnDur25 0x7f0901b4
 int id pom_btnDur50 0x7f0901b5
 int id pom_btnDur75 0x7f0901b6
-int id pom_btnEndSession 0x7f0901b7
 int id pom_btnRemoveContact 0x7f0901b8
 int id pom_btnStartPomodoro 0x7f0901b9
 int id pom_layoutActive 0x7f0901ba
@@ -3726,7 +3725,6 @@ int id titleDividerNoCustom 0x7f09024c
 int id title_template 0x7f09024d
 int id toggle 0x7f09024e
 int id top 0x7f09024f
-int id topBar 0x7f090250
 int id topPanel 0x7f090251
 int id touch_outside 0x7f090252
 int id transitionToEnd 0x7f090253
