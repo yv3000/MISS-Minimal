@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="accessibility_desc">Keeps MISS Minimal in focus by blocking system panel when launcher is active.</string>
-  <string name="strict_mode_description">MISS Minimal Strict Mode — blocks all apps during focus session</string>
-</resources>
