@@ -1,3 +1,10 @@
+/*
+ * i expect nothing from you...
+ * 
+ * the dead man
+ * yv3000
+ * the god
+ */
 package com.minimalist.launcher
 
 import android.animation.ValueAnimator
@@ -150,8 +157,18 @@ class FocusActivity : AppCompatActivity() {
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-
     super.onCreate(savedInstanceState)
+    
+    // Check orientation first to prevent crashes and show requirement message
+    val isLandscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+    if (isLandscape) {
+      setContentView(R.layout.activity_focus) // Loads layout-land/activity_focus.xml
+      findViewById<View>(R.id.btnExitLandscape)?.setOnClickListener {
+        finish()
+      }
+      return // Skip all initialization below to avoid crashes
+    }
+
     try {
       setContentView(R.layout.activity_focus)
       vibrator = if (Build.VERSION.SDK_INT >= 31)
@@ -168,8 +185,6 @@ class FocusActivity : AppCompatActivity() {
       setupPomodoro()
 
       // Restore Pomodoro state if session is still active
-      // (happens when activity is recreated due to rotation, memory pressure,
-      // or when redirected back from MainActivity)
       restorePomodoroState()
 
       handleIntent(intent)
@@ -664,7 +679,7 @@ class FocusActivity : AppCompatActivity() {
       addAction(PomodoroTimerService.BROADCAST_COMPLETE)
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      registerReceiver(timerReceiver, filter, RECEIVER_NOT_EXPORTED)
+      registerReceiver(timerReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
     } else {
       registerReceiver(timerReceiver, filter)
     }
@@ -722,14 +737,15 @@ class FocusActivity : AppCompatActivity() {
       vibrateTick()
       StrictModeManager.stop(this)
       applyStrictUiState(StrictUiState.SETUP)
+      val home = Intent(Intent.ACTION_MAIN)
+      home.addCategory(Intent.CATEGORY_HOME)
+      home.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+      startActivity(home)
       finish()
     }
     btnEnableStrict.addPressEffect()
     btnStartAgain.addPressEffect()
     btnExitStrict.addPressEffect()
-      val home = Intent(Intent.ACTION_MAIN); home.addCategory(Intent.CATEGORY_HOME)
-      home.flags = Intent.FLAG_ACTIVITY_NEW_TASK; startActivity(home)
-    }
   }
 
   private fun showStrictConfirmDialog() {
@@ -862,6 +878,7 @@ class FocusActivity : AppCompatActivity() {
                     Toast.makeText(this, "Cannot launch $pkg", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
     }
     
     listOf(pom_btnDur25, pom_btnDur50, pom_btnDur75, pom_btnDur100, 
@@ -1136,7 +1153,12 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun onPomPhaseChanged(isWork: Boolean, session: Int) {
-    vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+    if (Build.VERSION.SDK_INT >= 29) {
+      vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
+    } else {
+      @Suppress("DEPRECATION")
+      vibrator.vibrate(100)
+    }
     pom_tvSessionCount.text = "session $session"
     
     // Block during work, unblock during break

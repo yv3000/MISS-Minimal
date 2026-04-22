@@ -106,7 +106,6 @@
             android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.FocusActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop"
             android:screenOrientation="fullUser" />
         <activity

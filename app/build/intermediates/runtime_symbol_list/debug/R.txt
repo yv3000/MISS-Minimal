@@ -3260,6 +3260,7 @@ int id btnData 0x7f09007a
 int id btnDnd 0x7f09007b
 int id btnEnableStrict 0x7f09007c
 int id btnExit 0x7f09007d
+int id btnExitLandscape 0x7f09029f
 int id btnExitStrict 0x7f09007e
 int id btnFlashlight 0x7f09007f
 int id btnFlashlightText 0x7f090080
@@ -3545,7 +3546,6 @@ int id outline 0x7f090197
 int id outward 0x7f090198
 int id overshoot 0x7f090199
 int id packed 0x7f09019a
-int id panelContainer 0x7f09019b
 int id panelPomodoro 0x7f09019c
 int id panelStopwatch 0x7f09019d
 int id panelStrict 0x7f09019e
@@ -3683,7 +3683,6 @@ int id submit_area 0x7f090221
 int id supportScrollUp 0x7f090222
 int id swBtnRow 0x7f090223
 int id tabBar 0x7f090224
-int id tabContainer 0x7f090225
 int id tabIndicator 0x7f090226
 int id tabMode 0x7f090227
 int id tabPomodoro 0x7f090228

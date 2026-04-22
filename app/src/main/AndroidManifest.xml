@@ -81,7 +81,6 @@
         <activity android:name=".TimeLimitActivity" android:screenOrientation="fullUser" />
         <activity android:name=".FocusActivity"
             android:screenOrientation="fullUser"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTop" />
         <activity android:name=".NotificationPanelActivity" android:screenOrientation="fullUser" />
         <activity android:name=".PermissionOnboardingActivity" android:screenOrientation="fullUser" />

@@ -156,6 +156,10 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\font\\plus_jakarta_sans_light.ttf"
     },
     {
+        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_focus.xml.flat",
+        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_focus.xml"
+    },
+    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_border_box.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\drawable\\border_box.xml"
     },
@@ -238,10 +242,6 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_ic_flashlight.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\drawable\\ic_flashlight.xml"
-    },
-    {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_main.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_main.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_activity_app_drawer.xml.flat",

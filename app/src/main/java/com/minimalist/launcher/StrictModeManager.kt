@@ -1,3 +1,10 @@
+/*
+ * i expect nothing from you...
+ * 
+ * the dead man
+ * yv3000
+ * the god
+ */
 package com.minimalist.launcher
 
 import android.content.Context

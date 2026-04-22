@@ -65,18 +65,6 @@
                 android:textColor="@color/grey_666"
                 android:textSize="12sp" />
 
-            <TextView android:id="@+id/btnAirplane"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:background="@drawable/bg_border_dark"
-                android:fontFamily="@font/plus_jakarta_sans_medium"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp"
-                android:text="Airplane"
-                android:textColor="@color/grey_666"
-                android:textSize="12sp" />
-
             <TextView android:id="@+id/btnFlashlightText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,6 +101,19 @@
                 android:textColor="@color/grey_666"
                 android:textSize="12sp" />
 
+            <TextView android:id="@+id/btnAirplane"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/bg_border_dark"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp"
+                android:text="Airplane"
+                android:textColor="@color/grey_666"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
             <TextView android:id="@+id/btnLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +124,8 @@
                 android:paddingVertical="10dp"
                 android:text="Location"
                 android:textColor="@color/grey_666"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView android:id="@+id/btnHotspot"
                 android:layout_width="wrap_content"
@@ -135,7 +137,8 @@
                 android:paddingVertical="10dp"
                 android:text="Hotspot"
                 android:textColor="@color/grey_666"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
         </com.google.android.flexbox.FlexboxLayout>
 
         <View

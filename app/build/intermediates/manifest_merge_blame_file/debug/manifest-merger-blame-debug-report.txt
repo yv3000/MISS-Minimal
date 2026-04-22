@@ -93,7 +93,7 @@
 40-->[androidx.core:core:1.12.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\fa491052a0c4e52c4bc12c333827ee1c\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
 41
 42    <application
-42-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:5-126:19
+42-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:30:5-125:19
 43        android:name="com.minimalist.launcher.MissLauncherApp"
 43-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:31:9-40
 44        android:allowBackup="true"
@@ -217,173 +217,171 @@
 106            android:screenOrientation="fullUser" />
 106-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:81:53-89
 107        <activity
-107-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:9-85:46
+107-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:9-84:46
 108            android:name="com.minimalist.launcher.FocusActivity"
 108-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:82:19-48
-109            android:configChanges="orientation|screenSize|keyboardHidden"
-109-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:13-74
-110            android:launchMode="singleTop"
-110-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:13-43
-111            android:screenOrientation="fullUser" />
-111-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:13-49
-112        <activity
-112-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:9-100
-113            android:name="com.minimalist.launcher.NotificationPanelActivity"
-113-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:19-60
-114            android:screenOrientation="fullUser" />
-114-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:61-97
-115        <activity
-115-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:9-103
-116            android:name="com.minimalist.launcher.PermissionOnboardingActivity"
-116-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:19-63
-117            android:screenOrientation="fullUser" />
-117-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:64-100
-118        <activity
-118-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:9-88
-119            android:name="com.minimalist.launcher.TermsActivity"
-119-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:19-48
-120            android:screenOrientation="fullUser" />
-120-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:49-85
-121        <activity
-121-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:9-91
-122            android:name="com.minimalist.launcher.PomodoroActivity"
-122-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:19-51
-123            android:screenOrientation="fullUser" />
-123-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:52-88
-124        <activity
-124-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:9-86
-125            android:name="com.minimalist.launcher.SotActivity"
-125-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:19-46
-126            android:screenOrientation="fullUser" />
-126-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:90:47-83
-127
-128        <service
-128-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:9-98:19
-129            android:name="com.minimalist.launcher.NotificationService"
-129-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:18-53
-130            android:exported="true"
-130-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:13-36
-131            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
-131-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:13-87
-132            <intent-filter>
-132-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:95:13-97:29
-133                <action android:name="android.service.notification.NotificationListenerService" />
-133-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:17-99
-133-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:96:25-96
-134            </intent-filter>
-135        </service>
-136        <service
-136-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:9-104:39
-137            android:name="com.minimalist.launcher.StrictModeOverlayService"
-137-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:18-58
-138            android:exported="false"
-138-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:104:13-37
-139            android:foregroundServiceType="specialUse" />
-139-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:103:13-55
-140        <service
-140-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:106:9-108:39
-141            android:name="com.minimalist.launcher.PomodoroTimerService"
-141-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:106:18-54
-142            android:exported="false"
-142-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:108:13-37
-143            android:foregroundServiceType="specialUse" />
-143-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:107:13-55
-144        <service
-144-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:110:9-111:39
-145            android:name="com.minimalist.launcher.TopBarBlockerService"
-145-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:110:18-54
-146            android:exported="false" />
-146-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:111:13-37
-147        <service
-147-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:113:9-124:19
-148            android:name="com.minimalist.launcher.StrictModeService"
-148-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:114:13-46
-149            android:exported="true"
-149-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:115:13-36
-150            android:label="MISS Minimal Strict Mode"
-150-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:116:13-53
-151            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
-151-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:117:13-79
-152            <intent-filter>
-152-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:118:13-120:29
-153                <action android:name="android.accessibilityservice.AccessibilityService" />
-153-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:119:17-91
-153-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:119:25-89
-154            </intent-filter>
-155
-156            <meta-data
-156-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:121:13-123:62
-157                android:name="android.accessibilityservice"
+109            android:launchMode="singleTop"
+109-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:84:13-43
+110            android:screenOrientation="fullUser" />
+110-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:83:13-49
+111        <activity
+111-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:9-100
+112            android:name="com.minimalist.launcher.NotificationPanelActivity"
+112-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:19-60
+113            android:screenOrientation="fullUser" />
+113-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:85:61-97
+114        <activity
+114-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:9-103
+115            android:name="com.minimalist.launcher.PermissionOnboardingActivity"
+115-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:19-63
+116            android:screenOrientation="fullUser" />
+116-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:86:64-100
+117        <activity
+117-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:9-88
+118            android:name="com.minimalist.launcher.TermsActivity"
+118-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:19-48
+119            android:screenOrientation="fullUser" />
+119-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:87:49-85
+120        <activity
+120-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:9-91
+121            android:name="com.minimalist.launcher.PomodoroActivity"
+121-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:19-51
+122            android:screenOrientation="fullUser" />
+122-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:88:52-88
+123        <activity
+123-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:9-86
+124            android:name="com.minimalist.launcher.SotActivity"
+124-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:19-46
+125            android:screenOrientation="fullUser" />
+125-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:89:47-83
+126
+127        <service
+127-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:9-97:19
+128            android:name="com.minimalist.launcher.NotificationService"
+128-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:91:18-53
+129            android:exported="true"
+129-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:93:13-36
+130            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+130-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:92:13-87
+131            <intent-filter>
+131-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:94:13-96:29
+132                <action android:name="android.service.notification.NotificationListenerService" />
+132-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:95:17-99
+132-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:95:25-96
+133            </intent-filter>
+134        </service>
+135        <service
+135-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:9-103:39
+136            android:name="com.minimalist.launcher.StrictModeOverlayService"
+136-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:101:18-58
+137            android:exported="false"
+137-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:103:13-37
+138            android:foregroundServiceType="specialUse" />
+138-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:102:13-55
+139        <service
+139-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:105:9-107:39
+140            android:name="com.minimalist.launcher.PomodoroTimerService"
+140-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:105:18-54
+141            android:exported="false"
+141-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:107:13-37
+142            android:foregroundServiceType="specialUse" />
+142-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:106:13-55
+143        <service
+143-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:109:9-110:39
+144            android:name="com.minimalist.launcher.TopBarBlockerService"
+144-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:109:18-54
+145            android:exported="false" />
+145-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:110:13-37
+146        <service
+146-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:112:9-123:19
+147            android:name="com.minimalist.launcher.StrictModeService"
+147-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:113:13-46
+148            android:exported="true"
+148-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:114:13-36
+149            android:label="MISS Minimal Strict Mode"
+149-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:115:13-53
+150            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+150-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:116:13-79
+151            <intent-filter>
+151-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:117:13-119:29
+152                <action android:name="android.accessibilityservice.AccessibilityService" />
+152-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:118:17-91
+152-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:118:25-89
+153            </intent-filter>
+154
+155            <meta-data
+155-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:120:13-122:62
+156                android:name="android.accessibilityservice"
+156-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:121:17-60
+157                android:resource="@xml/strict_mode_service" />
 157-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:122:17-60
-158                android:resource="@xml/strict_mode_service" />
-158-->X:\ALL FOLDER\HACKATHON\SUMMER HACKS HACKATHON - Copy\MINIMALIST APP\V1\app\src\main\AndroidManifest.xml:123:17-60
-159        </service>
-160
-161        <provider
-161-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-162            android:name="androidx.startup.InitializationProvider"
-162-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-163            android:authorities="com.minimalist.launcher.androidx-startup"
-163-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
-164            android:exported="false" >
-164-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
-165            <meta-data
-165-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-166                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-166-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-167                android:value="androidx.startup" />
-167-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-168            <meta-data
-168-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
-169                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-169-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
-170                android:value="androidx.startup" />
-170-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
-171            <meta-data
-171-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-172                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-172-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-173                android:value="androidx.startup" />
-173-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-174        </provider>
-175
-176        <receiver
-176-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-177            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-177-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-178            android:directBootAware="false"
-178-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-179            android:enabled="true"
-179-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-180            android:exported="true"
-180-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-181            android:permission="android.permission.DUMP" >
-181-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-182            <intent-filter>
-182-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-183                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-183-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-183-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-184            </intent-filter>
-185            <intent-filter>
-185-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-186                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-186-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-186-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-187            </intent-filter>
-188            <intent-filter>
-188-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-189                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-189-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-189-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-190            </intent-filter>
-191            <intent-filter>
-191-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-192                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-192-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-192-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-193            </intent-filter>
-194        </receiver>
-195    </application>
-196
-197</manifest>
+158        </service>
+159
+160        <provider
+160-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+161            android:name="androidx.startup.InitializationProvider"
+161-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+162            android:authorities="com.minimalist.launcher.androidx-startup"
+162-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+163            android:exported="false" >
+163-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+164            <meta-data
+164-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+165                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+165-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+166                android:value="androidx.startup" />
+166-->[androidx.emoji2:emoji2:1.2.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\a40399bbfdf69ce0fabac4f525e770e7\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+167            <meta-data
+167-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+168                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+168-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+169                android:value="androidx.startup" />
+169-->[androidx.lifecycle:lifecycle-process:2.6.1] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\214760af31167c936452a3054e0cdf0b\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+170            <meta-data
+170-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+171                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+171-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+172                android:value="androidx.startup" />
+172-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+173        </provider>
+174
+175        <receiver
+175-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+176            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+176-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+177            android:directBootAware="false"
+177-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+178            android:enabled="true"
+178-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+179            android:exported="true"
+179-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+180            android:permission="android.permission.DUMP" >
+180-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+181            <intent-filter>
+181-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+182                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+182-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+182-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+183            </intent-filter>
+184            <intent-filter>
+184-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+185                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+185-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+185-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+186            </intent-filter>
+187            <intent-filter>
+187-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+188                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+188-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+188-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+189            </intent-filter>
+190            <intent-filter>
+190-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+191                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+191-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+191-->[androidx.profileinstaller:profileinstaller:1.3.0] X:\ALL FOLDER\FIREFOX\DOWNLOADS\gradle-8.7-bin\gradle-8.7\caches\9.0-milestone-1\transforms\f9953b3adf2f840cbb4137f28a684aab\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+192            </intent-filter>
+193        </receiver>
+194    </application>
+195
+196</manifest>
