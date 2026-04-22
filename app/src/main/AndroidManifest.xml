@@ -32,7 +32,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:label="MISS Minimal"
+        android:label="MISS-Minimal v2"
         android:supportsRtl="true"
         android:theme="@style/Theme.MinimalistLauncher"
         android:fontFamily="monospace">
@@ -112,7 +112,7 @@
         <service
             android:name=".StrictModeService"
             android:exported="true"
-            android:label="MISS Minimal Strict Mode"
+            android:label="MISS-Minimal v2 Strict Mode"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>

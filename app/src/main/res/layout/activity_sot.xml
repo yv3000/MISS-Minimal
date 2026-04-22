@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="If you know how to build this feature, please contribute to the MISS Minimal project on GitHub. Your help is appreciated!"
+            android:text="If you know how to build this feature, please contribute to the MISS-Minimal v2 project on GitHub. Your help is appreciated!"
             android:textColor="#666666"
             android:textSize="12sp"
             android:fontFamily="@font/plus_jakarta_sans"

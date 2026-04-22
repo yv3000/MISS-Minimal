@@ -536,7 +536,7 @@ class MainActivity : AppCompatActivity() {
         // 1. Overlay permission
         if (!Settings.canDrawOverlays(this)) {
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal Setup")
+                .setTitle("MISS-Minimal v2 Setup")
                 .setMessage("Step 1/3: Allow display over " +
                     "other apps — needed to block system " +
                     "notification panel.")
@@ -553,7 +553,7 @@ class MainActivity : AppCompatActivity() {
             as android.app.NotificationManager
         if (!nm.isNotificationPolicyAccessGranted) {
             androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("MISS Minimal Setup")
+                .setTitle("MISS-Minimal v2 Setup")
                 .setMessage("Step 2/3: Allow Do Not Disturb " +
                     "access — needed for Strict Mode.")
                 .setPositiveButton("Grant") { _, _ ->
@@ -588,7 +588,7 @@ class MainActivity : AppCompatActivity() {
                         "doesn't open system notifications while " +
                         "launcher is active.\n\n" +
                         "Settings → Accessibility → Installed Apps " +
-                        "→ MISS Minimal → ON")
+                        "→ MISS-Minimal v2 → ON")
                     .setPositiveButton("Open Settings") { _, _ ->
                         startActivity(Intent(
                             Settings.ACTION_ACCESSIBILITY_SETTINGS))

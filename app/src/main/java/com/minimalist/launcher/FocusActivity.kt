@@ -709,7 +709,7 @@ class FocusActivity : AppCompatActivity() {
     val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
     val tvStrictDesc = layoutStrictWarning.getChildAt(1) as? TextView
     if (!isAccessibilityServiceEnabled()) {
-      tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS Minimal Strict Mode'\n3. Toggle it ON\n4. Come back here"
+      tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS-Minimal v2 Strict Mode'\n3. Toggle it ON\n4. Come back here"
       btnEnableStrict.text = "Open Settings →"
     } else if (!checkAllStrictPermissions()) {
       tvStrictDesc?.text = "Additional permissions required for Strict Mode.\nPlease tap below to set up."
