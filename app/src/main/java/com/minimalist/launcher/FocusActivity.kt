@@ -90,6 +90,9 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var pom_tvSessionCount: TextView
   private lateinit var pom_btnCallContact: View
   private lateinit var pom_btnCancelBreak: View
+  private lateinit var pom_active_slot1: TextView
+  private lateinit var pom_active_slot2: TextView
+  private lateinit var pom_active_slot3: TextView
 
   private lateinit var tabIndicator: View
 
@@ -380,6 +383,9 @@ class FocusActivity : AppCompatActivity() {
     pom_tvSessionCount = findViewById(R.id.pom_tvSessionCount)
     pom_btnCallContact = findViewById(R.id.pom_btnCallContact)
     pom_btnCancelBreak = findViewById(R.id.pom_btnCancelBreak)
+    pom_active_slot1 = findViewById(R.id.pom_active_slot1)
+    pom_active_slot2 = findViewById(R.id.pom_active_slot2)
+    pom_active_slot3 = findViewById(R.id.pom_active_slot3)
   }
 
   private fun setupTabs() {
@@ -638,10 +644,18 @@ class FocusActivity : AppCompatActivity() {
     }
 
     if (PomodoroManager.isActive) {
+      // Restore state from manager
+      selectedApps.clear()
+      selectedApps.addAll(PomodoroManager.selectedAppPackages)
+      contactName = PomodoroManager.emergencyContactName
+      contactNumber = PomodoroManager.emergencyContactNumber
+      
       showPomActiveScreen()
     } else {
       showPomSetupScreen()
       updatePomDurationSelection(selectedDurationMins)
+      updatePomAppSlotsUI()
+      updatePomContactUI()
     }
   }
 
@@ -803,6 +817,20 @@ class FocusActivity : AppCompatActivity() {
       }
     }
     pom_btnCancelBreak.setOnClickListener { endPomodoroSession() }
+    
+    val activeSlots = listOf(pom_active_slot1, pom_active_slot2, pom_active_slot3)
+    activeSlots.forEachIndexed { index, slot ->
+        slot.setOnClickListener {
+            selectedApps.getOrNull(index)?.let { pkg ->
+                val intent = packageManager.getLaunchIntentForPackage(pkg)
+                if (intent != null) {
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Cannot launch $pkg", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
   }
 
   private fun updatePomDurationSelection(mins: Int) {
@@ -903,7 +931,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun startPomodoro() {
-    PomodoroManager.start(this, selectedDurationMins, selectedApps, contactName)
+    PomodoroManager.start(this, selectedDurationMins, selectedApps, contactName, contactNumber)
     val intent = Intent(this, PomodoroTimerService::class.java)
     intent.action = PomodoroTimerService.ACTION_START
     intent.putExtra(PomodoroTimerService.EXTRA_DURATION, selectedDurationMins * 60)
@@ -943,7 +971,27 @@ class FocusActivity : AppCompatActivity() {
     pom_layoutActive.visibility = View.VISIBLE
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE
+    
     pom_btnCallContact.visibility = if (contactNumber != null) View.VISIBLE else View.GONE
+    
+    // Populate active app slots
+    val activeSlots = listOf(pom_active_slot1, pom_active_slot2, pom_active_slot3)
+    activeSlots.forEach { it.visibility = View.GONE }
+    
+    selectedApps.forEachIndexed { index, pkg ->
+        if (index < activeSlots.size) {
+            val slot = activeSlots[index]
+            slot.visibility = View.VISIBLE
+            // Use app name if possible, else part of package
+            val label = try {
+                val info = packageManager.getApplicationInfo(pkg, 0)
+                packageManager.getApplicationLabel(info).toString()
+            } catch (e: Exception) {
+                pkg.substringAfterLast(".").take(8)
+            }
+            slot.text = label
+        }
+    }
   }
 
   private fun updatePomTimerUI(remaining: Int, isWork: Boolean) {

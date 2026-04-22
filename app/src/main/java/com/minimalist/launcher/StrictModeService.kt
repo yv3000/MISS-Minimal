@@ -87,18 +87,34 @@ class StrictModeService : AccessibilityService() {
     
     val pkg = event.packageName?.toString() ?: return
 
-    // BLOCK 1: Notification shade
+    // BLOCK 1: Notification shade & Recents
     if (pkg == "com.android.systemui") {
       val className = event.className?.toString() ?: ""
       if (className.contains("Notification") || className.contains("StatusBar") || 
-          className.contains("QuickSettings") || className.contains("NotificationPanel")) {
+          className.contains("QuickSettings") || className.contains("NotificationPanel") ||
+          className.contains("Recents") || className.contains("RecentTasks")) {
+        
         if (Build.VERSION.SDK_INT >= 31) {
           performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
         } else {
           performGlobalAction(GLOBAL_ACTION_BACK)
         }
+        
+        if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
+            performGlobalAction(GLOBAL_ACTION_HOME)
+        }
         return
       }
+    }
+
+    // BLOCK 1.5: Home Screen / Launchers
+    if (pkg.contains("launcher") || pkg.contains("trebuchet") || pkg.contains("home")) {
+        if (pkg != packageName) { // If it's not OUR launcher
+            if ((pomodoroActive && PomodoroManager.isWorkSessionActive()) || strictActive) {
+                bringStrictTimerToFront()
+                return
+            }
+        }
     }
 
     // BLOCK 2: Floating windows
@@ -106,7 +122,8 @@ class StrictModeService : AccessibilityService() {
       "com.vivo.easyaccess", "com.iqoo.easyaccess", "com.bbk.easyaccess", 
       "com.vivo.floatingball", "com.iqoo.secure", "com.miui.personalassistant",
       "com.samsung.android.app.edgecontent", "com.huawei.works",
-      "com.oppo.assistantscreen", "com.coloros.assistantscreen"
+      "com.oppo.assistantscreen", "com.coloros.assistantscreen",
+      "com.android.systemui.shared.recents"
     )
     if (floatingPackages.any { pkg.contains(it) }) {
       performGlobalAction(GLOBAL_ACTION_BACK)
@@ -121,6 +138,7 @@ class StrictModeService : AccessibilityService() {
             val winPkg = try { window.root?.packageName?.toString() } catch(e: Exception) { null }
             if (winPkg != null && winPkg != packageName && winPkg != "com.android.systemui" && winPkg !in phoneApps) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
+                performGlobalAction(GLOBAL_ACTION_HOME)
             }
         }
     }
@@ -130,7 +148,7 @@ class StrictModeService : AccessibilityService() {
       if (phoneAppStartTimeMs == 0L) {
         phoneAppStartTimeMs = System.currentTimeMillis()
       } else if (System.currentTimeMillis() - phoneAppStartTimeMs > 5 * 60 * 1000L) {
-        performGlobalAction(GLOBAL_ACTION_BACK)
+        performGlobalAction(GLOBAL_ACTION_HOME)
         handler.postDelayed({ bringStrictTimerToFront() }, 100)
       }
       return
@@ -142,7 +160,8 @@ class StrictModeService : AccessibilityService() {
     if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
       if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
         if (pkg !in PomodoroManager.allowedPackages) {
-            bringStrictTimerToFront()
+            performGlobalAction(GLOBAL_ACTION_HOME)
+            handler.postDelayed({ bringStrictTimerToFront() }, 50)
             return
         }
       } else if (strictActive) {
@@ -153,6 +172,7 @@ class StrictModeService : AccessibilityService() {
         )
         if (pkg !in allowedPackages) {
           performGlobalAction(GLOBAL_ACTION_BACK)
+          performGlobalAction(GLOBAL_ACTION_HOME)
           handler.postDelayed({
             bringStrictTimerToFront()
           }, 100)

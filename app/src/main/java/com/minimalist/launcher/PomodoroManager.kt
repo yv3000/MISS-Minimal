@@ -12,17 +12,28 @@ object PomodoroManager {
     var remainingWorkSeconds = 0
     var workChunkSeconds = 25 * 60
 
+    var emergencyContactName: String? = null
+    var emergencyContactNumber: String? = null
+    var selectedAppPackages = mutableListOf<String>()
+
     fun start(
         context: Context,
         durationMinutes: Int,
         allowedApps: List<String>,
-        emergencyContact: String?
+        contactName: String?,
+        contactNumber: String?
     ) {
         isActive = true
         isWorkPhase = true
         sessionCount = 1
         totalWorkSeconds = durationMinutes * 60
         remainingWorkSeconds = totalWorkSeconds
+        
+        emergencyContactName = contactName
+        emergencyContactNumber = contactNumber
+        selectedAppPackages.clear()
+        selectedAppPackages.addAll(allowedApps)
+
         allowedPackages.clear()
         allowedPackages.addAll(allowedApps)
         
@@ -46,6 +57,9 @@ object PomodoroManager {
         isActive = false
         isWorkPhase = true
         sessionCount = 0
+        emergencyContactName = null
+        emergencyContactNumber = null
+        selectedAppPackages.clear()
         allowedPackages.clear()
         
         TopBarBlockerService.stop(context)
