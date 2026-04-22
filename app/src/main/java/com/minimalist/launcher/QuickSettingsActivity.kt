@@ -202,38 +202,27 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // LOCATION
         binding.btnLocation.setOnClickListener {
-            try {
-                // Try to toggle via Settings.Secure (requires WRITE_SECURE_SETTINGS, usually fails)
-                // Fallback to opening settings if we can't toggle directly
-                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-            }
+            toggleLocation(this)
+            binding.btnLocation.postDelayed({
+                updateToggleState(binding.btnLocation, isLocationEnabled(this))
+            }, 800)
         }
 
         // HOTSPOT
         binding.btnHotspot.setOnClickListener {
-            try {
-                val intent = Intent()
-                intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
-                startActivity(intent)
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-            }
+            toggleHotspot(this)
+            binding.btnHotspot.postDelayed({
+                val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                updateToggleState(binding.btnHotspot, isHotspotEnabled(wm))
+            }, 500)
         }
 
         // AIRPLANE
         binding.btnAirplane.setOnClickListener {
-            if (Settings.System.canWrite(this)) {
-                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
-                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-                intent.putExtra("state", !isOn)
-                sendBroadcast(intent)
-                updateAllStates()
-            } else {
-                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
-            }
+            toggleAirplaneMode(this)
+            binding.btnAirplane.postDelayed({
+                updateToggleState(binding.btnAirplane, isAirplaneModeOn(this))
+            }, 600)
         }
 
         setupMicroInteractions()
@@ -329,19 +318,155 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun setButtonState(view: TextView, isActive: Boolean, density: Float) {
+        updateToggleState(view, isActive)
+    }
+
+    private fun updateToggleState(btn: TextView, isActive: Boolean) {
+        val density = resources.displayMetrics.density
         val bg = GradientDrawable()
         bg.shape = GradientDrawable.RECTANGLE
         bg.cornerRadius = 8f * density
+        
         if (isActive) {
+            // Monochromatic active state (white-ish text, dark blue-grey bg)
             bg.setColor(0xFF1A1A2E.toInt())
             bg.setStroke((1 * density).toInt(), 0xFF4444AA.toInt())
-            view.setTextColor(0xFFAAAAFF.toInt())
+            btn.setTextColor(0xFFAAAAFF.toInt())
         } else {
+            // Inactive state (grey text, black bg)
             bg.setColor(0xFF000000.toInt())
             bg.setStroke((1 * density).toInt(), 0xFF2A2A2A.toInt())
-            view.setTextColor(0xFF666666.toInt())
+            btn.setTextColor(0xFF666666.toInt())
         }
-        view.background = bg
+        btn.background = bg
+    }
+
+    // ── HOTSPOT HELPER METHODS ──
+    private fun toggleHotspot(context: Context) {
+        val wifiManager = context.applicationContext
+            .getSystemService(Context.WIFI_SERVICE) as WifiManager
+        try {
+            if (isHotspotEnabled(wifiManager)) {
+                stopHotspot(wifiManager)
+            } else {
+                startHotspot(wifiManager, context)
+            }
+        } catch (e: Exception) {
+            try {
+                if (Build.VERSION.SDK_INT >= 29) {
+                    val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                } else {
+                    val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                }
+            } catch (_: Exception) {}
+        }
+    }
+
+    private fun isHotspotEnabled(wifiManager: WifiManager): Boolean {
+        return try {
+            val method = wifiManager.javaClass.getDeclaredMethod("isWifiApEnabled")
+            method.isAccessible = true
+            method.invoke(wifiManager) as Boolean
+        } catch (e: Exception) { false }
+    }
+
+    private fun startHotspot(wifiManager: WifiManager, context: Context) {
+        try {
+            if (Build.VERSION.SDK_INT <= 28) {
+                val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp", android.net.wifi.WifiConfiguration::class.java)
+                method.isAccessible = true
+                method.invoke(wifiManager, null)
+                return
+            }
+            startHotspotViaWifiManager(wifiManager)
+        } catch (e: Exception) {
+            startHotspotViaWifiManager(wifiManager)
+        }
+    }
+
+    private fun startHotspotViaWifiManager(wifiManager: WifiManager) {
+        try {
+            val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp", android.net.wifi.WifiConfiguration::class.java)
+            method.isAccessible = true
+            method.invoke(wifiManager, null)
+        } catch (e: Exception) { e.printStackTrace() }
+    }
+
+    private fun stopHotspot(wifiManager: WifiManager) {
+        try {
+            val method = wifiManager.javaClass.getDeclaredMethod("stopSoftAp")
+            method.isAccessible = true
+            method.invoke(wifiManager)
+        } catch (e: Exception) { e.printStackTrace() }
+    }
+
+    // ── LOCATION HELPER METHODS ──
+    private fun toggleLocation(context: Context) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            val intent = Intent(Settings.Panel.ACTION_LOCATION)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            return
+        }
+        try {
+            val mode = Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF)
+            val newMode = if (mode == Settings.Secure.LOCATION_MODE_OFF) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
+            Settings.Secure.putInt(context.contentResolver, Settings.Secure.LOCATION_MODE, newMode)
+        } catch (e: Exception) {
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }
+    }
+
+    private fun isLocationEnabled(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= 28) {
+            val lm = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+            lm.isLocationEnabled
+        } else {
+            try {
+                Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF) != Settings.Secure.LOCATION_MODE_OFF
+            } catch (e: Exception) { false }
+        }
+    }
+
+    // ── AIRPLANE HELPER METHODS ──
+    private fun toggleAirplaneMode(context: Context) {
+        val isCurrentlyOn = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+        val newState = !isCurrentlyOn
+        val success = try {
+            Settings.Global.putInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (newState) 1 else 0)
+            true
+        } catch (e: SecurityException) { false }
+
+        if (success) {
+            val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", newState) }
+            context.sendBroadcast(intent)
+        } else {
+            if (Build.VERSION.SDK_INT >= 23 && !Settings.System.canWrite(context)) {
+                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(intent)
+            } else {
+                try {
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+                        panelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(panelIntent)
+                    }
+                } catch (_: Exception) {}
+            }
+        }
+    }
+
+    private fun isAirplaneModeOn(context: Context): Boolean {
+        return Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
     }
 
     private fun setupSound() {
