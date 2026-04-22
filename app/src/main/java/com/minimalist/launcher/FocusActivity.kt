@@ -920,10 +920,7 @@ class FocusActivity : AppCompatActivity() {
   private fun handlePomContactResult(data: Intent) {
     try {
         val uri = data.data ?: return
-        val cursor = contentResolver.query(uri, arrayOf(
-            android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
-        ), null, null, null)
+        val cursor = contentResolver.query(uri, null, null, null, null)
 
         cursor?.use {
             if (it.moveToFirst()) {

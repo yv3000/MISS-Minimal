@@ -38,7 +38,7 @@ class StrictModeService : AccessibilityService() {
                     // Pre-Android 12 fallback
                     performGlobalAction(GLOBAL_ACTION_BACK)
                 }
-                handler.postDelayed(this, 80)
+                handler.postDelayed(this, 50)
             }
         }
     }
@@ -111,14 +111,15 @@ class StrictModeService : AccessibilityService() {
             }
 
             // Block ALL floating windows on ANY OS
-            // Window type check instead of OEM-specific package names
             val windows = windows
             windows?.forEach { window ->
                 if (window.type == AccessibilityWindowInfo.TYPE_SYSTEM ||
-                    window.type == AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER) {
+                    window.type == AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER ||
+                    window.type == AccessibilityWindowInfo.TYPE_APPLICATION) {
                     val winPkg = try { window.root?.packageName?.toString() } catch (e: Exception) { null } ?: return@forEach
-                    if (!allowed.contains(winPkg)) {
+                    if (!allowed.contains(winPkg) && winPkg != "com.minimalist.launcher" && winPkg != "com.android.systemui") {
                         performGlobalAction(GLOBAL_ACTION_BACK)
+                        performGlobalAction(GLOBAL_ACTION_HOME)
                     }
                 }
             }

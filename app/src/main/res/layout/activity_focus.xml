@@ -194,10 +194,14 @@
   </LinearLayout>
 
   <!-- TIMER PANEL -->
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
   <LinearLayout
     android:id="@+id/panelTimer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:visibility="gone">
@@ -335,12 +339,17 @@
         android:visibility="gone"/>
     </LinearLayout>
   </LinearLayout>
+  </ScrollView>
 
   <!-- STRICT MODE PANEL -->
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
   <LinearLayout
     android:id="@+id/panelStrict"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp"
@@ -401,6 +410,7 @@
       android:gravity="center"
       android:background="@drawable/btn_border"/>
   </LinearLayout>
+  </ScrollView>
 
   <!-- STRICT ACTIVE PANEL — fullscreen countdown -->
   <FrameLayout
@@ -489,10 +499,14 @@
     android:visibility="gone">
 
     <!-- SETUP SCREEN -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
     <LinearLayout
         android:id="@+id/pom_layoutSetup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
         android:gravity="center"
@@ -710,6 +724,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"/>
     </LinearLayout>
+    </ScrollView>
 
     <!-- WORK/BREAK SCREEN -->
     <LinearLayout
