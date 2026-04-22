@@ -198,8 +198,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateSOT() {
+        val tvSot = binding.tvSOT ?: return
         if (!hasUsageStatsPermission()) {
-            binding.tvSOT.text = "SOT unavailable (grant usage access)"
+            tvSot.text = "SOT unavailable (grant usage access)"
             return
         }
         val sotMs = SOTManager.getScreenOnTimeToday(this)
@@ -207,9 +208,9 @@ class MainActivity : AppCompatActivity() {
         val h = sotMins / 60
         val m = sotMins % 60
         if (h > 0) {
-            binding.tvSOT.text = "${h}h ${m}m screen time"
+            tvSot.text = "${h}h ${m}m screen time"
         } else {
-            binding.tvSOT.text = "${m}m screen time"
+            tvSot.text = "${m}m screen time"
         }
     }
 

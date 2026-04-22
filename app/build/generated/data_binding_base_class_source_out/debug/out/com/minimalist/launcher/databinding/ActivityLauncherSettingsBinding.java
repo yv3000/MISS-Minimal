@@ -22,6 +22,9 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
+  public final LinearLayout btnAirplane;
+
+  @NonNull
   public final LinearLayout btnBluetooth;
 
   @NonNull
@@ -37,6 +40,15 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
   public final LinearLayout btnFontSize;
 
   @NonNull
+  public final LinearLayout btnHotspot;
+
+  @NonNull
+  public final LinearLayout btnLocation;
+
+  @NonNull
+  public final LinearLayout btnRotate;
+
+  @NonNull
   public final LinearLayout btnWifi;
 
   @NonNull
@@ -44,6 +56,9 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
 
   @NonNull
   public final SeekBar seekVolume;
+
+  @NonNull
+  public final TextView tvAirplaneState;
 
   @NonNull
   public final TextView tvBluetoothState;
@@ -64,6 +79,15 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
   public final TextView tvFontSizeState;
 
   @NonNull
+  public final TextView tvHotspotState;
+
+  @NonNull
+  public final TextView tvLocationState;
+
+  @NonNull
+  public final TextView tvRotateState;
+
+  @NonNull
   public final TextView tvTermsLink;
 
   @NonNull
@@ -73,30 +97,42 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
   public final TextView tvWifiState;
 
   private ActivityLauncherSettingsBinding(@NonNull ScrollView rootView,
-      @NonNull LinearLayout btnBluetooth, @NonNull LinearLayout btnData,
-      @NonNull LinearLayout btnDnd, @NonNull LinearLayout btnFlashlight,
-      @NonNull LinearLayout btnFontSize, @NonNull LinearLayout btnWifi,
+      @NonNull LinearLayout btnAirplane, @NonNull LinearLayout btnBluetooth,
+      @NonNull LinearLayout btnData, @NonNull LinearLayout btnDnd,
+      @NonNull LinearLayout btnFlashlight, @NonNull LinearLayout btnFontSize,
+      @NonNull LinearLayout btnHotspot, @NonNull LinearLayout btnLocation,
+      @NonNull LinearLayout btnRotate, @NonNull LinearLayout btnWifi,
       @NonNull SeekBar seekBrightness, @NonNull SeekBar seekVolume,
-      @NonNull TextView tvBluetoothState, @NonNull TextView tvBrightnessState,
-      @NonNull TextView tvDataState, @NonNull TextView tvDndState,
-      @NonNull TextView tvFlashlightState, @NonNull TextView tvFontSizeState,
+      @NonNull TextView tvAirplaneState, @NonNull TextView tvBluetoothState,
+      @NonNull TextView tvBrightnessState, @NonNull TextView tvDataState,
+      @NonNull TextView tvDndState, @NonNull TextView tvFlashlightState,
+      @NonNull TextView tvFontSizeState, @NonNull TextView tvHotspotState,
+      @NonNull TextView tvLocationState, @NonNull TextView tvRotateState,
       @NonNull TextView tvTermsLink, @NonNull TextView tvVolumeState,
       @NonNull TextView tvWifiState) {
     this.rootView = rootView;
+    this.btnAirplane = btnAirplane;
     this.btnBluetooth = btnBluetooth;
     this.btnData = btnData;
     this.btnDnd = btnDnd;
     this.btnFlashlight = btnFlashlight;
     this.btnFontSize = btnFontSize;
+    this.btnHotspot = btnHotspot;
+    this.btnLocation = btnLocation;
+    this.btnRotate = btnRotate;
     this.btnWifi = btnWifi;
     this.seekBrightness = seekBrightness;
     this.seekVolume = seekVolume;
+    this.tvAirplaneState = tvAirplaneState;
     this.tvBluetoothState = tvBluetoothState;
     this.tvBrightnessState = tvBrightnessState;
     this.tvDataState = tvDataState;
     this.tvDndState = tvDndState;
     this.tvFlashlightState = tvFlashlightState;
     this.tvFontSizeState = tvFontSizeState;
+    this.tvHotspotState = tvHotspotState;
+    this.tvLocationState = tvLocationState;
+    this.tvRotateState = tvRotateState;
     this.tvTermsLink = tvTermsLink;
     this.tvVolumeState = tvVolumeState;
     this.tvWifiState = tvWifiState;
@@ -129,6 +165,12 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnAirplane;
+      LinearLayout btnAirplane = ViewBindings.findChildViewById(rootView, id);
+      if (btnAirplane == null) {
+        break missingId;
+      }
+
       id = R.id.btnBluetooth;
       LinearLayout btnBluetooth = ViewBindings.findChildViewById(rootView, id);
       if (btnBluetooth == null) {
@@ -159,6 +201,24 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnHotspot;
+      LinearLayout btnHotspot = ViewBindings.findChildViewById(rootView, id);
+      if (btnHotspot == null) {
+        break missingId;
+      }
+
+      id = R.id.btnLocation;
+      LinearLayout btnLocation = ViewBindings.findChildViewById(rootView, id);
+      if (btnLocation == null) {
+        break missingId;
+      }
+
+      id = R.id.btnRotate;
+      LinearLayout btnRotate = ViewBindings.findChildViewById(rootView, id);
+      if (btnRotate == null) {
+        break missingId;
+      }
+
       id = R.id.btnWifi;
       LinearLayout btnWifi = ViewBindings.findChildViewById(rootView, id);
       if (btnWifi == null) {
@@ -174,6 +234,12 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
       id = R.id.seekVolume;
       SeekBar seekVolume = ViewBindings.findChildViewById(rootView, id);
       if (seekVolume == null) {
+        break missingId;
+      }
+
+      id = R.id.tvAirplaneState;
+      TextView tvAirplaneState = ViewBindings.findChildViewById(rootView, id);
+      if (tvAirplaneState == null) {
         break missingId;
       }
 
@@ -213,6 +279,24 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvHotspotState;
+      TextView tvHotspotState = ViewBindings.findChildViewById(rootView, id);
+      if (tvHotspotState == null) {
+        break missingId;
+      }
+
+      id = R.id.tvLocationState;
+      TextView tvLocationState = ViewBindings.findChildViewById(rootView, id);
+      if (tvLocationState == null) {
+        break missingId;
+      }
+
+      id = R.id.tvRotateState;
+      TextView tvRotateState = ViewBindings.findChildViewById(rootView, id);
+      if (tvRotateState == null) {
+        break missingId;
+      }
+
       id = R.id.tvTermsLink;
       TextView tvTermsLink = ViewBindings.findChildViewById(rootView, id);
       if (tvTermsLink == null) {
@@ -231,10 +315,11 @@ public final class ActivityLauncherSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLauncherSettingsBinding((ScrollView) rootView, btnBluetooth, btnData,
-          btnDnd, btnFlashlight, btnFontSize, btnWifi, seekBrightness, seekVolume, tvBluetoothState,
-          tvBrightnessState, tvDataState, tvDndState, tvFlashlightState, tvFontSizeState,
-          tvTermsLink, tvVolumeState, tvWifiState);
+      return new ActivityLauncherSettingsBinding((ScrollView) rootView, btnAirplane, btnBluetooth,
+          btnData, btnDnd, btnFlashlight, btnFontSize, btnHotspot, btnLocation, btnRotate, btnWifi,
+          seekBrightness, seekVolume, tvAirplaneState, tvBluetoothState, tvBrightnessState,
+          tvDataState, tvDndState, tvFlashlightState, tvFontSizeState, tvHotspotState,
+          tvLocationState, tvRotateState, tvTermsLink, tvVolumeState, tvWifiState);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

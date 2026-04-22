@@ -40,17 +40,88 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final TextView btnTime;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final View dateDivider;
 
   @NonNull
   public final FrameLayout fullscreenTimeOverlay;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final Guideline guideBottom;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideCenter;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final Guideline guideTop;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final LinearLayout timeContainer;
 
   @NonNull
   public final TextView tvAppCamera;
@@ -76,7 +147,20 @@ public final class ActivityMainBinding implements ViewBinding {
   @NonNull
   public final TextView tvFullscreenTime;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView tvSOT;
 
   @NonNull
@@ -84,12 +168,13 @@ public final class ActivityMainBinding implements ViewBinding {
 
   private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull LinearLayout appList,
       @NonNull LinearLayout bottomBar, @NonNull TextView btnExit, @NonNull TextView btnFocus,
-      @NonNull TextView btnSot, @NonNull TextView btnTime, @NonNull View dateDivider,
-      @NonNull FrameLayout fullscreenTimeOverlay, @NonNull Guideline guideBottom,
-      @NonNull Guideline guideTop, @NonNull TextView tvAppCamera, @NonNull TextView tvAppPhone,
-      @NonNull TextView tvAppSlot1, @NonNull TextView tvAppSlot2, @NonNull TextView tvAppSlot3,
-      @NonNull TextView tvDate, @NonNull TextView tvFullscreenDate,
-      @NonNull TextView tvFullscreenTime, @NonNull TextView tvSOT, @NonNull TextView tvTime) {
+      @NonNull TextView btnSot, @NonNull TextView btnTime, @Nullable View dateDivider,
+      @NonNull FrameLayout fullscreenTimeOverlay, @Nullable Guideline guideBottom,
+      @Nullable Guideline guideCenter, @Nullable Guideline guideTop,
+      @Nullable LinearLayout timeContainer, @NonNull TextView tvAppCamera,
+      @NonNull TextView tvAppPhone, @NonNull TextView tvAppSlot1, @NonNull TextView tvAppSlot2,
+      @NonNull TextView tvAppSlot3, @NonNull TextView tvDate, @NonNull TextView tvFullscreenDate,
+      @NonNull TextView tvFullscreenTime, @Nullable TextView tvSOT, @NonNull TextView tvTime) {
     this.rootView = rootView;
     this.appList = appList;
     this.bottomBar = bottomBar;
@@ -100,7 +185,9 @@ public final class ActivityMainBinding implements ViewBinding {
     this.dateDivider = dateDivider;
     this.fullscreenTimeOverlay = fullscreenTimeOverlay;
     this.guideBottom = guideBottom;
+    this.guideCenter = guideCenter;
     this.guideTop = guideTop;
+    this.timeContainer = timeContainer;
     this.tvAppCamera = tvAppCamera;
     this.tvAppPhone = tvAppPhone;
     this.tvAppSlot1 = tvAppSlot1;
@@ -178,9 +265,6 @@ public final class ActivityMainBinding implements ViewBinding {
 
       id = R.id.dateDivider;
       View dateDivider = ViewBindings.findChildViewById(rootView, id);
-      if (dateDivider == null) {
-        break missingId;
-      }
 
       id = R.id.fullscreenTimeOverlay;
       FrameLayout fullscreenTimeOverlay = ViewBindings.findChildViewById(rootView, id);
@@ -190,15 +274,15 @@ public final class ActivityMainBinding implements ViewBinding {
 
       id = R.id.guideBottom;
       Guideline guideBottom = ViewBindings.findChildViewById(rootView, id);
-      if (guideBottom == null) {
-        break missingId;
-      }
+
+      id = R.id.guideCenter;
+      Guideline guideCenter = ViewBindings.findChildViewById(rootView, id);
 
       id = R.id.guideTop;
       Guideline guideTop = ViewBindings.findChildViewById(rootView, id);
-      if (guideTop == null) {
-        break missingId;
-      }
+
+      id = R.id.timeContainer;
+      LinearLayout timeContainer = ViewBindings.findChildViewById(rootView, id);
 
       id = R.id.tvAppCamera;
       TextView tvAppCamera = ViewBindings.findChildViewById(rootView, id);
@@ -250,9 +334,6 @@ public final class ActivityMainBinding implements ViewBinding {
 
       id = R.id.tvSOT;
       TextView tvSOT = ViewBindings.findChildViewById(rootView, id);
-      if (tvSOT == null) {
-        break missingId;
-      }
 
       id = R.id.tvTime;
       TextView tvTime = ViewBindings.findChildViewById(rootView, id);
@@ -261,9 +342,9 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ConstraintLayout) rootView, appList, bottomBar, btnExit,
-          btnFocus, btnSot, btnTime, dateDivider, fullscreenTimeOverlay, guideBottom, guideTop,
-          tvAppCamera, tvAppPhone, tvAppSlot1, tvAppSlot2, tvAppSlot3, tvDate, tvFullscreenDate,
-          tvFullscreenTime, tvSOT, tvTime);
+          btnFocus, btnSot, btnTime, dateDivider, fullscreenTimeOverlay, guideBottom, guideCenter,
+          guideTop, timeContainer, tvAppCamera, tvAppPhone, tvAppSlot1, tvAppSlot2, tvAppSlot3,
+          tvDate, tvFullscreenDate, tvFullscreenTime, tvSOT, tvTime);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

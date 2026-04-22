@@ -3239,6 +3239,7 @@ id btn10m
 id btn15m
 id btn1m
 id btn5m
+id btnAirplane
 id btnAllowAccessibility
 id btnAllowBattery
 id btnAllowDnd
@@ -3404,7 +3405,9 @@ id group_divider
 id grouping
 id groups
 id guideBottom
+id guideCenter
 id guideTop
+id guideV
 id header_title
 id hide_ime_id
 id hideable
@@ -3571,6 +3574,7 @@ id pom_btnDur100
 id pom_btnDur25
 id pom_btnDur50
 id pom_btnDur75
+id pom_btnEndSession
 id pom_btnRemoveContact
 id pom_btnStartPomodoro
 id pom_layoutActive
@@ -3716,12 +3720,14 @@ id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
 id time
+id timeContainer
 id timerBtnRow
 id title
 id titleDividerNoCustom
 id title_template
 id toggle
 id top
+id topBar
 id topPanel
 id touch_outside
 id transitionToEnd
@@ -3732,6 +3738,7 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tvAirplaneState
 id tvAppCamera
 id tvAppName
 id tvAppPhone
@@ -3750,8 +3757,11 @@ id tvFullscreenDate
 id tvFullscreenTime
 id tvGithubLink
 id tvHeader
+id tvHotspotState
 id tvLinktree
+id tvLocationState
 id tvOverlayTimer
+id tvRotateState
 id tvSOT
 id tvStatusAccessibility
 id tvStatusBattery

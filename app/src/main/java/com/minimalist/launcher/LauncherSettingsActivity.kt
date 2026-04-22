@@ -139,7 +139,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         binding.btnFlashlight.setOnClickListener {
             try {
                 cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
-            } catch (e) { }
+            } catch (e: Exception) { }
         }
 
         binding.btnRotate.setOnClickListener {

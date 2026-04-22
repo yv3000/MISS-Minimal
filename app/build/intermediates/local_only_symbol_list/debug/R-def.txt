@@ -45,6 +45,7 @@ id btn10m
 id btn15m
 id btn1m
 id btn5m
+id btnAirplane
 id btnAllowAccessibility
 id btnAllowBattery
 id btnAllowDnd
@@ -97,7 +98,9 @@ id dateDivider
 id etSearch
 id fullscreenTimeOverlay
 id guideBottom
+id guideCenter
 id guideTop
+id guideV
 id layoutPickers
 id layoutStrictComplete
 id layoutStrictWarning
@@ -119,6 +122,7 @@ id pom_btnDur100
 id pom_btnDur25
 id pom_btnDur50
 id pom_btnDur75
+id pom_btnEndSession
 id pom_btnRemoveContact
 id pom_btnStartPomodoro
 id pom_layoutActive
@@ -150,7 +154,10 @@ id tabPomodoro
 id tabStopwatch
 id tabStrict
 id tabTimer
+id timeContainer
 id timerBtnRow
+id topBar
+id tvAirplaneState
 id tvAppCamera
 id tvAppName
 id tvAppPhone
@@ -169,8 +176,11 @@ id tvFullscreenDate
 id tvFullscreenTime
 id tvGithubLink
 id tvHeader
+id tvHotspotState
 id tvLinktree
+id tvLocationState
 id tvOverlayTimer
+id tvRotateState
 id tvSOT
 id tvStatusAccessibility
 id tvStatusBattery

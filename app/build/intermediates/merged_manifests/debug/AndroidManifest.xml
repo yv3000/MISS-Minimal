@@ -90,37 +90,48 @@
         </activity>
         <activity
             android:name="com.minimalist.launcher.AppPickerActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.QuickSettingsActivity"
+            android:configChanges="orientation|screenSize"
             android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.AppDrawerActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.LauncherSettingsActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.TimeLimitActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.FocusActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.NotificationPanelActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.PermissionOnboardingActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.TermsActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.PomodoroActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
         <activity
             android:name="com.minimalist.launcher.SotActivity"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="fullUser" />
 
         <service
             android:name="com.minimalist.launcher.NotificationService"

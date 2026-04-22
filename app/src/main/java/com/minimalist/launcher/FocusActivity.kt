@@ -912,55 +912,54 @@ class FocusActivity : AppCompatActivity() {
           updatePomAppSlotsUI()
         }
       } else if (requestCode == 2002) {
-        if (resultCode == RESULT_OK) {
-            handlePomContactResult(data)
-        } else {
-            Toast.makeText(this, "Contact selection cancelled", Toast.LENGTH_SHORT).show()
-        }
+        handlePomContactResult(data)
       }
     }
   }
 
   private fun handlePomContactResult(data: Intent) {
     try {
-        val uri = data.data ?: run {
-            Toast.makeText(this, "No contact data received", Toast.LENGTH_SHORT).show()
-            return
-        }
-        
-        try {
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            cursor?.use {
-                if (it.moveToFirst()) {
-                    val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                    val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                    
-                    if (nameIdx != -1 && numIdx != -1) {
-                        contactName = it.getString(nameIdx)
-                        contactNumber = it.getString(numIdx)
-                        updatePomContactUI()
-                        Toast.makeText(this, "Selected: $contactName", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val displayNameCol = it.getColumnIndex(android.provider.ContactsContract.Contacts.DISPLAY_NAME)
-                        val displayName = if (displayNameCol != -1) it.getString(displayNameCol) else "Unknown"
-                        Toast.makeText(this, "Could not find number for $displayName", Toast.LENGTH_SHORT).show()
-                    }
+        val uri = data.data ?: return
+        val cursor = contentResolver.query(uri, arrayOf(
+            android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
+        ), null, null, null)
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                
+                val name = if (nameIdx != -1) it.getString(nameIdx) else null
+                val rawNum = if (numIdx != -1) it.getString(numIdx) else null
+
+                if (name != null && rawNum != null) {
+                    contactName = name
+                    contactNumber = rawNum.replace("[^0-9+]".toRegex(), "")
+                    updatePomContactUI()
                 } else {
-                    Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Contact has no phone number", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error picking contact: ${e.message}", Toast.LENGTH_LONG).show()
         }
     } catch (e: Exception) {
-        e.printStackTrace()
-        Toast.makeText(this, "Error selecting contact", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
     }
   }
 
   private fun startPomodoro() {
-    PomodoroManager.start(this, selectedDurationMins, selectedApps, contactName, contactNumber)
+    // Keep screen on
+    window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    
+    PomodoroManager.start(
+        durationMinutes = selectedDurationMins,
+        allowedApps = selectedApps,
+        emergencyContact = contactNumber,
+        context = this
+    )
+    
     val intent = Intent(this, PomodoroTimerService::class.java)
     intent.action = PomodoroTimerService.ACTION_START
     intent.putExtra(PomodoroTimerService.EXTRA_DURATION, selectedDurationMins * 60)

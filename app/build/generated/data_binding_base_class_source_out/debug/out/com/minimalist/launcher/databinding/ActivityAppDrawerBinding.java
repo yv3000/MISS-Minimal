@@ -28,23 +28,66 @@ public final class ActivityAppDrawerBinding implements ViewBinding {
   @NonNull
   public final EditText etSearch;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final Guideline guideBottom;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final Guideline guideTop;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideV;
 
   @NonNull
   public final RecyclerView rvApps;
 
   private ActivityAppDrawerBinding(@NonNull ConstraintLayout rootView,
-      @NonNull ImageView btnSettings, @NonNull EditText etSearch, @NonNull Guideline guideBottom,
-      @NonNull Guideline guideTop, @NonNull RecyclerView rvApps) {
+      @NonNull ImageView btnSettings, @NonNull EditText etSearch, @Nullable Guideline guideBottom,
+      @Nullable Guideline guideTop, @Nullable Guideline guideV, @NonNull RecyclerView rvApps) {
     this.rootView = rootView;
     this.btnSettings = btnSettings;
     this.etSearch = etSearch;
     this.guideBottom = guideBottom;
     this.guideTop = guideTop;
+    this.guideV = guideV;
     this.rvApps = rvApps;
   }
 
@@ -89,15 +132,12 @@ public final class ActivityAppDrawerBinding implements ViewBinding {
 
       id = R.id.guideBottom;
       Guideline guideBottom = ViewBindings.findChildViewById(rootView, id);
-      if (guideBottom == null) {
-        break missingId;
-      }
 
       id = R.id.guideTop;
       Guideline guideTop = ViewBindings.findChildViewById(rootView, id);
-      if (guideTop == null) {
-        break missingId;
-      }
+
+      id = R.id.guideV;
+      Guideline guideV = ViewBindings.findChildViewById(rootView, id);
 
       id = R.id.rvApps;
       RecyclerView rvApps = ViewBindings.findChildViewById(rootView, id);
@@ -106,7 +146,7 @@ public final class ActivityAppDrawerBinding implements ViewBinding {
       }
 
       return new ActivityAppDrawerBinding((ConstraintLayout) rootView, btnSettings, etSearch,
-          guideBottom, guideTop, rvApps);
+          guideBottom, guideTop, guideV, rvApps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -4,7 +4,6 @@ package com.minimalist.launcher.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -18,7 +17,10 @@ import java.lang.String;
 
 public final class ActivityQuickSettingsBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final View rootView;
+
+  @NonNull
+  public final TextView btnAirplane;
 
   @NonNull
   public final TextView btnAutoBrightness;
@@ -62,7 +64,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
   @NonNull
   public final SeekBar seekVolume;
 
-  private ActivityQuickSettingsBinding(@NonNull LinearLayout rootView,
+  private ActivityQuickSettingsBinding(@NonNull View rootView, @NonNull TextView btnAirplane,
       @NonNull TextView btnAutoBrightness, @NonNull TextView btnBluetooth,
       @NonNull TextView btnData, @NonNull TextView btnDnd, @NonNull TextView btnFlashlightText,
       @NonNull TextView btnHotspot, @NonNull TextView btnLocation, @NonNull TextView btnRotate,
@@ -70,6 +72,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
       @NonNull TextView btnSoundVibrate, @NonNull TextView btnWifi, @NonNull SeekBar seekBrightness,
       @NonNull SeekBar seekVolume) {
     this.rootView = rootView;
+    this.btnAirplane = btnAirplane;
     this.btnAutoBrightness = btnAutoBrightness;
     this.btnBluetooth = btnBluetooth;
     this.btnData = btnData;
@@ -88,7 +91,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public View getRoot() {
     return rootView;
   }
 
@@ -113,6 +116,12 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnAirplane;
+      TextView btnAirplane = ViewBindings.findChildViewById(rootView, id);
+      if (btnAirplane == null) {
+        break missingId;
+      }
+
       id = R.id.btnAutoBrightness;
       TextView btnAutoBrightness = ViewBindings.findChildViewById(rootView, id);
       if (btnAutoBrightness == null) {
@@ -197,7 +206,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityQuickSettingsBinding((LinearLayout) rootView, btnAutoBrightness,
+      return new ActivityQuickSettingsBinding(rootView, btnAirplane, btnAutoBrightness,
           btnBluetooth, btnData, btnDnd, btnFlashlightText, btnHotspot, btnLocation, btnRotate,
           btnSoundNormal, btnSoundSilent, btnSoundVibrate, btnWifi, seekBrightness, seekVolume);
     }
