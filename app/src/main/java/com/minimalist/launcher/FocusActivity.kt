@@ -646,7 +646,7 @@ class FocusActivity : AppCompatActivity() {
     if (PomodoroManager.isActive) {
       // Restore state from manager
       selectedApps.clear()
-      selectedApps.addAll(PomodoroManager.selectedAppPackages)
+      selectedApps.addAll(PomodoroManager.allowedPackages)
       contactName = PomodoroManager.emergencyContactName
       contactNumber = PomodoroManager.emergencyContactNumber
       

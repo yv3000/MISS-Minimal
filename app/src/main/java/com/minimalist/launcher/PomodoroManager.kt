@@ -7,6 +7,10 @@ object PomodoroManager {
     var isWorkPhase = true
     var sessionCount = 1
     var workDurationSeconds = 25 * 60
+    
+    var remainingWorkSeconds = 0
+    var workChunkSeconds = 25 * 60
+    
     val allowedPackages = mutableSetOf<String>()
     
     var emergencyContactName: String? = null
@@ -33,6 +37,9 @@ object PomodoroManager {
         context: Context
     ) {
         workDurationSeconds = durationMinutes * 60
+        remainingWorkSeconds = workDurationSeconds
+        workChunkSeconds = 25 * 60 // standard pomodoro chunk
+        
         // Set state FIRST — service checks this
         isActive = true
         isWorkPhase = true
@@ -60,6 +67,8 @@ object PomodoroManager {
         emergencyContactName = null
         emergencyContactNumber = null
         allowedPackages.clear()
+        
+        remainingWorkSeconds = 0
         
         TopBarBlockerService.stop(context)
         StrictModeService.instance?.stopBlocking()

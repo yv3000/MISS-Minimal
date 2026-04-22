@@ -32,6 +32,14 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\drawable\\bg_pill.xml"
     },
     {
+        "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout-land_activity_quick_settings.xml.flat",
+        "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout-land\\activity_quick_settings.xml"
+    },
+    {
+        "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout-land_activity_main.xml.flat",
+        "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout-land\\activity_main.xml"
+    },
+    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\mipmap-mdpi_ic_launcher_foreground.webp.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\mipmap-mdpi\\ic_launcher_foreground.webp"
     },
@@ -46,10 +54,6 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_activity_focus.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout\\activity_focus.xml"
-    },
-    {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_app_drawer.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_app_drawer.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_bg_border_dark.xml.flat",
@@ -78,6 +82,14 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_row_notification.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout\\row_notification.xml"
+    },
+    {
+        "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout-land_activity_focus.xml.flat",
+        "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout-land\\activity_focus.xml"
+    },
+    {
+        "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout-land_activity_app_drawer.xml.flat",
+        "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout-land\\activity_app_drawer.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_bg_card_premium.xml.flat",
@@ -112,8 +124,8 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_quick_settings.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_quick_settings.xml"
+        "merged": "com.minimalist.launcher.app-merged_res-34:/xml_strict_mode_service.xml.flat",
+        "source": "com.minimalist.launcher.app-main-36:/xml/strict_mode_service.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_row_app.xml.flat",
@@ -148,10 +160,6 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\font\\plus_jakarta_sans_light.ttf"
     },
     {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_focus.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_focus.xml"
-    },
-    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_border_box.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\drawable\\border_box.xml"
     },
@@ -180,16 +188,8 @@
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\font\\plus_jakarta_sans_extra_bold.ttf"
     },
     {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout_activity_quick_settings.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout/activity_quick_settings.xml"
-    },
-    {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_activity_app_picker.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\layout\\activity_app_picker.xml"
-    },
-    {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout_activity_launcher_settings.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout/activity_launcher_settings.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
@@ -242,10 +242,6 @@
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\drawable_ic_flashlight.xml.flat",
         "source": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-main-36:\\drawable\\ic_flashlight.xml"
-    },
-    {
-        "merged": "com.minimalist.launcher.app-merged_res-34:/layout-land_activity_main.xml.flat",
-        "source": "com.minimalist.launcher.app-main-36:/layout-land/activity_main.xml"
     },
     {
         "merged": "X:\\ALL FOLDER\\FIREFOX\\DOWNLOADS\\gradle-8.7-bin\\gradle-8.7\\daemon\\9.0-milestone-1\\com.minimalist.launcher.app-merged_res-34:\\layout_activity_app_drawer.xml.flat",

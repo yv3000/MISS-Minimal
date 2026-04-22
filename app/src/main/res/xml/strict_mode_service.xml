@@ -6,6 +6,6 @@
     android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews|flagRetrieveInteractiveWindows|flagRequestFilterKeyEvents"
     android:canRetrieveWindowContent="true"
     android:canRequestFilterKeyEvents="true"
-    android:description="@string/accessibility_description"
+    android:description="@string/accessibility_desc"
     android:notificationTimeout="50"
     android:settingsActivity=".LauncherSettingsActivity"/>

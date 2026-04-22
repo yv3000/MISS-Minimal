@@ -61,4 +61,23 @@ object StrictModeManager {
 
   fun getRemainingMs() = 
     maxOf(0L, endTimeMs - System.currentTimeMillis())
+
+  fun getBlockedPackages(): List<String> {
+    return listOf(
+        "com.android.settings",
+        "com.android.vending",
+        "com.google.android.youtube",
+        "com.whatsapp",
+        "com.facebook.katana",
+        "com.instagram.android",
+        "com.twitter.android",
+        "com.snapchat.android",
+        "com.reddit.frontpage",
+        "com.google.android.apps.docs",
+        "com.google.android.gm",
+        "com.netflix.mediaclient",
+        "com.disney.disneyplus",
+        "com.spotify.music"
+    )
+  }
 }
