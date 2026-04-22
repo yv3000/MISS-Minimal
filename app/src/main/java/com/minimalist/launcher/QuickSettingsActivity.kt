@@ -52,6 +52,12 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
+    private val stateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateAllStates()
+        }
+    }
+
     private lateinit var gestureDetector: GestureDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,11 +132,21 @@ class QuickSettingsActivity : AppCompatActivity() {
             Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS_MODE),
             false, brightnessObserver
         )
+
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            addAction("android.net.wifi.WIFI_AP_STATE_CHANGED")
+            addAction("android.location.PROVIDERS_CHANGED")
+            addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
+            addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
+        }
+        registerReceiver(stateReceiver, filter)
     }
 
     override fun onPause() {
         super.onPause()
         unregisterReceiver(volumeReceiver)
+        unregisterReceiver(stateReceiver)
         contentResolver.unregisterContentObserver(brightnessObserver)
     }
 

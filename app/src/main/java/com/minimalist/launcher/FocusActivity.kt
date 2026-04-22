@@ -662,7 +662,7 @@ class FocusActivity : AppCompatActivity() {
     if (PomodoroManager.isActive) {
       // Restore state from manager
       selectedApps.clear()
-      selectedApps.addAll(PomodoroManager.allowedPackages)
+      selectedApps.addAll(PomodoroManager.userSelectedApps)
       contactName = PomodoroManager.emergencyContactName
       contactNumber = PomodoroManager.emergencyContactNumber
       
@@ -897,6 +897,10 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun openPomContactPicker() {
+    if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+      androidx.core.app.ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS), 7001)
+      return
+    }
     val intent = Intent(Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
     startActivityForResult(intent, 2002)
   }
@@ -933,6 +937,15 @@ class FocusActivity : AppCompatActivity() {
     }
   }
 
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == 7001 && grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+      openPomContactPicker()
+    } else if (requestCode == 7001) {
+      Toast.makeText(this, "Permission required to select contact", Toast.LENGTH_SHORT).show()
+    }
+  }
+
   private fun handlePomContactResult(data: Intent) {
     try {
         val uri = data.data ?: return
@@ -944,61 +957,46 @@ class FocusActivity : AppCompatActivity() {
             if (it.moveToFirst()) {
                 val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
                 val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                val nameAltIdx = it.getColumnIndex(android.provider.ContactsContract.Contacts.DISPLAY_NAME)
                 
-                foundName = when {
-                    nameIdx != -1 -> it.getString(nameIdx)
-                    nameAltIdx != -1 -> it.getString(nameAltIdx)
-                    else -> null
-                }
-                foundNumber = if (numIdx != -1) it.getString(numIdx) else null
+                if (numIdx != -1) foundNumber = it.getString(numIdx)
+                if (nameIdx != -1) foundName = it.getString(nameIdx)
             }
         }
         
-        // ── STEP 2: Secondary lookup by CONTACT_ID (Essential for MIUI/OxygenOS) ──
+        // ── STEP 2: Lookup by URI path if direct query failed ──
         if (foundNumber == null) {
             val contactId = uri.lastPathSegment
             if (contactId != null) {
+                // Try as Phone.CONTENT_URI lookup
                 contentResolver.query(
                     android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    arrayOf(
-                        android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                        android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
-                    ),
-                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                    arrayOf(contactId),
+                    null,
+                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? OR " + android.provider.ContactsContract.Data._ID + " = ?",
+                    arrayOf(contactId, contactId),
                     null
                 )?.use {
                     if (it.moveToFirst()) {
-                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
                         val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                        if (nameIdx != -1) foundName = it.getString(nameIdx)
+                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
                         if (numIdx != -1) foundNumber = it.getString(numIdx)
+                        if (nameIdx != -1 && foundName == null) foundName = it.getString(nameIdx)
                     }
                 }
             }
         }
-        
-        // ── STEP 3: Fallback by DATA_ID ──
-        if (foundNumber == null) {
-            val dataId = uri.lastPathSegment
-            if (dataId != null) {
-                contentResolver.query(
-                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    arrayOf(
-                        android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                        android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
-                    ),
-                    android.provider.ContactsContract.Data._ID + " = ?",
-                    arrayOf(dataId),
-                    null
-                )?.use {
-                    if (it.moveToFirst()) {
-                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                        val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                        if (nameIdx != -1 && foundName == null) foundName = it.getString(nameIdx)
-                        if (numIdx != -1) foundNumber = it.getString(numIdx)
-                    }
+
+        // ── STEP 3: Last resort - query all data for this contact ──
+        if (foundNumber == null && foundName != null) {
+             contentResolver.query(
+                android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?",
+                arrayOf(foundName),
+                null
+            )?.use {
+                if (it.moveToFirst()) {
+                    val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    if (numIdx != -1) foundNumber = it.getString(numIdx)
                 }
             }
         }
