@@ -407,7 +407,7 @@ class QuickSettingsActivity : AppCompatActivity() {
     // ── LOCATION HELPER METHODS ──
     private fun toggleLocation(context: Context) {
         if (Build.VERSION.SDK_INT >= 29) {
-            val intent = Intent(Settings.Panel.ACTION_LOCATION)
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
             return
