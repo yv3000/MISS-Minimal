@@ -1,0 +1,59 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="32dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upcoming soon..."
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:fontFamily="@font/plus_jakarta_sans_light"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="If you know how to build this feature, please contribute to the MISS Minimal project on GitHub. Your help is appreciated!"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:layout_marginBottom="32dp"/>
+
+        <TextView android:id="@+id/tvGithubLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="https://github.com/yv3000"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:background="@drawable/border_box"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"/>
+
+    </LinearLayout>
+
+    <TextView android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BACK"
+        android:textColor="#444444"
+        android:textSize="10sp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="16dp"/>
+
+</FrameLayout>

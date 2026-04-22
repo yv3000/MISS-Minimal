@@ -1,0 +1,52 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/build
+/.gradle
+/local.properties
+/.idea
+*.iml
+
+# Build output — zarurat nahi, bade files hain
+/build
+/app/build
+*.apk
+*.aab
+
+# Gradle cache
+/.gradle
+/gradle/wrapper/gradle-wrapper.jar
+
+# Local config — tera personal path hai isme
+local.properties
+
+# IDE files — dusre ke kaam ke nahi
+/.idea
+*.iml
+.DS_Store
+**/.DS_Store
+
+# Keystore — KABHI MAT PUSH KARNA
+*.jks
+*.keystore
+release/
+
+# Proguard (if generated)
+/app/proguard-rules.pro
+
+
+echo "/build
+/app/build
+/.gradle
+/local.properties
+/.idea
+*.iml
+.DS_Store
+*.jks
+*.keystore
+*.apk
+*.aab" > .gitignore
+
+cat .gitignore
+
+local.properties
