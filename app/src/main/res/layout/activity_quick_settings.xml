@@ -93,6 +93,47 @@
             android:text="DND"
             android:textColor="@color/grey_666"
             android:textSize="12sp" />
+        <TextView
+            android:id="@+id/btnRotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_border_dark"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="Rotate"
+            android:textColor="@color/grey_666"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_border_dark"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="Location"
+            android:textColor="@color/grey_666"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnHotspot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_border_dark"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="Hotspot"
+            android:textColor="@color/grey_666"
+            android:textSize="12sp" />
     </com.google.android.flexbox.FlexboxLayout>
 
     <View

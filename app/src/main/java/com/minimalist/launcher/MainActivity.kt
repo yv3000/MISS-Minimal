@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-    binding.btnExit.setOnClickListener {
+    binding.btnExit.setOnClickListener { animateClick(it) {
         try {
             val intent = Intent(Settings.ACTION_HOME_SETTINGS)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             } catch (e2: Exception) {}
         }
-    }
+    }}
 
         binding.btnFocus.setOnClickListener { animateClick(it) {
             startActivity(Intent(this, FocusActivity::class.java))
@@ -260,11 +260,11 @@ class MainActivity : AppCompatActivity() {
             window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
-        binding.tvAppPhone.setOnClickListener {
+        binding.tvAppPhone.setOnClickListener { animateClick(it) {
             val intent = Intent(Intent.ACTION_DIAL)
             startActivity(intent)
-        }
-        binding.tvAppCamera.setOnClickListener {
+        }}
+        binding.tvAppCamera.setOnClickListener { animateClick(it) {
             fun openCamera() {
                 val pm = packageManager
                 val camPackages = listOf(
@@ -297,7 +297,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             openCamera()
-        }
+        }}
         
         binding.tvAppSlot1.setOnClickListener { launchSlot(1, it) }
         binding.tvAppSlot2.setOnClickListener { launchSlot(2, it) }

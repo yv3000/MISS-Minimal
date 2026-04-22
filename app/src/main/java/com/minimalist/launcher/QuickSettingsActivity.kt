@@ -186,6 +186,61 @@ class QuickSettingsActivity : AppCompatActivity() {
                 cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
             } catch (e: Exception) {}
         }
+
+        // ROTATE
+        binding.btnRotate.setOnClickListener {
+            if (Settings.System.canWrite(this)) {
+                val current = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0)
+                Settings.System.putInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, if (current == 1) 0 else 1)
+                updateAllStates()
+            } else {
+                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
+        }
+
+        // LOCATION
+        binding.btnLocation.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        }
+
+        // HOTSPOT
+        binding.btnHotspot.setOnClickListener {
+            val intent = Intent()
+            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
+        }
+
+        setupMicroInteractions()
+    }
+
+    private fun setupMicroInteractions() {
+        val buttons = listOf(
+            binding.btnWifi, binding.btnData, binding.btnBluetooth, 
+            binding.btnDnd, binding.btnFlashlightText, binding.btnRotate,
+            binding.btnLocation, binding.btnHotspot, binding.btnAutoBrightness,
+            binding.btnSoundNormal, binding.btnSoundVibrate, binding.btnSoundSilent
+        )
+        buttons.forEach { it.addClickFeedback() }
+    }
+
+    private fun android.view.View.addClickFeedback() {
+        setOnTouchListener { v, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                }
+                android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                }
+            }
+            false
+        }
     }
 
     private fun updateAllStates() {
@@ -234,6 +289,18 @@ class QuickSettingsActivity : AppCompatActivity() {
             binding.btnFlashlightText.setTextColor(0xFF666666.toInt())
         }
         binding.btnFlashlightText.background = flashBg
+
+        // Rotate
+        val isRotateOn = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
+        setButtonState(binding.btnRotate, isRotateOn, dpToPx)
+
+        // Location
+        val lm = getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+        val isGpsOn = lm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+        setButtonState(binding.btnLocation, isGpsOn, dpToPx)
+
+        // Hotspot
+        setButtonState(binding.btnHotspot, false, dpToPx) // Hard to detect without special perms
     }
 
     private fun setButtonState(view: TextView, isActive: Boolean, density: Float) {
