@@ -225,5 +225,47 @@
         </FrameLayout>
 
     </FrameLayout>
+    
+    <!-- MISSING IDS FOR LANDSCAPE (Hidden to prevent crash) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        
+        <View android:id="@+id/tabIndicator" android:layout_width="0dp" android:layout_height="0dp"/>
+        
+        <!-- Stopwatch missing -->
+        <View android:id="@+id/btnSwFlag" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/scrollTimestamps" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/tvTimestamps" android:layout_width="0dp" android:layout_height="0dp"/>
+        
+        <!-- Timer missing -->
+        <View android:id="@+id/tvTimeUp" android:layout_width="0dp" android:layout_height="0dp"/>
+        
+        <!-- Strict missing -->
+        <View android:id="@+id/layoutStrictWarning" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/layoutStrictComplete" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/tvStrictStatus" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/btnStartAgain" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/btnExitStrict" android:layout_width="0dp" android:layout_height="0dp"/>
+        
+        <!-- Pomodoro missing -->
+        <View android:id="@+id/pom_layoutSetup" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_layoutActive" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_btnDur75" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_btnDur100" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_tvContactName" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_btnRemoveContact" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_tvPhaseLabel" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_tvCountdown" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_tvSessionCount" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_btnCallContact" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_btnCancelBreak" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_active_slot1" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_active_slot2" android:layout_width="0dp" android:layout_height="0dp"/>
+        <View android:id="@+id/pom_active_slot3" android:layout_width="0dp" android:layout_height="0dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

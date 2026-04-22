@@ -134,9 +134,9 @@ class QuickSettingsActivity : AppCompatActivity() {
         )
 
         val filter = IntentFilter().apply {
-            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-            addAction("android.net.wifi.WIFI_AP_STATE_CHANGED")
-            addAction("android.location.PROVIDERS_CHANGED")
+            // addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            // addAction("android.net.wifi.WIFI_AP_STATE_CHANGED")
+            // addAction("android.location.PROVIDERS_CHANGED")
             addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
             addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
         }
@@ -179,16 +179,9 @@ class QuickSettingsActivity : AppCompatActivity() {
             true
         }
 
-        // BLUETOOTH — use system panel (Android 10+)
+        // BLUETOOTH — use system settings (no dedicated Panel for Bluetooth in Android 10+)
         binding.btnBluetooth.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startActivity(Intent(Settings.Panel.ACTION_BLUETOOTH))
-            } else {
-                @Suppress("DEPRECATION")
-                val bt = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
-                if (bt?.isEnabled == true) bt.disable() else bt?.enable()
-                android.os.Handler(Looper.getMainLooper()).postDelayed({ updateAllStates() }, 800)
-            }
+            startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
         }
         binding.btnBluetooth.setOnLongClickListener {
             startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
@@ -236,12 +229,14 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
 
         // LOCATION
+        /*
         binding.btnLocation.setOnClickListener {
             toggleLocation(this)
         }
+        */
 
-        // HOTSPOT — keep existing reflection approach as primary,
-        // but on failure open tethering settings directly:
+        // HOTSPOT
+        /*
         binding.btnHotspot.setOnClickListener {
             toggleHotspot(this)
         }
@@ -255,11 +250,14 @@ class QuickSettingsActivity : AppCompatActivity() {
             }
             true
         }
+        */
 
         // AIRPLANE
+        /*
         binding.btnAirplane.setOnClickListener {
             toggleAirplaneMode(this)
         }
+        */
 
         setupMicroInteractions()
     }
@@ -279,14 +277,39 @@ class QuickSettingsActivity : AppCompatActivity() {
         setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {
-                    v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100).start()
+                    vibrateTick()
+                    v.animate().scaleX(0.92f).scaleY(0.92f).setDuration(100).start()
                 }
                 android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
-                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
                 }
             }
             false
         }
+    }
+
+    private fun vibrateTick() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(10)
+        }
+    }
+
+    private fun animateClick(view: View) {
+        view.animate()
+            .scaleX(0.92f)
+            .scaleY(0.92f)
+            .setDuration(100)
+            .withEndAction {
+                view.animate()
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .setDuration(150)
+                    .start()
+            }
+            .start()
     }
 
     private fun updateAllStates() {
@@ -312,258 +335,74 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // DND
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val isDnd = nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        setButtonState(binding.btnDnd, isDnd, dpToPx)
-
-        // Auto Brightness
-        try {
-            val isAuto = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-            setButtonState(binding.btnAutoBrightness, isAuto, dpToPx)
-        } catch (e: Exception) {}
+        val isDndOn = nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
+        setButtonState(binding.btnDnd, isDndOn, dpToPx)
 
         // Flashlight
-        val flashBg = GradientDrawable()
-        flashBg.shape = GradientDrawable.RECTANGLE
-        flashBg.cornerRadius = 8f * dpToPx
-        if (torchState) {
-            flashBg.setColor(0xFF1A1A2E.toInt())
-            flashBg.setStroke((1 * dpToPx).toInt(), 0xFF4444AA.toInt())
-            binding.btnFlashlightText.setTextColor(0xFFAAAAFF.toInt())
-        } else {
-            flashBg.setColor(0xFF000000.toInt())
-            flashBg.setStroke((1 * dpToPx).toInt(), 0xFF2A2A2A.toInt())
-            binding.btnFlashlightText.setTextColor(0xFF666666.toInt())
-        }
-        binding.btnFlashlightText.background = flashBg
+        setButtonState(binding.btnFlashlightText, torchState, dpToPx)
 
         // Rotate
         val isRotateOn = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
         setButtonState(binding.btnRotate, isRotateOn, dpToPx)
 
         // Location
-        val lm = getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
-        val isGpsOn = lm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
-        setButtonState(binding.btnLocation, isGpsOn, dpToPx)
+        // setButtonState(binding.btnLocation, isLocationOn, dpToPx)
 
         // Hotspot
-        val hotspotOn = try { isHotspotEnabled(wifiManager) } catch (e: Exception) { false }
-        setButtonState(binding.btnHotspot, hotspotOn, dpToPx) 
+        // setButtonState(binding.btnHotspot, isHotspotEnabled(this), dpToPx)
 
         // Airplane
-        val isAirplaneOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-        setButtonState(binding.btnAirplane, isAirplaneOn, dpToPx)
-    }
-
-    private fun setButtonState(view: TextView, isActive: Boolean, density: Float) {
-        updateToggleState(view, isActive)
-    }
-
-    private fun updateToggleState(btn: TextView, isActive: Boolean) {
-        val density = resources.displayMetrics.density
-        val bg = GradientDrawable()
-        bg.shape = GradientDrawable.RECTANGLE
-        bg.cornerRadius = 8f * density
+        // setButtonState(binding.btnAirplane, isAirplaneOn, dpToPx)
         
-        if (isActive) {
-            // Monochromatic active state (white-ish text, dark blue-grey bg)
-            bg.setColor(0xFF1A1A2E.toInt())
-            bg.setStroke((1 * density).toInt(), 0xFF4444AA.toInt())
-            btn.setTextColor(0xFFAAAAFF.toInt())
-        } else {
-            // Inactive state (grey text, black bg)
-            bg.setColor(0xFF000000.toInt())
-            bg.setStroke((1 * density).toInt(), 0xFF2A2A2A.toInt())
-            btn.setTextColor(0xFF666666.toInt())
-        }
-        btn.background = bg
+        updateSoundUI()
+        updateDisplayUI()
     }
 
-    // ── HOTSPOT HELPER METHODS ──
-    private fun toggleHotspot(context: Context) {
-        val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val isOn = isHotspotEnabled(wm)
-        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+    private fun setButtonState(view: View, active: Boolean, dpToPx: Float) {
+        val color = if (active) 
+            ContextCompat.getColor(this, R.color.white) 
+        else 
+            ContextCompat.getColor(this, R.color.text_secondary)
         
-        // Try reflection-based tethering via ConnectivityManager (works on Android 8+)
-        try {
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (isOn) {
-                // Stop tethering
-                val stopMethod = cm.javaClass.getDeclaredMethod("stopTethering", Int::class.java)
-                stopMethod.isAccessible = true
-                stopMethod.invoke(cm, 0) // 0 = TETHERING_WIFI
-                android.widget.Toast.makeText(context, "Hotspot OFF", android.widget.Toast.LENGTH_SHORT).show()
-            } else {
-                // Start tethering
-                val callbackClass = Class.forName("android.net.ConnectivityManager\$OnStartTetheringCallback")
-                val callback = try {
-                    callbackClass.getDeclaredConstructor().newInstance()
-                } catch (e: Exception) {
-                    // Fallback for some ROMs where constructor is not accessible
-                    java.lang.reflect.Proxy.newProxyInstance(
-                        callbackClass.classLoader,
-                        arrayOf(callbackClass)
-                    ) { _, _, _ -> null }
+        if (view is TextView) {
+            view.setTextColor(color)
+            val drawable = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 12 * dpToPx
+                setStroke((1.5 * dpToPx).toInt(), color)
+                if (active) {
+                    setColor(color)
+                } else {
+                    setColor(android.graphics.Color.TRANSPARENT)
                 }
-                
-                val startMethod = cm.javaClass.getDeclaredMethod(
-                    "startTethering", Int::class.java, Boolean::class.java, callbackClass
-                )
-                startMethod.isAccessible = true
-                startMethod.invoke(cm, 0, false, callback)
-                android.widget.Toast.makeText(context, "Hotspot ON", android.widget.Toast.LENGTH_SHORT).show()
             }
-            // Update UI after a brief delay
-            binding.btnHotspot.postDelayed({ updateAllStates() }, 800)
-            return
-        } catch (e: Exception) {
-            // Reflection failed
-        }
-        
-        // Fallback: try the old WifiManager startSoftAp / stopSoftAp
-        try {
-            if (isOn) {
-                stopHotspot(wm)
-            } else {
-                startHotspot(wm, context)
+            view.background = drawable
+            if (active) {
+                view.setTextColor(ContextCompat.getColor(this, R.color.black))
             }
-            binding.btnHotspot.postDelayed({ updateAllStates() }, 800)
-            return
-        } catch (e: Exception) {
-            // Also failed
-        }
-        
-        // Last resort: open tethering settings directly
-        try {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        }
-    }
-
-    private fun isHotspotEnabled(wifiManager: WifiManager): Boolean {
-        return try {
-            val method = wifiManager.javaClass.getDeclaredMethod("isWifiApEnabled")
-            method.isAccessible = true
-            method.invoke(wifiManager) as Boolean
-        } catch (e: Exception) { false }
-    }
-
-    private fun animateClick(view: View, action: () -> Unit) {
-        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
-        view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).withEndAction {
-            view.animate().scaleX(1f).scaleY(1f).setDuration(100).withEndAction {
-                action()
-            }
-        }.start()
-    }
-
-    private fun startHotspot(wifiManager: WifiManager, context: Context) {
-        try {
-            val method = wifiManager.javaClass.getDeclaredMethod("setWifiApEnabled",
-                android.net.wifi.WifiConfiguration::class.java, Boolean::class.java)
-            method.isAccessible = true
-            method.invoke(wifiManager, null, true)
-        } catch (e1: Exception) {
-            try {
-                val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp",
-                    android.net.wifi.WifiConfiguration::class.java)
-                method.isAccessible = true
-                method.invoke(wifiManager, null)
-            } catch (e2: Exception) { throw e2 }
-        }
-    }
-
-    private fun stopHotspot(wifiManager: WifiManager) {
-        try {
-            val method = wifiManager.javaClass.getDeclaredMethod("setWifiApEnabled",
-                android.net.wifi.WifiConfiguration::class.java, Boolean::class.java)
-            method.isAccessible = true
-            method.invoke(wifiManager, null, false)
-        } catch (e1: Exception) {
-            try {
-                val method = wifiManager.javaClass.getDeclaredMethod("stopSoftAp")
-                method.isAccessible = true
-                method.invoke(wifiManager)
-            } catch (e2: Exception) { throw e2 }
-        }
-    }
-
-    // ── LOCATION HELPER METHODS ──
-    private fun toggleLocation(context: Context) {
-        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
-        // On Android 10+, apps cannot toggle location directly.
-        // Best approach: open the Location settings in a focused, minimal way.
-        // We use startActivityForResult so we can update the toggle when user returns.
-        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivityForResult(intent, 5001)
-    }
-
-    private fun isLocationEnabled(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= 28) {
-            val lm = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
-            lm.isLocationEnabled
-        } else {
-            try {
-                Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF) != Settings.Secure.LOCATION_MODE_OFF
-            } catch (e: Exception) { false }
-        }
-    }
-
-    // ── AIRPLANE HELPER METHODS ──
-    private fun toggleAirplaneMode(context: Context) {
-        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
-        // On Android 10+, non-system apps CANNOT write Settings.Global.AIRPLANE_MODE_ON.
-        // The ONLY approach is to show the in-app internet connectivity panel.
-        if (Build.VERSION.SDK_INT >= 29) {
-            // This opens a BOTTOM SHEET panel inside the app — NOT a full settings page
-            val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-            startActivityForResult(intent, 5002)
-        } else {
-            // Pre-Android 10: direct toggle
-            try {
-                val isCurrentlyOn = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
-                val newState = !isCurrentlyOn
-                Settings.Global.putInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (newState) 1 else 0)
-                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", newState) }
-                context.sendBroadcast(intent)
-                binding.btnAirplane.postDelayed({ updateAllStates() }, 500)
-            } catch (e: SecurityException) {
-                val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-                startActivityForResult(intent, 5002)
-            }
-        }
-    }
-
-    private fun isAirplaneModeOn(context: Context): Boolean {
-        return Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // When user returns from Location or Airplane panel, refresh all states
-        if (requestCode == 5001 || requestCode == 5002) {
-            updateAllStates()
         }
     }
 
     private fun setupSound() {
-        binding.btnSoundNormal.setOnClickListener { setRingerMode(AudioManager.RINGER_MODE_NORMAL) }
-        binding.btnSoundVibrate.setOnClickListener { setRingerMode(AudioManager.RINGER_MODE_VIBRATE) }
-        binding.btnSoundSilent.setOnClickListener { setRingerMode(AudioManager.RINGER_MODE_SILENT) }
+        binding.btnSoundNormal.setOnClickListener {
+            audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
+            updateSoundUI()
+        }
+        binding.btnSoundVibrate.setOnClickListener {
+            audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
+            updateSoundUI()
+        }
+        binding.btnSoundSilent.setOnClickListener {
+            audioManager.ringerMode = AudioManager.RINGER_MODE_SILENT
+            updateSoundUI()
+        }
 
+        binding.seekVolume.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        binding.seekVolume.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         binding.seekVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-                    val targetVol = (progress * maxVol) / 100
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVol, 0)
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0)
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -571,70 +410,35 @@ class QuickSettingsActivity : AppCompatActivity() {
         })
     }
 
-    private fun setRingerMode(mode: Int) {
-        try {
-            audioManager.ringerMode = mode
-            
-            // Sync DND state with ringer mode for a more predictable 'Mute'
-            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            if (nm.isNotificationPolicyAccessGranted) {
-                if (mode == AudioManager.RINGER_MODE_SILENT) {
-                    nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
-                } else {
-                    nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
-                }
-            }
-            
-            updateSoundUI()
-        } catch (e: Exception) {
-            val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-            startActivity(intent)
-        }
-    }
-
     private fun updateSoundUI() {
+        val dpToPx = resources.displayMetrics.density
         val mode = audioManager.ringerMode
-        val activeColor = ContextCompat.getColor(this, R.color.white)
-        val inactiveColor = ContextCompat.getColor(this, R.color.grey_666)
-
-        binding.btnSoundNormal.setTextColor(if (mode == AudioManager.RINGER_MODE_NORMAL) activeColor else inactiveColor)
-        binding.btnSoundVibrate.setTextColor(if (mode == AudioManager.RINGER_MODE_VIBRATE) activeColor else inactiveColor)
-        binding.btnSoundSilent.setTextColor(if (mode == AudioManager.RINGER_MODE_SILENT) activeColor else inactiveColor)
-
-        // Update Volume SeekBar
-        val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        val curVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        val progress = if (maxVol > 0) (curVol * 100) / maxVol else 0
-        binding.seekVolume.progress = progress
+        setButtonState(binding.btnSoundNormal, mode == AudioManager.RINGER_MODE_NORMAL, dpToPx)
+        setButtonState(binding.btnSoundVibrate, mode == AudioManager.RINGER_MODE_VIBRATE, dpToPx)
+        setButtonState(binding.btnSoundSilent, mode == AudioManager.RINGER_MODE_SILENT, dpToPx)
+        
+        binding.seekVolume.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
     }
 
     private fun setupDisplay() {
         binding.btnAutoBrightness.setOnClickListener {
             if (Settings.System.canWrite(this)) {
-                try {
-                    val isAuto = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-                    if (isAuto) {
-                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
-                    } else {
-                        Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC)
-                        val lp = window.attributes
-                        lp.screenBrightness = android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-                        window.attributes = lp
-                    }
-                    updateAllStates()
-                } catch (e: Exception) {}
+                val mode = if (Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, 0) == 1) 0 else 1
+                Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, mode)
+                updateDisplayUI()
             } else {
-                startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-                    data = Uri.parse("package:$packageName")
-                })
+                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
             }
         }
 
+        binding.seekBrightness.max = 255
+        binding.seekBrightness.progress = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 128)
         binding.seekBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser && Settings.System.canWrite(this@QuickSettingsActivity)) {
-                    val brightness = (progress * 255) / 100
-                    Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, brightness)
+                    Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, progress)
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -643,9 +447,40 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun updateDisplayUI() {
+        val dpToPx = resources.displayMetrics.density
+        val isAuto = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, 0) == 1
+        setButtonState(binding.btnAutoBrightness, isAuto, dpToPx)
+        binding.seekBrightness.progress = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 128)
+    }
+
+    private fun toggleLocation(context: Context) {
+        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+    }
+
+    private fun toggleAirplaneMode(context: Context) {
+        startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+    }
+
+    private fun toggleHotspot(context: Context) {
+        // Since Android 8.0+, we can\u0027t easily toggle hotspot without high-level permissions.
+        // Opening settings is the safest way.
         try {
-            val curBrightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS)
-            binding.seekBrightness.progress = (curBrightness * 100) / 255
-        } catch (e: Exception) {}
+            val intent = Intent()
+            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
+            startActivity(intent)
+        } catch (e: Exception) {
+            startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+        }
+    }
+
+    private fun isHotspotEnabled(context: Context): Boolean {
+        return try {
+            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val method = wm.javaClass.getDeclaredMethod("getWifiApState")
+            val state = method.invoke(wm) as Int
+            state == 13 // WIFI_AP_STATE_ENABLED
+        } catch (e: Exception) {
+            false
+        }
     }
 }

@@ -203,17 +203,19 @@ class FocusActivity : AppCompatActivity() {
         val diffX = e2.x - e1.x
         val diffY = e2.y - e1.y
         if (abs(diffX) > abs(diffY) && abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-          if (diffX > 0) {
-            // Swipe right -> Previous tab
-            if (currentTabIndex > 0) {
-                selectTab(TABS[currentTabIndex - 1])
+            if (diffX > 0) {
+              // Swipe right -> Previous tab
+              if (currentTabIndex > 0) {
+                  vibrateTick()
+                  selectTab(TABS[currentTabIndex - 1])
+              }
+            } else {
+              // Swipe left -> Next tab
+              if (currentTabIndex < TABS.size - 1) {
+                  vibrateTick()
+                  selectTab(TABS[currentTabIndex + 1])
+              }
             }
-          } else {
-            // Swipe left -> Next tab
-            if (currentTabIndex < TABS.size - 1) {
-                selectTab(TABS[currentTabIndex + 1])
-            }
-          }
           return true
         }
         return false
@@ -420,9 +422,10 @@ class FocusActivity : AppCompatActivity() {
     val lastTab = getSharedPreferences("miss_prefs", MODE_PRIVATE).getString("last_focus_tab", "stopwatch")
     selectTab(lastTab ?: "stopwatch")
     
-    tabStopwatch.setOnClickListener { resolveTab(0) }
-    tabTimer.setOnClickListener { resolveTab(1) }
+    tabStopwatch.setOnClickListener { resolveTab(0); vibrateTick() }
+    tabTimer.setOnClickListener { resolveTab(1); vibrateTick() }
     tabStrict.setOnClickListener {
+      vibrateTick()
       if (!checkAllStrictPermissions()) {
         startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
@@ -430,8 +433,11 @@ class FocusActivity : AppCompatActivity() {
       }
     }
     tabPomodoro.setOnClickListener {
+        vibrateTick()
         selectTab("pomodoro")
     }
+    
+    listOf(tabStopwatch, tabTimer, tabStrict, tabPomodoro).forEach { it.addPressEffect() }
   }
 
   private fun setupStopwatch() {
@@ -454,6 +460,7 @@ class FocusActivity : AppCompatActivity() {
       scrollTimestamps.visibility = View.VISIBLE
       runStopwatch()
     }
+    listOf(btnStart, btnPause, btnStop, btnResume, btnFlag).forEach { it.addPressEffect() }
     btnPause.setOnClickListener {
       swPaused = true
       handler.removeCallbacksAndMessages(null)
@@ -700,6 +707,7 @@ class FocusActivity : AppCompatActivity() {
 
   private fun setupStrictMode() {
     btnEnableStrict.setOnClickListener {
+      vibrateTick()
       if (!checkAllStrictPermissions()) {
         startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
@@ -707,12 +715,18 @@ class FocusActivity : AppCompatActivity() {
       }
     }
     btnStartAgain.setOnClickListener {
+      vibrateTick()
       showStrictConfirmDialog()
     }
     btnExitStrict.setOnClickListener {
+      vibrateTick()
       StrictModeManager.stop(this)
       applyStrictUiState(StrictUiState.SETUP)
       finish()
+    }
+    btnEnableStrict.addPressEffect()
+    btnStartAgain.addPressEffect()
+    btnExitStrict.addPressEffect()
       val home = Intent(Intent.ACTION_MAIN); home.addCategory(Intent.CATEGORY_HOME)
       home.flags = Intent.FLAG_ACTIVITY_NEW_TASK; startActivity(home)
     }
@@ -848,8 +862,13 @@ class FocusActivity : AppCompatActivity() {
                     Toast.makeText(this, "Cannot launch $pkg", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
     }
+    
+    listOf(pom_btnDur25, pom_btnDur50, pom_btnDur75, pom_btnDur100, 
+           pom_slotApp1, pom_slotApp2, pom_slotApp3, pom_btnStartPomodoro,
+           pom_tvContactName, pom_btnRemoveContact,
+           pom_btnCallContact, pom_btnCancelBreak,
+           pom_active_slot1, pom_active_slot2, pom_active_slot3).forEach { it.addPressEffect() }
   }
 
   private fun updatePomDurationSelection(mins: Int) {
@@ -1136,5 +1155,28 @@ class FocusActivity : AppCompatActivity() {
   override fun onDestroy() {
     handler.removeCallbacksAndMessages(null)
     super.onDestroy()
+  }
+
+  private fun vibrateTick() {
+    if (Build.VERSION.SDK_INT >= 29) {
+      vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+    } else {
+      @Suppress("DEPRECATION")
+      vibrator.vibrate(10)
+    }
+  }
+
+  private fun View.addPressEffect() {
+    setOnTouchListener { v, event ->
+      when (event.action) {
+        android.view.MotionEvent.ACTION_DOWN -> {
+          v.animate().scaleX(0.92f).scaleY(0.92f).setDuration(100).start()
+        }
+        android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+          v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+        }
+      }
+      false
+    }
   }
 }

@@ -334,19 +334,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun vibrateClick() {
         if (Build.VERSION.SDK_INT >= 29) {
+            // Apple-like subtle tick
+            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(10)
+        }
+    }
+
+    private fun vibrateStrong() {
+        if (Build.VERSION.SDK_INT >= 29) {
             vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(50)
+            vibrator.vibrate(40)
         }
     }
 
     private fun animateClick(view: View, action: () -> Unit) {
-        view.animate().scaleX(0.95f).scaleY(0.95f).setDuration(80).withEndAction {
-            view.animate().scaleX(1f).scaleY(1f).setDuration(80).withEndAction {
-                action()
+        view.animate()
+            .scaleX(0.92f)
+            .scaleY(0.92f)
+            .setDuration(100)
+            .withEndAction {
+                view.animate()
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .setDuration(150)
+                    .withEndAction { action() }
+                    .start()
             }
-        }.start()
+            .start()
     }
 
     private fun updateHomescreenApps() {
