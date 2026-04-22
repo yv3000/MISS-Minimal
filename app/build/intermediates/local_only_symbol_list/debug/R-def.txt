@@ -107,6 +107,9 @@ id panelTimer
 id pickerHours
 id pickerMinutes
 id pickerSeconds
+id pom_active_slot1
+id pom_active_slot2
+id pom_active_slot3
 id pom_btnCallContact
 id pom_btnCancelBreak
 id pom_btnDur100
@@ -116,6 +119,7 @@ id pom_btnDur75
 id pom_btnRemoveContact
 id pom_btnStartPomodoro
 id pom_layoutActive
+id pom_layoutActiveApps
 id pom_layoutContact
 id pom_layoutSetup
 id pom_slotApp1

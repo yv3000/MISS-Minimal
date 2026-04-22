@@ -95,6 +95,15 @@ public final class ActivityFocusBinding implements ViewBinding {
   public final NumberPicker pickerSeconds;
 
   @NonNull
+  public final TextView pomActiveSlot1;
+
+  @NonNull
+  public final TextView pomActiveSlot2;
+
+  @NonNull
+  public final TextView pomActiveSlot3;
+
+  @NonNull
   public final TextView pomBtnCallContact;
 
   @NonNull
@@ -120,6 +129,9 @@ public final class ActivityFocusBinding implements ViewBinding {
 
   @NonNull
   public final LinearLayout pomLayoutActive;
+
+  @NonNull
+  public final LinearLayout pomLayoutActiveApps;
 
   @NonNull
   public final LinearLayout pomLayoutContact;
@@ -204,10 +216,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       @NonNull LinearLayout panelStrict, @NonNull FrameLayout panelStrictActive,
       @NonNull LinearLayout panelTimer, @NonNull NumberPicker pickerHours,
       @NonNull NumberPicker pickerMinutes, @NonNull NumberPicker pickerSeconds,
-      @NonNull TextView pomBtnCallContact, @NonNull TextView pomBtnCancelBreak,
-      @NonNull TextView pomBtnDur100, @NonNull TextView pomBtnDur25, @NonNull TextView pomBtnDur50,
-      @NonNull TextView pomBtnDur75, @NonNull TextView pomBtnRemoveContact,
-      @NonNull TextView pomBtnStartPomodoro, @NonNull LinearLayout pomLayoutActive,
+      @NonNull TextView pomActiveSlot1, @NonNull TextView pomActiveSlot2,
+      @NonNull TextView pomActiveSlot3, @NonNull TextView pomBtnCallContact,
+      @NonNull TextView pomBtnCancelBreak, @NonNull TextView pomBtnDur100,
+      @NonNull TextView pomBtnDur25, @NonNull TextView pomBtnDur50, @NonNull TextView pomBtnDur75,
+      @NonNull TextView pomBtnRemoveContact, @NonNull TextView pomBtnStartPomodoro,
+      @NonNull LinearLayout pomLayoutActive, @NonNull LinearLayout pomLayoutActiveApps,
       @NonNull LinearLayout pomLayoutContact, @NonNull LinearLayout pomLayoutSetup,
       @NonNull TextView pomSlotApp1, @NonNull TextView pomSlotApp2, @NonNull TextView pomSlotApp3,
       @NonNull TextView pomTvContactName, @NonNull TextView pomTvCountdown,
@@ -244,6 +258,9 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.pickerHours = pickerHours;
     this.pickerMinutes = pickerMinutes;
     this.pickerSeconds = pickerSeconds;
+    this.pomActiveSlot1 = pomActiveSlot1;
+    this.pomActiveSlot2 = pomActiveSlot2;
+    this.pomActiveSlot3 = pomActiveSlot3;
     this.pomBtnCallContact = pomBtnCallContact;
     this.pomBtnCancelBreak = pomBtnCancelBreak;
     this.pomBtnDur100 = pomBtnDur100;
@@ -253,6 +270,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.pomBtnRemoveContact = pomBtnRemoveContact;
     this.pomBtnStartPomodoro = pomBtnStartPomodoro;
     this.pomLayoutActive = pomLayoutActive;
+    this.pomLayoutActiveApps = pomLayoutActiveApps;
     this.pomLayoutContact = pomLayoutContact;
     this.pomLayoutSetup = pomLayoutSetup;
     this.pomSlotApp1 = pomSlotApp1;
@@ -450,6 +468,24 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.pom_active_slot1;
+      TextView pomActiveSlot1 = ViewBindings.findChildViewById(rootView, id);
+      if (pomActiveSlot1 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_active_slot2;
+      TextView pomActiveSlot2 = ViewBindings.findChildViewById(rootView, id);
+      if (pomActiveSlot2 == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_active_slot3;
+      TextView pomActiveSlot3 = ViewBindings.findChildViewById(rootView, id);
+      if (pomActiveSlot3 == null) {
+        break missingId;
+      }
+
       id = R.id.pom_btnCallContact;
       TextView pomBtnCallContact = ViewBindings.findChildViewById(rootView, id);
       if (pomBtnCallContact == null) {
@@ -501,6 +537,12 @@ public final class ActivityFocusBinding implements ViewBinding {
       id = R.id.pom_layoutActive;
       LinearLayout pomLayoutActive = ViewBindings.findChildViewById(rootView, id);
       if (pomLayoutActive == null) {
+        break missingId;
+      }
+
+      id = R.id.pom_layoutActiveApps;
+      LinearLayout pomLayoutActiveApps = ViewBindings.findChildViewById(rootView, id);
+      if (pomLayoutActiveApps == null) {
         break missingId;
       }
 
@@ -652,13 +694,14 @@ public final class ActivityFocusBinding implements ViewBinding {
           btnStartAgain, btnSwFlag, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause,
           btnTimerReset, btnTimerResume, btnTimerStart, btnTimerStop, layoutPickers,
           layoutStrictComplete, layoutStrictWarning, panelPomodoro, panelStopwatch, panelStrict,
-          panelStrictActive, panelTimer, pickerHours, pickerMinutes, pickerSeconds,
-          pomBtnCallContact, pomBtnCancelBreak, pomBtnDur100, pomBtnDur25, pomBtnDur50, pomBtnDur75,
-          pomBtnRemoveContact, pomBtnStartPomodoro, pomLayoutActive, pomLayoutContact,
-          pomLayoutSetup, pomSlotApp1, pomSlotApp2, pomSlotApp3, pomTvContactName, pomTvCountdown,
-          pomTvPhaseLabel, pomTvSessionCount, scrollTimestamps, swBtnRow, tabBar, tabIndicator,
-          tabPomodoro, tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch,
-          tvStrictCountdown, tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
+          panelStrictActive, panelTimer, pickerHours, pickerMinutes, pickerSeconds, pomActiveSlot1,
+          pomActiveSlot2, pomActiveSlot3, pomBtnCallContact, pomBtnCancelBreak, pomBtnDur100,
+          pomBtnDur25, pomBtnDur50, pomBtnDur75, pomBtnRemoveContact, pomBtnStartPomodoro,
+          pomLayoutActive, pomLayoutActiveApps, pomLayoutContact, pomLayoutSetup, pomSlotApp1,
+          pomSlotApp2, pomSlotApp3, pomTvContactName, pomTvCountdown, pomTvPhaseLabel,
+          pomTvSessionCount, scrollTimestamps, swBtnRow, tabBar, tabIndicator, tabPomodoro,
+          tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch, tvStrictCountdown,
+          tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -918,16 +918,26 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun handlePomContactResult(data: Intent) {
-    val uri = data.data ?: return
-    val cursor = contentResolver.query(uri, null, null, null, null)
-    if (cursor?.moveToFirst() == true) {
-      val nameIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-      val numIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-      contactName = cursor.getString(nameIdx)
-      contactNumber = cursor.getString(numIdx)
-      updatePomContactUI()
+    try {
+        val uri = data.data ?: return
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        if (cursor?.moveToFirst() == true) {
+            val nameIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            val numIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+            
+            if (nameIdx != -1 && numIdx != -1) {
+                contactName = cursor.getString(nameIdx)
+                contactNumber = cursor.getString(numIdx)
+                updatePomContactUI()
+            } else {
+                Toast.makeText(this, "Could not get contact details", Toast.LENGTH_SHORT).show()
+            }
+        }
+        cursor?.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        Toast.makeText(this, "Error selecting contact", Toast.LENGTH_SHORT).show()
     }
-    cursor?.close()
   }
 
   private fun startPomodoro() {

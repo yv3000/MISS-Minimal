@@ -3558,6 +3558,9 @@ int id pickerHours 0x7f0901a4
 int id pickerMinutes 0x7f0901a5
 int id pickerSeconds 0x7f0901a6
 int id pin 0x7f0901a7
+int id pom_active_slot1 0x7f09028e
+int id pom_active_slot2 0x7f09028f
+int id pom_active_slot3 0x7f090290
 int id pom_btnCallContact 0x7f0901a8
 int id pom_btnCancelBreak 0x7f0901a9
 int id pom_btnDur100 0x7f0901aa
@@ -3567,6 +3570,7 @@ int id pom_btnDur75 0x7f0901ad
 int id pom_btnRemoveContact 0x7f0901ae
 int id pom_btnStartPomodoro 0x7f0901af
 int id pom_layoutActive 0x7f0901b0
+int id pom_layoutActiveApps 0x7f090291
 int id pom_layoutContact 0x7f0901b1
 int id pom_layoutSetup 0x7f0901b2
 int id pom_slotApp1 0x7f0901b3

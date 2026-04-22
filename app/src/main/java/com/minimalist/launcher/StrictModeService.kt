@@ -31,12 +31,29 @@ class StrictModeService : AccessibilityService() {
       val pomodoroActive = PomodoroManager.isActive
       
       if (strictActive || pomodoroActive) {
+        // DISMISS SHADE
         if (Build.VERSION.SDK_INT >= 31) {
-          performGlobalAction(
-            GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+          performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
         } else {
           performGlobalAction(GLOBAL_ACTION_BACK)
         }
+
+        // AGGRESSIVE WINDOW BLOCKING (Sidebars/Floating Windows)
+        windows?.forEach { window ->
+          val title = window.title?.toString() ?: ""
+          if (title.contains("Sidebar", ignoreCase = true) ||
+              title.contains("EasyTouch", ignoreCase = true) ||
+              title.contains("Smart", ignoreCase = true) ||
+              window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM) {
+            
+            if (Build.VERSION.SDK_INT >= 31) {
+              performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            } else {
+              performGlobalAction(GLOBAL_ACTION_BACK)
+            }
+          }
+        }
+
         handler.postDelayed(this, 50)
       }
     }

@@ -46,16 +46,16 @@
         android:tag="fixed_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:fontFamily="@font/plus_jakarta_sans_light"
-
-        android:lineSpacingExtra="-12dp"
-
+        android:lineSpacingExtra="-8dp"
         android:text="00\n00"
         android:textColor="@color/white"
-        android:textSize="72sp"
-        android:textStyle="normal"
+        android:textSize="85sp"
+        android:gravity="center"
+        android:fontFeatureSettings="tnum"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintTop_toBottomOf="@id/guideTop" />
 
     <TextView
@@ -257,11 +257,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/plus_jakarta_sans_light"
-                android:lineSpacingExtra="-24dp"
+                android:lineSpacingExtra="-20dp"
                 android:text="00\n00"
                 android:textColor="#FFFFFF"
-                android:textSize="120sp"
+                android:textSize="140sp"
                 android:gravity="center"
+                android:fontFeatureSettings="tnum"
                 android:tag="fixed_size" />
                 
             <TextView
