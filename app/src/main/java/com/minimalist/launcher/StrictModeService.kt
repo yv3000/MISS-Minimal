@@ -118,7 +118,7 @@ class StrictModeService : AccessibilityService() {
     if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
         windows?.forEach { window ->
             // If window is NOT our app and NOT system UI/phone, close it
-            val winPkg = try { window.rootAccessibilityNodeInWindow?.packageName?.toString() } catch(e: Exception) { null }
+            val winPkg = try { window.root?.packageName?.toString() } catch(e: Exception) { null }
             if (winPkg != null && winPkg != packageName && winPkg != "com.android.systemui" && winPkg !in phoneApps) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
             }
