@@ -912,28 +912,47 @@ class FocusActivity : AppCompatActivity() {
           updatePomAppSlotsUI()
         }
       } else if (requestCode == 2002) {
-        handlePomContactResult(data)
+        if (resultCode == RESULT_OK) {
+            handlePomContactResult(data)
+        } else {
+            Toast.makeText(this, "Contact selection cancelled", Toast.LENGTH_SHORT).show()
+        }
       }
     }
   }
 
   private fun handlePomContactResult(data: Intent) {
     try {
-        val uri = data.data ?: return
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        if (cursor?.moveToFirst() == true) {
-            val nameIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-            val numIdx = cursor.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-            
-            if (nameIdx != -1 && numIdx != -1) {
-                contactName = cursor.getString(nameIdx)
-                contactNumber = cursor.getString(numIdx)
-                updatePomContactUI()
-            } else {
-                Toast.makeText(this, "Could not get contact details", Toast.LENGTH_SHORT).show()
-            }
+        val uri = data.data ?: run {
+            Toast.makeText(this, "No contact data received", Toast.LENGTH_SHORT).show()
+            return
         }
-        cursor?.close()
+        
+        try {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                    val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                    
+                    if (nameIdx != -1 && numIdx != -1) {
+                        contactName = it.getString(nameIdx)
+                        contactNumber = it.getString(numIdx)
+                        updatePomContactUI()
+                        Toast.makeText(this, "Selected: $contactName", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val displayNameCol = it.getColumnIndex(android.provider.ContactsContract.Contacts.DISPLAY_NAME)
+                        val displayName = if (displayNameCol != -1) it.getString(displayNameCol) else "Unknown"
+                        Toast.makeText(this, "Could not find number for $displayName", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error picking contact: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     } catch (e: Exception) {
         e.printStackTrace()
         Toast.makeText(this, "Error selecting contact", Toast.LENGTH_SHORT).show()

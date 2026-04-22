@@ -3265,7 +3265,10 @@ id btnFlashlight
 id btnFlashlightText
 id btnFocus
 id btnFontSize
+id btnHotspot
+id btnLocation
 id btnRemoveApp
+id btnRotate
 id btnSettings
 id btnSot
 id btnSoundNormal

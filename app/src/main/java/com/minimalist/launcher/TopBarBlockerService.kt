@@ -14,7 +14,9 @@ import android.view.WindowManager
 
 class TopBarBlockerService : Service() {
 
-    private var overlayView: View? = null
+    private var topOverlay: View? = null
+    private var leftOverlay: View? = null
+    private var rightOverlay: View? = null
     private lateinit var windowManager: WindowManager
 
     companion object {
@@ -37,17 +39,17 @@ class TopBarBlockerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            "START" -> addOverlay()
+            "START" -> addOverlays()
             "STOP" -> {
-                removeOverlay()
+                removeOverlays()
                 stopSelf()
             }
         }
         return START_STICKY
     }
 
-    private fun addOverlay() {
-        if (overlayView != null) return
+    private fun addOverlays() {
+        if (topOverlay != null) return
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 
@@ -58,49 +60,71 @@ class TopBarBlockerService : Service() {
             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
 
-        // Get status bar height to know overlay height
+        // 1. TOP OVERLAY (Blocks Notifs)
         val statusBarHeight = getStatusBarHeight()
-        // Use 3x status bar height to cover pull zone
-        val overlayHeight = statusBarHeight * 3
-
-        val params = WindowManager.LayoutParams(
+        val topParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            overlayHeight,
+            statusBarHeight * 2, // Double height for buffer
             0, 0, type,
-            // KEY FLAGS
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSPARENT
         )
-        params.gravity = Gravity.TOP or Gravity.START
+        topParams.gravity = Gravity.TOP
+        topOverlay = createBlockerView()
+        windowManager.addView(topOverlay, topParams)
 
-        overlayView = View(this).apply {
-            // Consume ALL touch events on this view
+        // 2. LEFT OVERLAY (Blocks Sidebars)
+        val edgeWidth = dpToPx(20)
+        val leftParams = WindowManager.LayoutParams(
+            edgeWidth,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            0, 0, type,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            PixelFormat.TRANSPARENT
+        )
+        leftParams.gravity = Gravity.START
+        leftOverlay = createBlockerView()
+        windowManager.addView(leftOverlay, leftParams)
+
+        // 3. RIGHT OVERLAY (Blocks Sidebars)
+        val rightParams = WindowManager.LayoutParams(
+            edgeWidth,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            0, 0, type,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            PixelFormat.TRANSPARENT
+        )
+        rightParams.gravity = Gravity.END
+        rightOverlay = createBlockerView()
+        windowManager.addView(rightOverlay, rightParams)
+    }
+
+    private fun createBlockerView(): View {
+        return View(this).apply {
             setOnTouchListener { _, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN,
-                    MotionEvent.ACTION_MOVE,
-                    MotionEvent.ACTION_UP -> true // consume
-                    else -> false
-                }
+                true // Consume EVERYTHING
             }
-        }
-
-        try {
-            windowManager.addView(overlayView, params)
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 
-    private fun removeOverlay() {
-        overlayView?.let {
-            try {
-                windowManager.removeView(it)
-            } catch (e: Exception) {}
-            overlayView = null
+    private fun removeOverlays() {
+        val overlays = listOf(topOverlay, leftOverlay, rightOverlay)
+        overlays.forEach { view ->
+            view?.let {
+                try {
+                    windowManager.removeView(it)
+                } catch (e: Exception) {}
+            }
         }
+        topOverlay = null
+        leftOverlay = null
+        rightOverlay = null
     }
 
     private fun getStatusBarHeight(): Int {
@@ -117,7 +141,7 @@ class TopBarBlockerService : Service() {
     }
 
     override fun onDestroy() {
-        removeOverlay()
+        removeOverlays()
         super.onDestroy()
     }
 }

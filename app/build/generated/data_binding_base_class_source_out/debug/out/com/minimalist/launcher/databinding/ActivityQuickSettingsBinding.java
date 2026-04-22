@@ -36,6 +36,15 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
   public final TextView btnFlashlightText;
 
   @NonNull
+  public final TextView btnHotspot;
+
+  @NonNull
+  public final TextView btnLocation;
+
+  @NonNull
+  public final TextView btnRotate;
+
+  @NonNull
   public final TextView btnSoundNormal;
 
   @NonNull
@@ -56,6 +65,7 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
   private ActivityQuickSettingsBinding(@NonNull LinearLayout rootView,
       @NonNull TextView btnAutoBrightness, @NonNull TextView btnBluetooth,
       @NonNull TextView btnData, @NonNull TextView btnDnd, @NonNull TextView btnFlashlightText,
+      @NonNull TextView btnHotspot, @NonNull TextView btnLocation, @NonNull TextView btnRotate,
       @NonNull TextView btnSoundNormal, @NonNull TextView btnSoundSilent,
       @NonNull TextView btnSoundVibrate, @NonNull TextView btnWifi, @NonNull SeekBar seekBrightness,
       @NonNull SeekBar seekVolume) {
@@ -65,6 +75,9 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
     this.btnData = btnData;
     this.btnDnd = btnDnd;
     this.btnFlashlightText = btnFlashlightText;
+    this.btnHotspot = btnHotspot;
+    this.btnLocation = btnLocation;
+    this.btnRotate = btnRotate;
     this.btnSoundNormal = btnSoundNormal;
     this.btnSoundSilent = btnSoundSilent;
     this.btnSoundVibrate = btnSoundVibrate;
@@ -130,6 +143,24 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnHotspot;
+      TextView btnHotspot = ViewBindings.findChildViewById(rootView, id);
+      if (btnHotspot == null) {
+        break missingId;
+      }
+
+      id = R.id.btnLocation;
+      TextView btnLocation = ViewBindings.findChildViewById(rootView, id);
+      if (btnLocation == null) {
+        break missingId;
+      }
+
+      id = R.id.btnRotate;
+      TextView btnRotate = ViewBindings.findChildViewById(rootView, id);
+      if (btnRotate == null) {
+        break missingId;
+      }
+
       id = R.id.btnSoundNormal;
       TextView btnSoundNormal = ViewBindings.findChildViewById(rootView, id);
       if (btnSoundNormal == null) {
@@ -167,8 +198,8 @@ public final class ActivityQuickSettingsBinding implements ViewBinding {
       }
 
       return new ActivityQuickSettingsBinding((LinearLayout) rootView, btnAutoBrightness,
-          btnBluetooth, btnData, btnDnd, btnFlashlightText, btnSoundNormal, btnSoundSilent,
-          btnSoundVibrate, btnWifi, seekBrightness, seekVolume);
+          btnBluetooth, btnData, btnDnd, btnFlashlightText, btnHotspot, btnLocation, btnRotate,
+          btnSoundNormal, btnSoundSilent, btnSoundVibrate, btnWifi, seekBrightness, seekVolume);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

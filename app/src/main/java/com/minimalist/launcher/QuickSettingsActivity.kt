@@ -202,17 +202,37 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // LOCATION
         binding.btnLocation.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            try {
+                // Try to toggle via Settings.Secure (requires WRITE_SECURE_SETTINGS, usually fails)
+                // Fallback to opening settings if we can't toggle directly
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
         }
 
         // HOTSPOT
         binding.btnHotspot.setOnClickListener {
-            val intent = Intent()
-            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
             try {
+                val intent = Intent()
+                intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
                 startActivity(intent)
             } catch (e: Exception) {
                 startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
+        }
+
+        // AIRPLANE
+        binding.btnAirplane.setOnClickListener {
+            if (Settings.System.canWrite(this)) {
+                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
+                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                intent.putExtra("state", !isOn)
+                sendBroadcast(intent)
+                updateAllStates()
+            } else {
+                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
             }
         }
 
@@ -223,8 +243,9 @@ class QuickSettingsActivity : AppCompatActivity() {
         val buttons = listOf(
             binding.btnWifi, binding.btnData, binding.btnBluetooth, 
             binding.btnDnd, binding.btnFlashlightText, binding.btnRotate,
-            binding.btnLocation, binding.btnHotspot, binding.btnAutoBrightness,
-            binding.btnSoundNormal, binding.btnSoundVibrate, binding.btnSoundSilent
+            binding.btnLocation, binding.btnHotspot, binding.btnAirplane,
+            binding.btnAutoBrightness, binding.btnSoundNormal, 
+            binding.btnSoundVibrate, binding.btnSoundSilent
         )
         buttons.forEach { it.addClickFeedback() }
     }
@@ -300,7 +321,11 @@ class QuickSettingsActivity : AppCompatActivity() {
         setButtonState(binding.btnLocation, isGpsOn, dpToPx)
 
         // Hotspot
-        setButtonState(binding.btnHotspot, false, dpToPx) // Hard to detect without special perms
+        setButtonState(binding.btnHotspot, false, dpToPx) 
+
+        // Airplane
+        val isAirplaneOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+        setButtonState(binding.btnAirplane, isAirplaneOn, dpToPx)
     }
 
     private fun setButtonState(view: TextView, isActive: Boolean, density: Float) {

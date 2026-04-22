@@ -31,26 +31,41 @@ class StrictModeService : AccessibilityService() {
       val pomodoroActive = PomodoroManager.isActive
       
       if (strictActive || pomodoroActive) {
-        // DISMISS SHADE
-        if (Build.VERSION.SDK_INT >= 31) {
-          performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-        } else {
-          performGlobalAction(GLOBAL_ACTION_BACK)
-        }
-
-        // AGGRESSIVE WINDOW BLOCKING (Sidebars/Floating Windows)
-        windows?.forEach { window ->
+        // DISMISS SHADE & SIDEBARS
+        val windowsInfo = windows
+        windowsInfo?.forEach { window ->
           val title = window.title?.toString() ?: ""
-          if (title.contains("Sidebar", ignoreCase = true) ||
-              title.contains("EasyTouch", ignoreCase = true) ||
-              title.contains("Smart", ignoreCase = true) ||
-              window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM) {
-            
+          val winPkg = try { window.root?.packageName?.toString() } catch(e: Exception) { null }
+          
+          val isSystemPanel = title.contains("Notification", ignoreCase = true) ||
+                              title.contains("Quick Settings", ignoreCase = true) ||
+                              title.contains("Sidebar", ignoreCase = true) ||
+                              title.contains("EasyTouch", ignoreCase = true) ||
+                              title.contains("Smart", ignoreCase = true) ||
+                              title.contains("Edge", ignoreCase = true) ||
+                              title.contains("Panel", ignoreCase = true) ||
+                              title.contains("Control", ignoreCase = true) ||
+                              window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM ||
+                              window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY
+
+          if (isSystemPanel) {
             if (Build.VERSION.SDK_INT >= 31) {
               performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
             } else {
               performGlobalAction(GLOBAL_ACTION_BACK)
             }
+            
+            // If it's a persistent sidebar, force Home to clear it
+            if (title.contains("Sidebar") || title.contains("EasyTouch")) {
+                performGlobalAction(GLOBAL_ACTION_HOME)
+            }
+          }
+          
+          // If we are in WORK session, block ANY app that isn't allowed
+          if (pomodoroActive && PomodoroManager.isWorkSessionActive()) {
+              if (winPkg != null && winPkg != packageName && winPkg != "com.android.systemui" && winPkg !in phoneApps && winPkg !in PomodoroManager.allowedPackages) {
+                  performGlobalAction(GLOBAL_ACTION_HOME)
+              }
           }
         }
 

@@ -139,7 +139,46 @@ class LauncherSettingsActivity : AppCompatActivity() {
         binding.btnFlashlight.setOnClickListener {
             try {
                 cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
-            } catch (e: Exception) {}
+            } catch (e) { }
+        }
+
+        binding.btnRotate.setOnClickListener {
+            if (Settings.System.canWrite(this)) {
+                val current = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0)
+                Settings.System.putInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, if (current == 1) 0 else 1)
+                updateAllStates()
+            } else {
+                startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                    data = Uri.parse("package:$packageName")
+                })
+            }
+        }
+
+        binding.btnAirplane.setOnClickListener {
+            if (Settings.System.canWrite(this)) {
+                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
+                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                intent.putExtra("state", !isOn)
+                sendBroadcast(intent)
+                updateAllStates()
+            } else {
+                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+            }
+        }
+
+        binding.btnLocation.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        }
+
+        binding.btnHotspot.setOnClickListener {
+            try {
+                val intent = Intent()
+                intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
+                startActivity(intent)
+            } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
         }
     }
 
@@ -217,6 +256,22 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
         // Flashlight
         setLabelState(binding.tvFlashlightState, torchState)
+
+        // Rotate
+        val isRotateOn = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
+        setLabelState(binding.tvRotateState, isRotateOn)
+
+        // Airplane
+        val isAirplaneOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+        setLabelState(binding.tvAirplaneState, isAirplaneOn)
+
+        // Location
+        val lm = getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+        val isGpsOn = lm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+        setLabelState(binding.tvLocationState, isGpsOn)
+
+        // Hotspot
+        setLabelState(binding.tvHotspotState, false)
 
         // Brightness
         try {
