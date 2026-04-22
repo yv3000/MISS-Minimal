@@ -26,21 +26,58 @@ class StrictModeService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
 
     // ── SHADE BLOCKER ──
-    // Runs every 80ms when blocking is active
-    // Handles BOTH strict mode AND pomodoro
+    // Runs every 50ms when blocking is active.
+    // This is the PRIMARY defense against the notification shade.
+    // It runs continuously in a tight loop regardless of accessibility events.
     private val shadeBlocker = object : Runnable {
         override fun run() {
             val shouldBlock = StrictModeManager.isActive() || PomodoroManager.isActive
             if (shouldBlock) {
+                // ALWAYS dismiss the shade — this is the core mechanism
                 if (Build.VERSION.SDK_INT >= 31) {
                     performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
                 } else {
-                    // Pre-Android 12 fallback
-                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    // Pre-Android 12: collapse status bar via reflection
+                    try {
+                        val sbService = getSystemService("statusbar")
+                        val sbClass = Class.forName("android.app.StatusBarManager")
+                        val collapse = sbClass.getMethod("collapsePanels")
+                        collapse.invoke(sbService)
+                    } catch (e: Exception) {
+                        performGlobalAction(GLOBAL_ACTION_BACK)
+                    }
                 }
+                
+                // ALSO check for floating windows here proactively
+                if (PomodoroManager.isActive) {
+                    checkAndKillFloatingWindows()
+                }
+
                 handler.postDelayed(this, 50)
             }
         }
+    }
+
+    private fun checkAndKillFloatingWindows() {
+        try {
+            val allWindows = windows
+            allWindows?.forEach { window ->
+                val winType = window.type
+                // TYPE_APPLICATION windows that are NOT the launcher and NOT full screen
+                // usually indicate a floating/pop-up window (like OEM sidebar apps)
+                if (winType == AccessibilityWindowInfo.TYPE_APPLICATION || 
+                    winType == AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER) {
+                    
+                    val winPkg = try { window.root?.packageName?.toString() } catch (e: Exception) { null }
+                    val allowed = PomodoroManager.allowedPackages
+                    
+                    if (winPkg != null && winPkg != packageName && !allowed.contains(winPkg)) {
+                        // This is an unauthorized floating window — kill it
+                        performGlobalAction(GLOBAL_ACTION_BACK)
+                    }
+                }
+            }
+        } catch (e: Exception) {}
     }
 
     fun startBlocking() {
@@ -55,6 +92,14 @@ class StrictModeService : AccessibilityService() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        
+        // ── AUTO-START BLOCKING ──
+        val shouldAutoBlock = getSharedPreferences("miss_prefs", MODE_PRIVATE)
+            .getBoolean("pomodoro_shade_block", false)
+        
+        if (shouldAutoBlock || PomodoroManager.isActive || StrictModeManager.isActive()) {
+            startBlocking()
+        }
     }
 
     override fun onDestroy() {
@@ -67,20 +112,21 @@ class StrictModeService : AccessibilityService() {
         event ?: return
         val eventPkg = event.packageName?.toString() ?: return
 
-        // Skip irrelevant event types early
-        if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
-            event.eventType != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED &&
-            event.eventType != AccessibilityEvent.TYPE_WINDOWS_CHANGED) return
-
         // ── POMODORO BLOCKING ──
-        // This runs when Pomodoro session is active
         if (PomodoroManager.isActive) {
+            
+            // ALWAYS dismiss notification shade on EVERY event
+            if (Build.VERSION.SDK_INT >= 31) {
+                performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            }
+            
             val allowed = PomodoroManager.allowedPackages
-            if (!allowed.contains(eventPkg)) {
-                // Block this app — send back to our activity
-                performGlobalAction(GLOBAL_ACTION_HOME)
+            
+            // If the event itself is from a non-allowed source, kill it
+            if (!allowed.contains(eventPkg) && eventPkg != "com.android.systemui") {
+                performGlobalAction(GLOBAL_ACTION_BACK)
                 
-                // Also bring PomodoroActivity to front after short delay
+                // Bring FocusActivity back to front
                 handler.postDelayed({
                     try {
                         val intent = Intent(this, FocusActivity::class.java).apply {
@@ -93,59 +139,22 @@ class StrictModeService : AccessibilityService() {
                         }
                         startActivity(intent)
                     } catch (e: Exception) {
-                        // fallback: just go home
                         performGlobalAction(GLOBAL_ACTION_HOME)
                     }
-                }, 100)
-            }
-
-            // Also dismiss notification shade proactively
-            val title = event.className?.toString() ?: ""
-            if (title.contains("StatusBar", true) ||
-                title.contains("NotificationShade", true) ||
-                title.contains("QuickSettings", true) ||
-                title.contains("VolumeDialog", true)) {
-                if (Build.VERSION.SDK_INT >= 31) {
-                    performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-                }
-            }
-
-            // Block ALL floating windows on ANY OS
-            val windows = windows
-            windows?.forEach { window ->
-                if (window.type == AccessibilityWindowInfo.TYPE_SYSTEM ||
-                    window.type == AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER ||
-                    window.type == AccessibilityWindowInfo.TYPE_APPLICATION) {
-                    val winPkg = try { window.root?.packageName?.toString() } catch (e: Exception) { null } ?: return@forEach
-                    if (!allowed.contains(winPkg) && winPkg != "com.minimalist.launcher" && winPkg != "com.android.systemui") {
-                        performGlobalAction(GLOBAL_ACTION_BACK)
-                        performGlobalAction(GLOBAL_ACTION_HOME)
-                    }
-                }
-            }
-
-            // Also block any non-allowed app that opened a new window
-            if (!allowed.contains(eventPkg)) {
-                performGlobalAction(GLOBAL_ACTION_BACK)
-                performGlobalAction(GLOBAL_ACTION_HOME)
+                }, 50)
             }
             return
         }
 
         // ── STRICT MODE BLOCKING ──
         if (StrictModeManager.isActive()) {
+            if (Build.VERSION.SDK_INT >= 31) {
+                performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            }
+            
             val blockedPkgs = StrictModeManager.getBlockedPackages()
             if (blockedPkgs.isNotEmpty() && blockedPkgs.contains(eventPkg)) {
                 performGlobalAction(GLOBAL_ACTION_HOME)
-            }
-
-            // Also dismiss notification shade
-            val title = event.className?.toString() ?: ""
-            if (title.contains("StatusBar", true) ||
-                title.contains("NotificationShade", true)) {
-                if (Build.VERSION.SDK_INT >= 31) {
-                    performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-                }
             }
         }
     }

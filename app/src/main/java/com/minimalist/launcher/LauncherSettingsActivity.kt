@@ -100,6 +100,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun setupConnectivity() {
         binding.btnWifi.setOnClickListener {
+            vibrate()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startActivity(Intent(Settings.Panel.ACTION_WIFI))
             } else {
@@ -110,18 +111,17 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
 
         binding.btnData.setOnClickListener {
+            vibrate()
             startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
-        }
-        binding.btnData.setOnLongClickListener {
-            startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
-            true
         }
 
         binding.btnBluetooth.setOnClickListener {
+            vibrate()
             startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
         }
 
         binding.btnDnd.setOnClickListener {
+            vibrate()
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (nm.isNotificationPolicyAccessGranted) {
                 val currentFilter = nm.currentInterruptionFilter
@@ -137,12 +137,14 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
 
         binding.btnFlashlight.setOnClickListener {
+            vibrate()
             try {
                 cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
             } catch (e: Exception) { }
         }
 
         binding.btnRotate.setOnClickListener {
+            vibrate()
             if (Settings.System.canWrite(this)) {
                 val current = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0)
                 Settings.System.putInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, if (current == 1) 0 else 1)
@@ -155,30 +157,84 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
 
         binding.btnAirplane.setOnClickListener {
-            if (Settings.System.canWrite(this)) {
-                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
-                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-                intent.putExtra("state", !isOn)
-                sendBroadcast(intent)
-                updateAllStates()
-            } else {
-                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
-            }
+            vibrate()
+            toggleAirplaneMode()
         }
 
         binding.btnLocation.setOnClickListener {
+            vibrate()
             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
 
         binding.btnHotspot.setOnClickListener {
+            vibrate()
+            toggleHotspot()
+        }
+    }
+
+    private fun toggleAirplaneMode() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
+        } else if (Settings.System.canWrite(this)) {
             try {
-                val intent = Intent()
-                intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
-                startActivity(intent)
+                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
+                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", !isOn) }
+                sendBroadcast(intent)
+                updateAllStates()
             } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+            }
+        } else {
+            startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+        }
+    }
+
+    private fun toggleHotspot() {
+        val isOn = isHotspotEnabled()
+        try {
+            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (isOn) {
+                val stopMethod = cm.javaClass.getDeclaredMethod("stopTethering", Int::class.java)
+                stopMethod.isAccessible = true
+                stopMethod.invoke(cm, 0)
+            } else {
+                val callbackClass = Class.forName("android.net.ConnectivityManager\$OnStartTetheringCallback")
+                val callback = try {
+                    callbackClass.getDeclaredConstructor().newInstance()
+                } catch (e: Exception) {
+                    java.lang.reflect.Proxy.newProxyInstance(callbackClass.classLoader, arrayOf(callbackClass)) { _, _, _ -> null }
+                }
+                val startMethod = cm.javaClass.getDeclaredMethod("startTethering", Int::class.java, Boolean::class.java, callbackClass)
+                startMethod.isAccessible = true
+                startMethod.invoke(cm, 0, false, callback)
+            }
+            handler.postDelayed({ updateAllStates() }, 1000)
+        } catch (e: Exception) {
+            try {
+                val intent = Intent().apply {
+                    setClassName("com.android.settings", "com.android.settings.TetherSettings")
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(intent)
+            } catch (ex: Exception) {
                 startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
             }
+        }
+    }
+
+    private fun isHotspotEnabled(): Boolean {
+        return try {
+            val method = wifiManager.javaClass.getDeclaredMethod("isWifiApEnabled")
+            method.isAccessible = true
+            method.invoke(wifiManager) as Boolean
+        } catch (e: Exception) { false }
+    }
+
+    private fun vibrate() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
+            vibrator.vibrate(android.os.VibrationEffect.createPredefined(android.os.VibrationEffect.EFFECT_CLICK))
         }
     }
 
@@ -271,7 +327,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setLabelState(binding.tvLocationState, isGpsOn)
 
         // Hotspot
-        setLabelState(binding.tvHotspotState, false)
+        setLabelState(binding.tvHotspotState, isHotspotEnabled())
 
         // Brightness
         try {

@@ -167,10 +167,26 @@ class FocusActivity : AppCompatActivity() {
       setupStrictMode()
       setupPomodoro()
 
+      // Restore Pomodoro state if session is still active
+      // (happens when activity is recreated due to rotation, memory pressure,
+      // or when redirected back from MainActivity)
+      restorePomodoroState()
+
       handleIntent(intent)
     } catch (e: Exception) {
       e.printStackTrace()
       finish()
+    }
+  }
+
+  private fun restorePomodoroState() {
+    if (PomodoroManager.isActive) {
+      // Restore local selectedApps from PomodoroManager
+      selectedApps.clear()
+      selectedApps.addAll(PomodoroManager.userSelectedApps)
+      // Restore contact info
+      contactName = PomodoroManager.emergencyContactName
+      contactNumber = PomodoroManager.emergencyContactNumber
     }
   }
 
@@ -920,29 +936,84 @@ class FocusActivity : AppCompatActivity() {
   private fun handlePomContactResult(data: Intent) {
     try {
         val uri = data.data ?: return
-        val cursor = contentResolver.query(uri, null, null, null, null)
-
-        cursor?.use {
+        var foundName: String? = null
+        var foundNumber: String? = null
+        
+        // ── STEP 1: Direct query from the returned URI ──
+        contentResolver.query(uri, null, null, null, null)?.use {
             if (it.moveToFirst()) {
-                val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
                 val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val nameAltIdx = it.getColumnIndex(android.provider.ContactsContract.Contacts.DISPLAY_NAME)
                 
-                val name = if (nameIdx != -1) it.getString(nameIdx) else null
-                val rawNum = if (numIdx != -1) it.getString(numIdx) else null
-
-                if (name != null && rawNum != null) {
-                    contactName = name
-                    contactNumber = rawNum.replace("[^0-9+]".toRegex(), "")
-                    updatePomContactUI()
-                } else {
-                    Toast.makeText(this, "Contact has no phone number", Toast.LENGTH_SHORT).show()
+                foundName = when {
+                    nameIdx != -1 -> it.getString(nameIdx)
+                    nameAltIdx != -1 -> it.getString(nameAltIdx)
+                    else -> null
                 }
-            } else {
-                Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
+                foundNumber = if (numIdx != -1) it.getString(numIdx) else null
             }
         }
+        
+        // ── STEP 2: Secondary lookup by CONTACT_ID (Essential for MIUI/OxygenOS) ──
+        if (foundNumber == null) {
+            val contactId = uri.lastPathSegment
+            if (contactId != null) {
+                contentResolver.query(
+                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    arrayOf(
+                        android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
+                    ),
+                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                    arrayOf(contactId),
+                    null
+                )?.use {
+                    if (it.moveToFirst()) {
+                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        if (nameIdx != -1) foundName = it.getString(nameIdx)
+                        if (numIdx != -1) foundNumber = it.getString(numIdx)
+                    }
+                }
+            }
+        }
+        
+        // ── STEP 3: Fallback by DATA_ID ──
+        if (foundNumber == null) {
+            val dataId = uri.lastPathSegment
+            if (dataId != null) {
+                contentResolver.query(
+                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    arrayOf(
+                        android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER
+                    ),
+                    android.provider.ContactsContract.Data._ID + " = ?",
+                    arrayOf(dataId),
+                    null
+                )?.use {
+                    if (it.moveToFirst()) {
+                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        if (nameIdx != -1 && foundName == null) foundName = it.getString(nameIdx)
+                        if (numIdx != -1) foundNumber = it.getString(numIdx)
+                    }
+                }
+            }
+        }
+        
+        if (foundName != null && foundNumber != null) {
+            contactName = foundName
+            contactNumber = foundNumber!!.replace("[^0-9+]".toRegex(), "")
+            updatePomContactUI()
+        } else if (foundName != null) {
+            Toast.makeText(this, "$foundName has no details", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
+        }
     } catch (e: Exception) {
-        Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Error reading contact: ${e.message}", Toast.LENGTH_SHORT).show()
     }
   }
 
@@ -954,6 +1025,7 @@ class FocusActivity : AppCompatActivity() {
         durationMinutes = selectedDurationMins,
         allowedApps = selectedApps,
         emergencyContact = contactNumber,
+        emergencyName = contactName,
         context = this
     )
     
@@ -997,17 +1069,28 @@ class FocusActivity : AppCompatActivity() {
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE
     
+    // Read contact from PomodoroManager (survives activity recreation)
+    if (contactNumber == null && PomodoroManager.emergencyContactNumber != null) {
+        contactNumber = PomodoroManager.emergencyContactNumber
+        contactName = PomodoroManager.emergencyContactName
+    }
     pom_btnCallContact.visibility = if (contactNumber != null) View.VISIBLE else View.GONE
     
-    // Populate active app slots
+    // Populate active app slots from PomodoroManager.userSelectedApps
+    // NOT from local selectedApps — because selectedApps is empty after activity recreate
+    val appsToShow = if (PomodoroManager.userSelectedApps.isNotEmpty()) {
+        PomodoroManager.userSelectedApps
+    } else {
+        selectedApps
+    }
+    
     val activeSlots = listOf(pom_active_slot1, pom_active_slot2, pom_active_slot3)
     activeSlots.forEach { it.visibility = View.GONE }
     
-    selectedApps.forEachIndexed { index, pkg ->
+    appsToShow.forEachIndexed { index, pkg ->
         if (index < activeSlots.size) {
             val slot = activeSlots[index]
             slot.visibility = View.VISIBLE
-            // Use app name if possible, else part of package
             val label = try {
                 val info = packageManager.getApplicationInfo(pkg, 0)
                 packageManager.getApplicationLabel(info).toString()

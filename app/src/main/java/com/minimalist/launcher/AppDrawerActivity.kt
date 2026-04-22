@@ -56,7 +56,16 @@ class AppDrawerActivity : AppCompatActivity() {
         })
 
         adapter = AppAdapter()
-        binding.rvApps.layoutManager = LinearLayoutManager(this)
+        val isLandscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+        if (isLandscape) {
+            binding.rvApps.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3).apply {
+                spanSizeLookup = object : androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int = if (adapter.items[position] is String) 3 else 1
+                }
+            }
+        } else {
+            binding.rvApps.layoutManager = LinearLayoutManager(this)
+        }
         binding.rvApps.adapter = adapter
 
         binding.btnSettings.setOnClickListener {

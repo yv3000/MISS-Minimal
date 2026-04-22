@@ -203,26 +203,16 @@ class QuickSettingsActivity : AppCompatActivity() {
         // LOCATION
         binding.btnLocation.setOnClickListener {
             toggleLocation(this)
-            binding.btnLocation.postDelayed({
-                updateToggleState(binding.btnLocation, isLocationEnabled(this))
-            }, 800)
         }
 
         // HOTSPOT
         binding.btnHotspot.setOnClickListener {
             toggleHotspot(this)
-            binding.btnHotspot.postDelayed({
-                val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-                updateToggleState(binding.btnHotspot, isHotspotEnabled(wm))
-            }, 500)
         }
 
         // AIRPLANE
         binding.btnAirplane.setOnClickListener {
             toggleAirplaneMode(this)
-            binding.btnAirplane.postDelayed({
-                updateToggleState(binding.btnAirplane, isAirplaneModeOn(this))
-            }, 600)
         }
 
         setupMicroInteractions()
@@ -310,7 +300,8 @@ class QuickSettingsActivity : AppCompatActivity() {
         setButtonState(binding.btnLocation, isGpsOn, dpToPx)
 
         // Hotspot
-        setButtonState(binding.btnHotspot, false, dpToPx) 
+        val hotspotOn = try { isHotspotEnabled(wifiManager) } catch (e: Exception) { false }
+        setButtonState(binding.btnHotspot, hotspotOn, dpToPx) 
 
         // Airplane
         val isAirplaneOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
@@ -343,26 +334,69 @@ class QuickSettingsActivity : AppCompatActivity() {
 
     // ── HOTSPOT HELPER METHODS ──
     private fun toggleHotspot(context: Context) {
-        val wifiManager = context.applicationContext
-            .getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val isOn = isHotspotEnabled(wm)
+        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        
+        // Try reflection-based tethering via ConnectivityManager (works on Android 8+)
         try {
-            if (isHotspotEnabled(wifiManager)) {
-                stopHotspot(wifiManager)
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (isOn) {
+                // Stop tethering
+                val stopMethod = cm.javaClass.getDeclaredMethod("stopTethering", Int::class.java)
+                stopMethod.isAccessible = true
+                stopMethod.invoke(cm, 0) // 0 = TETHERING_WIFI
+                android.widget.Toast.makeText(context, "Hotspot OFF", android.widget.Toast.LENGTH_SHORT).show()
             } else {
-                startHotspot(wifiManager, context)
-            }
-        } catch (e: Exception) {
-            try {
-                if (Build.VERSION.SDK_INT >= 29) {
-                    val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-                } else {
-                    val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
+                // Start tethering
+                val callbackClass = Class.forName("android.net.ConnectivityManager\$OnStartTetheringCallback")
+                val callback = try {
+                    callbackClass.getDeclaredConstructor().newInstance()
+                } catch (e: Exception) {
+                    // Fallback for some ROMs where constructor is not accessible
+                    java.lang.reflect.Proxy.newProxyInstance(
+                        callbackClass.classLoader,
+                        arrayOf(callbackClass)
+                    ) { _, _, _ -> null }
                 }
-            } catch (_: Exception) {}
+                
+                val startMethod = cm.javaClass.getDeclaredMethod(
+                    "startTethering", Int::class.java, Boolean::class.java, callbackClass
+                )
+                startMethod.isAccessible = true
+                startMethod.invoke(cm, 0, false, callback)
+                android.widget.Toast.makeText(context, "Hotspot ON", android.widget.Toast.LENGTH_SHORT).show()
+            }
+            // Update UI after a brief delay
+            binding.btnHotspot.postDelayed({ updateAllStates() }, 800)
+            return
+        } catch (e: Exception) {
+            // Reflection failed
+        }
+        
+        // Fallback: try the old WifiManager startSoftAp / stopSoftAp
+        try {
+            if (isOn) {
+                stopHotspot(wm)
+            } else {
+                startHotspot(wm, context)
+            }
+            binding.btnHotspot.postDelayed({ updateAllStates() }, 800)
+            return
+        } catch (e: Exception) {
+            // Also failed
+        }
+        
+        // Last resort: open tethering settings directly
+        try {
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
         }
     }
 
@@ -374,53 +408,55 @@ class QuickSettingsActivity : AppCompatActivity() {
         } catch (e: Exception) { false }
     }
 
-    private fun startHotspot(wifiManager: WifiManager, context: Context) {
-        try {
-            if (Build.VERSION.SDK_INT <= 28) {
-                val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp", android.net.wifi.WifiConfiguration::class.java)
-                method.isAccessible = true
-                method.invoke(wifiManager, null)
-                return
+    private fun animateClick(view: View, action: () -> Unit) {
+        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        view.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100).withEndAction {
+            view.animate().scaleX(1f).scaleY(1f).setDuration(100).withEndAction {
+                action()
             }
-            startHotspotViaWifiManager(wifiManager)
-        } catch (e: Exception) {
-            startHotspotViaWifiManager(wifiManager)
-        }
+        }.start()
     }
 
-    private fun startHotspotViaWifiManager(wifiManager: WifiManager) {
+    private fun startHotspot(wifiManager: WifiManager, context: Context) {
         try {
-            val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp", android.net.wifi.WifiConfiguration::class.java)
+            val method = wifiManager.javaClass.getDeclaredMethod("setWifiApEnabled",
+                android.net.wifi.WifiConfiguration::class.java, Boolean::class.java)
             method.isAccessible = true
-            method.invoke(wifiManager, null)
-        } catch (e: Exception) { e.printStackTrace() }
+            method.invoke(wifiManager, null, true)
+        } catch (e1: Exception) {
+            try {
+                val method = wifiManager.javaClass.getDeclaredMethod("startSoftAp",
+                    android.net.wifi.WifiConfiguration::class.java)
+                method.isAccessible = true
+                method.invoke(wifiManager, null)
+            } catch (e2: Exception) { throw e2 }
+        }
     }
 
     private fun stopHotspot(wifiManager: WifiManager) {
         try {
-            val method = wifiManager.javaClass.getDeclaredMethod("stopSoftAp")
+            val method = wifiManager.javaClass.getDeclaredMethod("setWifiApEnabled",
+                android.net.wifi.WifiConfiguration::class.java, Boolean::class.java)
             method.isAccessible = true
-            method.invoke(wifiManager)
-        } catch (e: Exception) { e.printStackTrace() }
+            method.invoke(wifiManager, null, false)
+        } catch (e1: Exception) {
+            try {
+                val method = wifiManager.javaClass.getDeclaredMethod("stopSoftAp")
+                method.isAccessible = true
+                method.invoke(wifiManager)
+            } catch (e2: Exception) { throw e2 }
+        }
     }
 
     // ── LOCATION HELPER METHODS ──
     private fun toggleLocation(context: Context) {
-        if (Build.VERSION.SDK_INT >= 29) {
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-            return
-        }
-        try {
-            val mode = Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF)
-            val newMode = if (mode == Settings.Secure.LOCATION_MODE_OFF) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
-            Settings.Secure.putInt(context.contentResolver, Settings.Secure.LOCATION_MODE, newMode)
-        } catch (e: Exception) {
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        }
+        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        // On Android 10+, apps cannot toggle location directly.
+        // Best approach: open the Location settings in a focused, minimal way.
+        // We use startActivityForResult so we can update the toggle when user returns.
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivityForResult(intent, 5001)
     }
 
     private fun isLocationEnabled(context: Context): Boolean {
@@ -436,37 +472,39 @@ class QuickSettingsActivity : AppCompatActivity() {
 
     // ── AIRPLANE HELPER METHODS ──
     private fun toggleAirplaneMode(context: Context) {
-        val isCurrentlyOn = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
-        val newState = !isCurrentlyOn
-        val success = try {
-            Settings.Global.putInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (newState) 1 else 0)
-            true
-        } catch (e: SecurityException) { false }
-
-        if (success) {
-            val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", newState) }
-            context.sendBroadcast(intent)
+        vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        // On Android 10+, non-system apps CANNOT write Settings.Global.AIRPLANE_MODE_ON.
+        // The ONLY approach is to show the in-app internet connectivity panel.
+        if (Build.VERSION.SDK_INT >= 29) {
+            // This opens a BOTTOM SHEET panel inside the app — NOT a full settings page
+            val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+            startActivityForResult(intent, 5002)
         } else {
-            if (Build.VERSION.SDK_INT >= 23 && !Settings.System.canWrite(context)) {
-                val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-                    data = Uri.parse("package:${context.packageName}")
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                context.startActivity(intent)
-            } else {
-                try {
-                    if (Build.VERSION.SDK_INT >= 29) {
-                        val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-                        panelIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(panelIntent)
-                    }
-                } catch (_: Exception) {}
+            // Pre-Android 10: direct toggle
+            try {
+                val isCurrentlyOn = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+                val newState = !isCurrentlyOn
+                Settings.Global.putInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (newState) 1 else 0)
+                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", newState) }
+                context.sendBroadcast(intent)
+                binding.btnAirplane.postDelayed({ updateAllStates() }, 500)
+            } catch (e: SecurityException) {
+                val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+                startActivityForResult(intent, 5002)
             }
         }
     }
 
     private fun isAirplaneModeOn(context: Context): Boolean {
         return Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        // When user returns from Location or Airplane panel, refresh all states
+        if (requestCode == 5001 || requestCode == 5002) {
+            updateAllStates()
+        }
     }
 
     private fun setupSound() {

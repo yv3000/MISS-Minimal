@@ -67,23 +67,23 @@ class TopBarBlockerService : Service() {
         addTopOverlay(type, statusBarH)
         
         // ── RIGHT EDGE OVERLAY (blocks OEM sidebar swipe) ──
-        addRightEdgeOverlay(type)
+        addEdgeOverlay(type, Gravity.END)
         
         // ── LEFT EDGE OVERLAY (blocks OEM sidebar swipe) ──
-        addLeftEdgeOverlay(type)
+        addEdgeOverlay(type, Gravity.START)
     }
 
     private fun addTopOverlay(type: Int, statusBarH: Int) {
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            statusBarH * 3,
+            statusBarH * 2, // Double height to catch the start of the swipe
             0, 0, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSPARENT
         )
-        params.gravity = Gravity.TOP or Gravity.START
+        params.gravity = Gravity.TOP
         
         topOverlayView = View(this).apply {
             setOnTouchListener { _, event ->
@@ -95,18 +95,13 @@ class TopBarBlockerService : Service() {
                     }
                     MotionEvent.ACTION_MOVE -> {
                         val dy = event.rawY - touchStartY
-                        if (dy > 60f && !panelOpenedThisGesture) {
+                        if (dy > 80f && !panelOpenedThisGesture) {
                             panelOpenedThisGesture = true
-                            // Open our custom panel instead
-                            val intent = Intent("com.minimalist.launcher.OPEN_NOTIF_PANEL")
-                            intent.`package` = packageName
-                            sendBroadcast(intent)
+                            // Open our custom panel broadcast
+                            sendBroadcast(Intent("com.minimalist.launcher.OPEN_NOTIF_PANEL").apply {
+                                `package` = packageName
+                            })
                         }
-                        true
-                    }
-                    MotionEvent.ACTION_UP,
-                    MotionEvent.ACTION_CANCEL -> {
-                        panelOpenedThisGesture = false
                         true
                     }
                     else -> true
@@ -116,9 +111,9 @@ class TopBarBlockerService : Service() {
         try { windowManager.addView(topOverlayView, params) } catch (e: Exception) {}
     }
 
-    private fun addRightEdgeOverlay(type: Int) {
-        // Cover right 32dp of screen to block sidebar swipe-in gesture
-        val edgeWidth = dpToPx(32)
+    private fun addEdgeOverlay(type: Int, gravity: Int) {
+        // Cover 40dp of screen edges to block sidebar gestures
+        val edgeWidth = dpToPx(40)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -128,44 +123,23 @@ class TopBarBlockerService : Service() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             PixelFormat.TRANSPARENT
         )
-        params.gravity = Gravity.TOP or Gravity.END  // right edge
-        rightEdgeView = View(this).apply {
-            setOnTouchListener { _, _ -> true }  // consume all touches
+        params.gravity = gravity
+        val edgeView = View(this).apply {
+            setOnTouchListener { _, _ -> true } // Consume all touches
         }
-        try { windowManager.addView(rightEdgeView, params) } catch (e: Exception) {}
-    }
-
-    private fun addLeftEdgeOverlay(type: Int) {
-        val edgeWidth = dpToPx(32)
-        val params = WindowManager.LayoutParams(
-            edgeWidth,
-            WindowManager.LayoutParams.MATCH_PARENT,
-            0, 0, type,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            PixelFormat.TRANSPARENT
-        )
-        params.gravity = Gravity.TOP or Gravity.START  // left edge
-        leftEdgeView = View(this).apply {
-            setOnTouchListener { _, _ -> true }  // consume all touches
-        }
-        try { windowManager.addView(leftEdgeView, params) } catch (e: Exception) {}
+        if (gravity == Gravity.END) rightEdgeView = edgeView else leftEdgeView = edgeView
+        try { windowManager.addView(edgeView, params) } catch (e: Exception) {}
     }
 
     private fun removeOverlays() {
-        topOverlayView?.let {
-            try { windowManager.removeView(it) } catch (e: Exception) {}
-            topOverlayView = null
+        listOf(topOverlayView, rightEdgeView, leftEdgeView).forEach { view ->
+            view?.let {
+                try { windowManager.removeView(it) } catch (e: Exception) {}
+            }
         }
-        rightEdgeView?.let {
-            try { windowManager.removeView(it) } catch (e: Exception) {}
-            rightEdgeView = null
-        }
-        leftEdgeView?.let {
-            try { windowManager.removeView(it) } catch (e: Exception) {}
-            leftEdgeView = null
-        }
+        topOverlayView = null
+        rightEdgeView = null
+        leftEdgeView = null
     }
 
     private fun getStatusBarHeight(): Int {

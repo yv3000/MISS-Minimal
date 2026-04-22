@@ -11,7 +11,8 @@ object PomodoroManager {
     var remainingWorkSeconds = 0
     var workChunkSeconds = 25 * 60
     
-    val allowedPackages = mutableSetOf<String>()
+    // ── USER-SELECTED APPS (separate from system-always-allowed) ──
+    val userSelectedApps = mutableListOf<String>()
     
     var emergencyContactName: String? = null
     var emergencyContactNumber: String? = null
@@ -34,29 +35,36 @@ object PomodoroManager {
         durationMinutes: Int,
         allowedApps: List<String>,
         emergencyContact: String?,
+        emergencyName: String?,
         context: Context
     ) {
         workDurationSeconds = durationMinutes * 60
         remainingWorkSeconds = workDurationSeconds
-        workChunkSeconds = 25 * 60 // standard pomodoro chunk
+        workChunkSeconds = 25 * 60
         
-        // Set state FIRST — service checks this
         isActive = true
         isWorkPhase = true
         sessionCount = 1
         
         emergencyContactNumber = emergencyContact
+        emergencyContactName = emergencyName
 
-        // Build allowed package list
+        // STRICTLY store user-selected apps
+        userSelectedApps.clear()
+        userSelectedApps.addAll(allowedApps)
+
+        // Build allowed package list for accessibility service checks
         allowedPackages.clear()
         allowedPackages.addAll(ALWAYS_ALLOWED)
         allowedPackages.addAll(allowedApps)
 
-        // Start top bar overlay (blocks notification shade swipe)
         TopBarBlockerService.start(context)
         
-        // Start accessibility blocking loop
-        // This is CRITICAL — without this, shade blocker never runs
+        context.getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("pomodoro_shade_block", true)
+            .apply()
+        
         StrictModeService.instance?.startBlocking()
     }
 
@@ -66,9 +74,15 @@ object PomodoroManager {
         sessionCount = 0
         emergencyContactName = null
         emergencyContactNumber = null
+        userSelectedApps.clear()
         allowedPackages.clear()
         
         remainingWorkSeconds = 0
+        
+        context.getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("pomodoro_shade_block", false)
+            .apply()
         
         TopBarBlockerService.stop(context)
         StrictModeService.instance?.stopBlocking()
