@@ -11,6 +11,9 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.widget.SeekBar
@@ -23,12 +26,14 @@ import android.database.ContentObserver
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import android.view.GestureDetector
+import android.view.View
 
 class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuickSettingsBinding
     private lateinit var audioManager: AudioManager
     private lateinit var wifiManager: WifiManager
     private lateinit var cameraManager: CameraManager
+    private lateinit var vibrator: Vibrator
     private var torchState = false
     private var cameraId: String? = null
 
@@ -57,6 +62,14 @@ class QuickSettingsActivity : AppCompatActivity() {
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        
+        vibrator = if (Build.VERSION.SDK_INT >= 31) {
+            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
 
         setupGestures()
 
@@ -229,7 +242,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         buttons.forEach { it.addClickFeedback() }
     }
 
-    private fun android.view.View.addClickFeedback() {
+    private fun View.addClickFeedback() {
         setOnTouchListener { v, event ->
             when (event.action) {
                 android.view.MotionEvent.ACTION_DOWN -> {

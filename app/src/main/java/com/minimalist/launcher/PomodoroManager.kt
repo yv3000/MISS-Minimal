@@ -13,6 +13,7 @@ object PomodoroManager {
     
     // ── USER-SELECTED APPS (separate from system-always-allowed) ──
     val userSelectedApps = mutableListOf<String>()
+    val allowedPackages = mutableSetOf<String>()
     
     var emergencyContactName: String? = null
     var emergencyContactNumber: String? = null

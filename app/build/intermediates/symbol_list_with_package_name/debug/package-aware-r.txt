@@ -3546,6 +3546,7 @@ id outline
 id outward
 id overshoot
 id packed
+id panelContainer
 id panelPomodoro
 id panelStopwatch
 id panelStrict
@@ -3683,6 +3684,7 @@ id submit_area
 id supportScrollUp
 id swBtnRow
 id tabBar
+id tabContainer
 id tabIndicator
 id tabMode
 id tabPomodoro

@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.minimalist.launcher.R;
@@ -20,18 +21,57 @@ import java.lang.String;
 
 public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
-  private final FrameLayout rootView;
+  private final View rootView;
 
   @NonNull
   public final TextView btnEnableStrict;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView btnExitStrict;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView btnStartAgain;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView btnSwFlag;
 
   @NonNull
@@ -61,17 +101,75 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final TextView btnTimerStop;
 
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final Guideline guideV;
+
   @NonNull
   public final LinearLayout layoutPickers;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout layoutStrictComplete;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout layoutStrictWarning;
 
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final FrameLayout panelContainer;
+
   @NonNull
-  public final FrameLayout panelPomodoro;
+  public final View panelPomodoro;
 
   @NonNull
   public final LinearLayout panelStopwatch;
@@ -94,22 +192,100 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final NumberPicker pickerSeconds;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomActiveSlot1;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomActiveSlot2;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomActiveSlot3;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomBtnCallContact;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomBtnCancelBreak;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomBtnDur100;
 
   @NonNull
@@ -118,25 +294,103 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final TextView pomBtnDur50;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomBtnDur75;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomBtnRemoveContact;
 
   @NonNull
   public final TextView pomBtnStartPomodoro;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout pomLayoutActive;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout pomLayoutActiveApps;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout pomLayoutContact;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final LinearLayout pomLayoutSetup;
 
   @NonNull
@@ -148,19 +402,84 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final TextView pomSlotApp3;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomTvContactName;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomTvCountdown;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomTvPhaseLabel;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView pomTvSessionCount;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final ScrollView scrollTimestamps;
 
   @NonNull
@@ -169,7 +488,36 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final LinearLayout tabBar;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   */
+  @Nullable
+  public final LinearLayout tabContainer;
+
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final View tabIndicator;
 
   @NonNull
@@ -193,46 +541,86 @@ public final class ActivityFocusBinding implements ViewBinding {
   @NonNull
   public final TextView tvStrictCountdown;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView tvStrictStatus;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView tvTimeUp;
 
   @NonNull
   public final TextView tvTimerCountdown;
 
-  @NonNull
+  /**
+   * This binding is not available in all configurations.
+   * <p>
+   * Present:
+   * <ul>
+   *   <li>layout/</li>
+   * </ul>
+   *
+   * Absent:
+   * <ul>
+   *   <li>layout-land/</li>
+   * </ul>
+   */
+  @Nullable
   public final TextView tvTimestamps;
 
-  private ActivityFocusBinding(@NonNull FrameLayout rootView, @NonNull TextView btnEnableStrict,
-      @NonNull TextView btnExitStrict, @NonNull TextView btnStartAgain, @NonNull TextView btnSwFlag,
-      @NonNull TextView btnSwPause, @NonNull TextView btnSwResume, @NonNull TextView btnSwStart,
-      @NonNull TextView btnSwStop, @NonNull TextView btnTimerPause, @NonNull TextView btnTimerReset,
-      @NonNull TextView btnTimerResume, @NonNull TextView btnTimerStart,
-      @NonNull TextView btnTimerStop, @NonNull LinearLayout layoutPickers,
-      @NonNull LinearLayout layoutStrictComplete, @NonNull LinearLayout layoutStrictWarning,
-      @NonNull FrameLayout panelPomodoro, @NonNull LinearLayout panelStopwatch,
+  private ActivityFocusBinding(@NonNull View rootView, @NonNull TextView btnEnableStrict,
+      @Nullable TextView btnExitStrict, @Nullable TextView btnStartAgain,
+      @Nullable TextView btnSwFlag, @NonNull TextView btnSwPause, @NonNull TextView btnSwResume,
+      @NonNull TextView btnSwStart, @NonNull TextView btnSwStop, @NonNull TextView btnTimerPause,
+      @NonNull TextView btnTimerReset, @NonNull TextView btnTimerResume,
+      @NonNull TextView btnTimerStart, @NonNull TextView btnTimerStop, @Nullable Guideline guideV,
+      @NonNull LinearLayout layoutPickers, @Nullable LinearLayout layoutStrictComplete,
+      @Nullable LinearLayout layoutStrictWarning, @Nullable FrameLayout panelContainer,
+      @NonNull View panelPomodoro, @NonNull LinearLayout panelStopwatch,
       @NonNull LinearLayout panelStrict, @NonNull FrameLayout panelStrictActive,
       @NonNull LinearLayout panelTimer, @NonNull NumberPicker pickerHours,
       @NonNull NumberPicker pickerMinutes, @NonNull NumberPicker pickerSeconds,
-      @NonNull TextView pomActiveSlot1, @NonNull TextView pomActiveSlot2,
-      @NonNull TextView pomActiveSlot3, @NonNull TextView pomBtnCallContact,
-      @NonNull TextView pomBtnCancelBreak, @NonNull TextView pomBtnDur100,
-      @NonNull TextView pomBtnDur25, @NonNull TextView pomBtnDur50, @NonNull TextView pomBtnDur75,
-      @NonNull TextView pomBtnRemoveContact, @NonNull TextView pomBtnStartPomodoro,
-      @NonNull LinearLayout pomLayoutActive, @NonNull LinearLayout pomLayoutActiveApps,
-      @NonNull LinearLayout pomLayoutContact, @NonNull LinearLayout pomLayoutSetup,
+      @Nullable TextView pomActiveSlot1, @Nullable TextView pomActiveSlot2,
+      @Nullable TextView pomActiveSlot3, @Nullable TextView pomBtnCallContact,
+      @Nullable TextView pomBtnCancelBreak, @Nullable TextView pomBtnDur100,
+      @NonNull TextView pomBtnDur25, @NonNull TextView pomBtnDur50, @Nullable TextView pomBtnDur75,
+      @Nullable TextView pomBtnRemoveContact, @NonNull TextView pomBtnStartPomodoro,
+      @Nullable LinearLayout pomLayoutActive, @Nullable LinearLayout pomLayoutActiveApps,
+      @Nullable LinearLayout pomLayoutContact, @Nullable LinearLayout pomLayoutSetup,
       @NonNull TextView pomSlotApp1, @NonNull TextView pomSlotApp2, @NonNull TextView pomSlotApp3,
-      @NonNull TextView pomTvContactName, @NonNull TextView pomTvCountdown,
-      @NonNull TextView pomTvPhaseLabel, @NonNull TextView pomTvSessionCount,
-      @NonNull ScrollView scrollTimestamps, @NonNull LinearLayout swBtnRow,
-      @NonNull LinearLayout tabBar, @NonNull View tabIndicator, @NonNull TextView tabPomodoro,
-      @NonNull TextView tabStopwatch, @NonNull TextView tabStrict, @NonNull TextView tabTimer,
-      @NonNull LinearLayout timerBtnRow, @NonNull TextView tvStopwatch,
-      @NonNull TextView tvStrictCountdown, @NonNull TextView tvStrictStatus,
-      @NonNull TextView tvTimeUp, @NonNull TextView tvTimerCountdown,
-      @NonNull TextView tvTimestamps) {
+      @Nullable TextView pomTvContactName, @Nullable TextView pomTvCountdown,
+      @Nullable TextView pomTvPhaseLabel, @Nullable TextView pomTvSessionCount,
+      @Nullable ScrollView scrollTimestamps, @NonNull LinearLayout swBtnRow,
+      @NonNull LinearLayout tabBar, @Nullable LinearLayout tabContainer,
+      @Nullable View tabIndicator, @NonNull TextView tabPomodoro, @NonNull TextView tabStopwatch,
+      @NonNull TextView tabStrict, @NonNull TextView tabTimer, @NonNull LinearLayout timerBtnRow,
+      @NonNull TextView tvStopwatch, @NonNull TextView tvStrictCountdown,
+      @Nullable TextView tvStrictStatus, @Nullable TextView tvTimeUp,
+      @NonNull TextView tvTimerCountdown, @Nullable TextView tvTimestamps) {
     this.rootView = rootView;
     this.btnEnableStrict = btnEnableStrict;
     this.btnExitStrict = btnExitStrict;
@@ -247,9 +635,11 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.btnTimerResume = btnTimerResume;
     this.btnTimerStart = btnTimerStart;
     this.btnTimerStop = btnTimerStop;
+    this.guideV = guideV;
     this.layoutPickers = layoutPickers;
     this.layoutStrictComplete = layoutStrictComplete;
     this.layoutStrictWarning = layoutStrictWarning;
+    this.panelContainer = panelContainer;
     this.panelPomodoro = panelPomodoro;
     this.panelStopwatch = panelStopwatch;
     this.panelStrict = panelStrict;
@@ -283,6 +673,7 @@ public final class ActivityFocusBinding implements ViewBinding {
     this.scrollTimestamps = scrollTimestamps;
     this.swBtnRow = swBtnRow;
     this.tabBar = tabBar;
+    this.tabContainer = tabContainer;
     this.tabIndicator = tabIndicator;
     this.tabPomodoro = tabPomodoro;
     this.tabStopwatch = tabStopwatch;
@@ -299,7 +690,7 @@ public final class ActivityFocusBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public FrameLayout getRoot() {
+  public View getRoot() {
     return rootView;
   }
 
@@ -332,21 +723,12 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.btnExitStrict;
       TextView btnExitStrict = ViewBindings.findChildViewById(rootView, id);
-      if (btnExitStrict == null) {
-        break missingId;
-      }
 
       id = R.id.btnStartAgain;
       TextView btnStartAgain = ViewBindings.findChildViewById(rootView, id);
-      if (btnStartAgain == null) {
-        break missingId;
-      }
 
       id = R.id.btnSwFlag;
       TextView btnSwFlag = ViewBindings.findChildViewById(rootView, id);
-      if (btnSwFlag == null) {
-        break missingId;
-      }
 
       id = R.id.btnSwPause;
       TextView btnSwPause = ViewBindings.findChildViewById(rootView, id);
@@ -402,6 +784,9 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.guideV;
+      Guideline guideV = ViewBindings.findChildViewById(rootView, id);
+
       id = R.id.layoutPickers;
       LinearLayout layoutPickers = ViewBindings.findChildViewById(rootView, id);
       if (layoutPickers == null) {
@@ -410,18 +795,15 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.layoutStrictComplete;
       LinearLayout layoutStrictComplete = ViewBindings.findChildViewById(rootView, id);
-      if (layoutStrictComplete == null) {
-        break missingId;
-      }
 
       id = R.id.layoutStrictWarning;
       LinearLayout layoutStrictWarning = ViewBindings.findChildViewById(rootView, id);
-      if (layoutStrictWarning == null) {
-        break missingId;
-      }
+
+      id = R.id.panelContainer;
+      FrameLayout panelContainer = ViewBindings.findChildViewById(rootView, id);
 
       id = R.id.panelPomodoro;
-      FrameLayout panelPomodoro = ViewBindings.findChildViewById(rootView, id);
+      View panelPomodoro = ViewBindings.findChildViewById(rootView, id);
       if (panelPomodoro == null) {
         break missingId;
       }
@@ -470,39 +852,21 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.pom_active_slot1;
       TextView pomActiveSlot1 = ViewBindings.findChildViewById(rootView, id);
-      if (pomActiveSlot1 == null) {
-        break missingId;
-      }
 
       id = R.id.pom_active_slot2;
       TextView pomActiveSlot2 = ViewBindings.findChildViewById(rootView, id);
-      if (pomActiveSlot2 == null) {
-        break missingId;
-      }
 
       id = R.id.pom_active_slot3;
       TextView pomActiveSlot3 = ViewBindings.findChildViewById(rootView, id);
-      if (pomActiveSlot3 == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnCallContact;
       TextView pomBtnCallContact = ViewBindings.findChildViewById(rootView, id);
-      if (pomBtnCallContact == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnCancelBreak;
       TextView pomBtnCancelBreak = ViewBindings.findChildViewById(rootView, id);
-      if (pomBtnCancelBreak == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnDur100;
       TextView pomBtnDur100 = ViewBindings.findChildViewById(rootView, id);
-      if (pomBtnDur100 == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnDur25;
       TextView pomBtnDur25 = ViewBindings.findChildViewById(rootView, id);
@@ -518,15 +882,9 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.pom_btnDur75;
       TextView pomBtnDur75 = ViewBindings.findChildViewById(rootView, id);
-      if (pomBtnDur75 == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnRemoveContact;
       TextView pomBtnRemoveContact = ViewBindings.findChildViewById(rootView, id);
-      if (pomBtnRemoveContact == null) {
-        break missingId;
-      }
 
       id = R.id.pom_btnStartPomodoro;
       TextView pomBtnStartPomodoro = ViewBindings.findChildViewById(rootView, id);
@@ -536,27 +894,15 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.pom_layoutActive;
       LinearLayout pomLayoutActive = ViewBindings.findChildViewById(rootView, id);
-      if (pomLayoutActive == null) {
-        break missingId;
-      }
 
       id = R.id.pom_layoutActiveApps;
       LinearLayout pomLayoutActiveApps = ViewBindings.findChildViewById(rootView, id);
-      if (pomLayoutActiveApps == null) {
-        break missingId;
-      }
 
       id = R.id.pom_layoutContact;
       LinearLayout pomLayoutContact = ViewBindings.findChildViewById(rootView, id);
-      if (pomLayoutContact == null) {
-        break missingId;
-      }
 
       id = R.id.pom_layoutSetup;
       LinearLayout pomLayoutSetup = ViewBindings.findChildViewById(rootView, id);
-      if (pomLayoutSetup == null) {
-        break missingId;
-      }
 
       id = R.id.pom_slotApp1;
       TextView pomSlotApp1 = ViewBindings.findChildViewById(rootView, id);
@@ -578,33 +924,18 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.pom_tvContactName;
       TextView pomTvContactName = ViewBindings.findChildViewById(rootView, id);
-      if (pomTvContactName == null) {
-        break missingId;
-      }
 
       id = R.id.pom_tvCountdown;
       TextView pomTvCountdown = ViewBindings.findChildViewById(rootView, id);
-      if (pomTvCountdown == null) {
-        break missingId;
-      }
 
       id = R.id.pom_tvPhaseLabel;
       TextView pomTvPhaseLabel = ViewBindings.findChildViewById(rootView, id);
-      if (pomTvPhaseLabel == null) {
-        break missingId;
-      }
 
       id = R.id.pom_tvSessionCount;
       TextView pomTvSessionCount = ViewBindings.findChildViewById(rootView, id);
-      if (pomTvSessionCount == null) {
-        break missingId;
-      }
 
       id = R.id.scrollTimestamps;
       ScrollView scrollTimestamps = ViewBindings.findChildViewById(rootView, id);
-      if (scrollTimestamps == null) {
-        break missingId;
-      }
 
       id = R.id.swBtnRow;
       LinearLayout swBtnRow = ViewBindings.findChildViewById(rootView, id);
@@ -618,11 +949,11 @@ public final class ActivityFocusBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tabContainer;
+      LinearLayout tabContainer = ViewBindings.findChildViewById(rootView, id);
+
       id = R.id.tabIndicator;
       View tabIndicator = ViewBindings.findChildViewById(rootView, id);
-      if (tabIndicator == null) {
-        break missingId;
-      }
 
       id = R.id.tabPomodoro;
       TextView tabPomodoro = ViewBindings.findChildViewById(rootView, id);
@@ -668,15 +999,9 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.tvStrictStatus;
       TextView tvStrictStatus = ViewBindings.findChildViewById(rootView, id);
-      if (tvStrictStatus == null) {
-        break missingId;
-      }
 
       id = R.id.tvTimeUp;
       TextView tvTimeUp = ViewBindings.findChildViewById(rootView, id);
-      if (tvTimeUp == null) {
-        break missingId;
-      }
 
       id = R.id.tvTimerCountdown;
       TextView tvTimerCountdown = ViewBindings.findChildViewById(rootView, id);
@@ -686,22 +1011,19 @@ public final class ActivityFocusBinding implements ViewBinding {
 
       id = R.id.tvTimestamps;
       TextView tvTimestamps = ViewBindings.findChildViewById(rootView, id);
-      if (tvTimestamps == null) {
-        break missingId;
-      }
 
-      return new ActivityFocusBinding((FrameLayout) rootView, btnEnableStrict, btnExitStrict,
-          btnStartAgain, btnSwFlag, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause,
-          btnTimerReset, btnTimerResume, btnTimerStart, btnTimerStop, layoutPickers,
-          layoutStrictComplete, layoutStrictWarning, panelPomodoro, panelStopwatch, panelStrict,
+      return new ActivityFocusBinding(rootView, btnEnableStrict, btnExitStrict, btnStartAgain,
+          btnSwFlag, btnSwPause, btnSwResume, btnSwStart, btnSwStop, btnTimerPause, btnTimerReset,
+          btnTimerResume, btnTimerStart, btnTimerStop, guideV, layoutPickers, layoutStrictComplete,
+          layoutStrictWarning, panelContainer, panelPomodoro, panelStopwatch, panelStrict,
           panelStrictActive, panelTimer, pickerHours, pickerMinutes, pickerSeconds, pomActiveSlot1,
           pomActiveSlot2, pomActiveSlot3, pomBtnCallContact, pomBtnCancelBreak, pomBtnDur100,
           pomBtnDur25, pomBtnDur50, pomBtnDur75, pomBtnRemoveContact, pomBtnStartPomodoro,
           pomLayoutActive, pomLayoutActiveApps, pomLayoutContact, pomLayoutSetup, pomSlotApp1,
           pomSlotApp2, pomSlotApp3, pomTvContactName, pomTvCountdown, pomTvPhaseLabel,
-          pomTvSessionCount, scrollTimestamps, swBtnRow, tabBar, tabIndicator, tabPomodoro,
-          tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch, tvStrictCountdown,
-          tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
+          pomTvSessionCount, scrollTimestamps, swBtnRow, tabBar, tabContainer, tabIndicator,
+          tabPomodoro, tabStopwatch, tabStrict, tabTimer, timerBtnRow, tvStopwatch,
+          tvStrictCountdown, tvStrictStatus, tvTimeUp, tvTimerCountdown, tvTimestamps);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

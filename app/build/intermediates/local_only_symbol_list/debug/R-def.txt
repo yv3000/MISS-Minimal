@@ -105,6 +105,7 @@ id layoutPickers
 id layoutStrictComplete
 id layoutStrictWarning
 id original_text_size
+id panelContainer
 id panelPomodoro
 id panelStopwatch
 id panelStrict
@@ -148,6 +149,7 @@ id seekBrightness
 id seekVolume
 id swBtnRow
 id tabBar
+id tabContainer
 id tabIndicator
 id tabPomodoro
 id tabStopwatch
