@@ -113,7 +113,11 @@ class AppDrawerActivity : AppCompatActivity() {
                     allApps.add(AppItem(app.packageName, name))
                 }
             }
-            allApps.sortBy { it.name.lowercase() }
+        }
+        // Sort by effective display name (custom or original)
+        allApps.sortBy { app ->
+            val custom = PrefsManager.getCustomName(app.packageName)
+            (custom ?: app.name).lowercase()
         }
         filterApps(binding.etSearch.text.toString())
     }
@@ -126,9 +130,15 @@ class AppDrawerActivity : AppCompatActivity() {
             filteredApps.addAll(allApps.filter { it.name.contains(query, ignoreCase = true) })
         }
 
+        // Sort by effective display name before adding headers
+        val sortedList = filteredApps.sortedBy { app ->
+            val custom = PrefsManager.getCustomName(app.packageName)
+            (custom ?: app.name).lowercase()
+        }
+
         val withHeaders = mutableListOf<Any>()
         var currentLetter = ""
-        for (app in filteredApps) {
+        for (app in sortedList) {
             val custom = PrefsManager.getCustomName(app.packageName)
             val displayName = custom ?: app.name
             

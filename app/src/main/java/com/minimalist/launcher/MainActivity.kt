@@ -8,6 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.GestureDetector
@@ -25,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var gestureDetector: GestureDetector
+    private lateinit var vibrator: Vibrator
 
     private val timeRunnable = object : Runnable {
         override fun run() {
@@ -41,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        vibrator = if (Build.VERSION.SDK_INT >= 31) {
+            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
 
         Thread {
             val apps = mutableListOf<AppItem>()
@@ -115,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 3001) {
-            if (Build.VERSION.SDK_INT >= 23 && Settings.canDrawOverlays(this)) {
+            if (Settings.canDrawOverlays(this)) {
                 startNotificationBlocker()
             }
         }
@@ -178,7 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // Must do absolutely nothing
+        super.onBackPressed()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -241,20 +253,29 @@ class MainActivity : AppCompatActivity() {
         }
     }}
 
-        binding.btnFocus.setOnClickListener { animateClick(it) {
-            startActivity(Intent(this, FocusActivity::class.java))
-            overridePendingTransition(R.anim.slide_up_enter, 0)
-        }}
+        binding.btnFocus.setOnClickListener { 
+            vibrateClick()
+            try {
+                val intent = Intent(this, FocusActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_up_enter, 0)
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(this, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
 
-        binding.btnSot.setOnClickListener { animateClick(it) {
+        binding.btnSot.setOnClickListener { 
+            vibrateClick()
             startActivity(Intent(this, SotActivity::class.java))
             overridePendingTransition(R.anim.slide_up_enter, 0)
-        }}
+        }
 
-        binding.btnTime.setOnClickListener { animateClick(it) {
+        binding.btnTime.setOnClickListener { 
+            vibrateClick()
             binding.fullscreenTimeOverlay.visibility = View.VISIBLE
             window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }}
+        }
 
         binding.fullscreenTimeOverlay.setOnClickListener {
             binding.fullscreenTimeOverlay.visibility = View.GONE
@@ -307,6 +328,15 @@ class MainActivity : AppCompatActivity() {
         binding.tvAppSlot1.setOnLongClickListener { showSlotOptions(1); true }
         binding.tvAppSlot2.setOnLongClickListener { showSlotOptions(2); true }
         binding.tvAppSlot3.setOnLongClickListener { showSlotOptions(3); true }
+    }
+
+    private fun vibrateClick() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(50)
+        }
     }
 
     private fun animateClick(view: View, action: () -> Unit) {
@@ -449,16 +479,14 @@ class MainActivity : AppCompatActivity() {
     // Moved font logic to AppFont.kt
 
     fun startNotificationBlocker() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (!Settings.canDrawOverlays(this)) {
-                // Request overlay permission
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    android.net.Uri.parse("package:$packageName")
-                )
-                startActivityForResult(intent, 3001)
-                return
-            }
+        if (!Settings.canDrawOverlays(this)) {
+            // Request overlay permission
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                android.net.Uri.parse("package:$packageName")
+            )
+            startActivityForResult(intent, 3001)
+            return
         }
         val intent = Intent(this, NotificationBlockerService::class.java)
         startService(intent)
@@ -479,8 +507,7 @@ class MainActivity : AppCompatActivity() {
             .putBoolean("first_launch_done", true).apply()
 
         // 1. Overlay permission
-        if (Build.VERSION.SDK_INT >= 23 &&
-            !Settings.canDrawOverlays(this)) {
+        if (!Settings.canDrawOverlays(this)) {
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("MISS Minimal Setup")
                 .setMessage("Step 1/3: Allow display over " +

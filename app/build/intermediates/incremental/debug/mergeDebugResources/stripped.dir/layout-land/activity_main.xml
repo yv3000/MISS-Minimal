@@ -146,10 +146,13 @@
             android:layout_weight="1"
             android:fontFamily="@font/plus_jakarta_sans_medium"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="14dp"
             android:text="FOCUS"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <TextView android:id="@+id/btnSot"
             android:layout_width="0dp"
@@ -157,10 +160,13 @@
             android:layout_weight="1"
             android:fontFamily="@font/plus_jakarta_sans_medium"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="14dp"
             android:text="SOT"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <TextView android:id="@+id/btnTime"
             android:layout_width="0dp"
@@ -168,10 +174,13 @@
             android:layout_weight="1"
             android:fontFamily="@font/plus_jakarta_sans_medium"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="14dp"
             android:text="TIME"
             android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
     </LinearLayout>
 
     <FrameLayout
