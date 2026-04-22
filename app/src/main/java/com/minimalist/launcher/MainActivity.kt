@@ -257,7 +257,9 @@ class MainActivity : AppCompatActivity() {
             vibrateClick()
             try {
                 val intent = Intent(this, FocusActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                // Remove FLAG_ACTIVITY_SINGLE_TOP — causes issues after rotation
+                // Use NEW_TASK only
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_up_enter, 0)
             } catch (e: Exception) {

@@ -60,6 +60,7 @@ object PomodoroManager {
         allowedPackages.addAll(allowedApps)
 
         TopBarBlockerService.start(context)
+        isWorkPhase = true
         
         context.getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
             .edit()

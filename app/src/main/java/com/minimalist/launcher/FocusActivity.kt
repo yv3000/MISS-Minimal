@@ -175,6 +175,9 @@ class FocusActivity : AppCompatActivity() {
       handleIntent(intent)
     } catch (e: Exception) {
       e.printStackTrace()
+      android.widget.Toast.makeText(
+        this, "Focus mode error: ${e.message}", 
+        android.widget.Toast.LENGTH_LONG).show()
       finish()
     }
   }
@@ -1027,6 +1030,9 @@ class FocusActivity : AppCompatActivity() {
         context = this
     )
     
+    // Start blocker for work phase
+    TopBarBlockerService.start(this)
+    
     val intent = Intent(this, PomodoroTimerService::class.java)
     intent.action = PomodoroTimerService.ACTION_START
     intent.putExtra(PomodoroTimerService.EXTRA_DURATION, selectedDurationMins * 60)
@@ -1036,6 +1042,7 @@ class FocusActivity : AppCompatActivity() {
 
   private fun endPomodoroSession() {
     PomodoroManager.stop(this)
+    TopBarBlockerService.stop(this) // stop blocker
     val intent = Intent(this, PomodoroTimerService::class.java)
     stopService(intent)
     showPomSetupScreen()
@@ -1112,6 +1119,13 @@ class FocusActivity : AppCompatActivity() {
   private fun onPomPhaseChanged(isWork: Boolean, session: Int) {
     vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_DOUBLE_CLICK))
     pom_tvSessionCount.text = "session $session"
+    
+    // Block during work, unblock during break
+    if (isWork) {
+      TopBarBlockerService.start(this)
+    } else {
+      TopBarBlockerService.stop(this)
+    }
   }
 
   override fun onBackPressed() {

@@ -114,37 +114,45 @@ class AppDrawerActivity : AppCompatActivity() {
                 }
             }
         }
-        // Sort by effective display name (custom or original)
-        allApps.sortBy { app ->
-            val custom = PrefsManager.getCustomName(app.packageName)
-            (custom ?: app.name).lowercase()
-        }
+        // Do NOT sort here — filterApps() handles it
         filterApps(binding.etSearch.text.toString())
     }
 
     private fun filterApps(query: String) {
-        filteredApps.clear()
-        if (query.isEmpty()) {
-            filteredApps.addAll(allApps)
+        val sourceList = if (query.isEmpty()) {
+            allApps.toList()
         } else {
-            filteredApps.addAll(allApps.filter { it.name.contains(query, ignoreCase = true) })
+            allApps.filter { app ->
+                val custom = PrefsManager.getCustomName(app.packageName)
+                val displayName = custom ?: app.name
+                displayName.contains(query, ignoreCase = true)
+            }
         }
 
-        // Sort by effective display name before adding headers
-        val sortedList = filteredApps.sortedBy { app ->
-            val custom = PrefsManager.getCustomName(app.packageName)
-            (custom ?: app.name).lowercase()
-        }
+        // Single sort by display name — case insensitive
+        val sorted = sourceList.sortedWith(
+            compareBy { app ->
+                val custom = PrefsManager.getCustomName(app.packageName)
+                val displayName = custom ?: app.name
+                // Remove leading special chars so "#abc" sorts near "A"
+                displayName.trimStart { !it.isLetterOrDigit() }
+                    .lowercase(java.util.Locale.getDefault())
+            }
+        )
 
         val withHeaders = mutableListOf<Any>()
         var currentLetter = ""
-        for (app in sortedList) {
+
+        for (app in sorted) {
             val custom = PrefsManager.getCustomName(app.packageName)
             val displayName = custom ?: app.name
+            val firstChar = displayName.firstOrNull { 
+                it.isLetterOrDigit() 
+            }
+            val letter = firstChar?.uppercaseChar()?.toString() ?: "#"
             
-            val firstLetter = displayName.firstOrNull()?.uppercaseChar()?.toString() ?: "#"
-            if (firstLetter != currentLetter) {
-                currentLetter = firstLetter
+            if (letter != currentLetter) {
+                currentLetter = letter
                 withHeaders.add(currentLetter)
             }
             withHeaders.add(app)

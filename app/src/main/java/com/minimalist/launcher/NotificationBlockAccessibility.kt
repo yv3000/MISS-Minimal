@@ -29,8 +29,14 @@ class NotificationBlockAccessibility : AccessibilityService() {
   }
 
   fun shouldBlock(): Boolean {
-    return getSharedPreferences("miss_prefs", MODE_PRIVATE)
-      .getBoolean("block_notif_panel", false)
+    val prefs = getSharedPreferences(
+      "miss_prefs", MODE_PRIVATE)
+    val launcherBlocking = prefs.getBoolean(
+      "block_notif_panel", false)
+    // Also block if Pomodoro work phase is active
+    val pomodoroBlocking = PomodoroManager.isActive && 
+      PomodoroManager.isWorkPhase
+    return launcherBlocking || pomodoroBlocking
   }
 
   fun isSystemUI(pkg: String): Boolean {

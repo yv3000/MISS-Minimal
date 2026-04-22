@@ -71,6 +71,7 @@ class PomodoroTimerService : Service() {
                     if (PomodoroManager.remainingWorkSeconds > 0) {
                         // More work to do -> Break
                         isWorkPhase = false
+                        PomodoroManager.isWorkPhase = false
                         remainingSeconds = 5 * 60 // 5 min break
                         
                         val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
@@ -89,6 +90,7 @@ class PomodoroTimerService : Service() {
                 } else {
                     // Break phase ended -> Start next work chunk
                     isWorkPhase = true
+                    PomodoroManager.isWorkPhase = true
                     PomodoroManager.sessionCount++
                     remainingSeconds = minOf(PomodoroManager.workChunkSeconds, PomodoroManager.remainingWorkSeconds)
                     

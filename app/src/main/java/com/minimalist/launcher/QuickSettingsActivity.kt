@@ -151,14 +151,14 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupConnectivity() {
-        // WIFI
+        // WIFI — use system panel (works on all Android 10+ phones)
         binding.btnWifi.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startActivity(Intent(Settings.Panel.ACTION_WIFI))
             } else {
                 @Suppress("DEPRECATION")
                 wifiManager.isWifiEnabled = !wifiManager.isWifiEnabled
-                updateAllStates()
+                android.os.Handler(Looper.getMainLooper()).postDelayed({ updateAllStates() }, 600)
             }
         }
         binding.btnWifi.setOnLongClickListener {
@@ -166,11 +166,10 @@ class QuickSettingsActivity : AppCompatActivity() {
             true
         }
 
-        // DATA
+        // DATA — use internet connectivity panel
         binding.btnData.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val intent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-                startActivity(intent)
+                startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
             } else {
                 startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
             }
@@ -180,9 +179,16 @@ class QuickSettingsActivity : AppCompatActivity() {
             true
         }
 
-        // BLUETOOTH
+        // BLUETOOTH — use system panel (Android 10+)
         binding.btnBluetooth.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startActivity(Intent(Settings.Panel.ACTION_BLUETOOTH))
+            } else {
+                @Suppress("DEPRECATION")
+                val bt = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+                if (bt?.isEnabled == true) bt.disable() else bt?.enable()
+                android.os.Handler(Looper.getMainLooper()).postDelayed({ updateAllStates() }, 800)
+            }
         }
         binding.btnBluetooth.setOnLongClickListener {
             startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
@@ -234,9 +240,20 @@ class QuickSettingsActivity : AppCompatActivity() {
             toggleLocation(this)
         }
 
-        // HOTSPOT
+        // HOTSPOT — keep existing reflection approach as primary,
+        // but on failure open tethering settings directly:
         binding.btnHotspot.setOnClickListener {
             toggleHotspot(this)
+        }
+        binding.btnHotspot.setOnLongClickListener {
+            try {
+                val i = Intent(Intent.ACTION_MAIN)
+                i.setClassName("com.android.settings", "com.android.settings.TetherSettings")
+                startActivity(i)
+            } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
+            true
         }
 
         // AIRPLANE
