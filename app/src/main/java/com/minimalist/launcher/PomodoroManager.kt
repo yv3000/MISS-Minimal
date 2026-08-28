@@ -1,6 +1,7 @@
 package com.minimalist.launcher
 
 import android.content.Context
+import android.telecom.TelecomManager
 
 object PomodoroManager {
     var isActive = false
@@ -50,14 +51,23 @@ object PomodoroManager {
         emergencyContactNumber = emergencyContact
         emergencyContactName = emergencyName
 
-        // STRICTLY store user-selected apps
+        val safeApps = allowedApps.distinct().filter { packageName ->
+            runCatching {
+                val app = context.packageManager.getApplicationInfo(packageName, 0)
+                !GameDetector.isLikelyGame(context.packageManager, app)
+            }.getOrDefault(false)
+        }.take(3)
+
         userSelectedApps.clear()
-        userSelectedApps.addAll(allowedApps)
+        userSelectedApps.addAll(safeApps)
 
         // Build allowed package list for accessibility service checks
         allowedPackages.clear()
         allowedPackages.addAll(ALWAYS_ALLOWED)
-        allowedPackages.addAll(allowedApps)
+        allowedPackages.addAll(safeApps)
+        context.getSystemService(TelecomManager::class.java)
+            .defaultDialerPackage
+            ?.let(allowedPackages::add)
 
         TopBarBlockerService.start(context)
         isWorkPhase = true

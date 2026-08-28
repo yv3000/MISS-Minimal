@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
@@ -20,8 +21,6 @@
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"/>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -84,7 +83,6 @@
         <activity android:name=".NotificationPanelActivity" android:screenOrientation="fullUser" />
         <activity android:name=".PermissionOnboardingActivity" android:screenOrientation="fullUser" />
         <activity android:name=".TermsActivity" android:screenOrientation="fullUser" />
-        <activity android:name=".PomodoroActivity" android:screenOrientation="fullUser" />
         <activity android:name=".SotActivity" android:screenOrientation="fullUser" />
 
         <service android:name=".NotificationService"
@@ -99,11 +97,19 @@
 
         <service android:name=".StrictModeOverlayService"
             android:foregroundServiceType="specialUse"
-            android:exported="false"/>
+            android:exported="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-started strict focus session" />
+        </service>
             
         <service android:name=".PomodoroTimerService"
             android:foregroundServiceType="specialUse"
-            android:exported="false"/>
+            android:exported="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-started Pomodoro timer" />
+        </service>
             
         <service android:name=".TopBarBlockerService"
             android:exported="false"/>

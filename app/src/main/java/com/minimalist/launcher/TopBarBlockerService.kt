@@ -45,15 +45,17 @@ class TopBarBlockerService : Service() {
         }
 
         fun stop(context: Context) {
-            val intent = Intent(context, TopBarBlockerService::class.java)
-            intent.action = "STOP"
-            context.startService(intent)
+            context.stopService(Intent(context, TopBarBlockerService::class.java))
         }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == "STOP") {
+            stopSelf()
+            return START_NOT_STICKY
+        }
         handler.removeCallbacks(stateCheck)
         handler.post(stateCheck)
         return START_STICKY
@@ -82,7 +84,7 @@ class TopBarBlockerService : Service() {
     private fun addTopOverlay(type: Int, statusBarH: Int) {
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            statusBarH + dpToPx(8),
+            statusBarH + dpToPx(16),
             0, 0, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
@@ -118,7 +120,7 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addEdgeOverlay(type: Int, gravity: Int) {
-        val edgeWidth = dpToPx(16)
+        val edgeWidth = dpToPx(24)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,

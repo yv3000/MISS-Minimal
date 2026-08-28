@@ -1,138 +1,85 @@
-/*
- * i expect nothing from you...
- *
- * the dead man
- * yv3000
- * the god
- */
 package com.minimalist.launcher
 
+import android.app.KeyguardManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import android.os.Build
+import android.os.PowerManager
 import java.util.Calendar
-import kotlin.math.max
-import kotlin.math.min
 
 object SOTManager {
-
-    fun getScreenOnTimeToday(context: Context): Long =
-        getTodayAppUsageFromEvents(context).values.sum()
-
-    fun getTodayAppUsageFromEvents(context: Context): Map<String, Long> {
-        val manager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val midnightCalendar = Calendar.getInstance().apply {
+    fun getScreenOnTimeToday(context: Context): Long {
+        val start = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-        }
-        val midnight = midnightCalendar.timeInMillis
-        val endTime = System.currentTimeMillis()
-        val bootstrapStart = (midnightCalendar.clone() as Calendar).apply {
-            add(Calendar.DAY_OF_YEAR, -1)
         }.timeInMillis
-
-        val events = manager.queryEvents(bootstrapStart, endTime)
-        val allEvents = mutableListOf<SimpleEvent>()
+        val end = System.currentTimeMillis()
+        val manager = context.getSystemService(UsageStatsManager::class.java)
+        val usageEvents = manager.queryEvents(start, end)
+        val events = mutableListOf<TimedEvent>()
         val event = UsageEvents.Event()
-        while (events.hasNextEvent()) {
-            events.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.SCREEN_INTERACTIVE ||
-                event.eventType == UsageEvents.Event.SCREEN_NON_INTERACTIVE ||
-                event.eventType == UsageEvents.Event.KEYGUARD_SHOWN ||
-                event.eventType == UsageEvents.Event.KEYGUARD_HIDDEN ||
-                event.eventType == resumedEvent || event.eventType == pausedEvent
-            ) {
-                allEvents += SimpleEvent(event.packageName.orEmpty(), event.eventType, event.timeStamp)
-            }
-        }
-        allEvents.sortBy { it.timestamp }
-
-        val appUsage = mutableMapOf<String, Long>()
-        var interactive: Boolean? = null
-        var keyguardShown: Boolean? = null
-        var foregroundApp: String? = null
-        var foregroundKnown = false
-        var countingSince: Long? = null
-
-        fun closeSegment(at: Long) {
-            val app = foregroundApp
-            val start = countingSince
-            if (app != null && start != null) {
-                val duration = min(at, endTime) - max(start, midnight)
-                if (duration > 0) appUsage[app] = appUsage.getOrDefault(app, 0L) + duration
-            }
-            countingSince = null
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event)
+            if (event.eventType in TRACKED_EVENTS) events += TimedEvent(event.timeStamp, event.eventType)
         }
 
-        fun resumeCounting(at: Long) {
-            if (interactive == true && keyguardShown == false && foregroundApp != null) {
-                countingSince = max(at, midnight)
-            }
-        }
+        if (events.isEmpty()) return dailyStatsFallback(manager, start, end)
+        val power = context.getSystemService(PowerManager::class.java)
+        val keyguard = context.getSystemService(KeyguardManager::class.java)
+        return calculateUnlockedTime(start, end, events, power.isInteractive, keyguard.isKeyguardLocked)
+    }
 
-        var stateKnownAtMidnight: Boolean? = null
-        for (item in allEvents) {
-            if (item.timestamp >= midnight && stateKnownAtMidnight == null) {
-                stateKnownAtMidnight = interactive != null && keyguardShown != null && foregroundKnown
-            }
-            closeSegment(item.timestamp)
+    internal fun calculateUnlockedTime(
+        start: Long,
+        end: Long,
+        events: List<TimedEvent>,
+        currentlyInteractive: Boolean,
+        currentlyLocked: Boolean
+    ): Long {
+        val sorted = events.filter { it.timestamp in start..end }.sortedBy(TimedEvent::timestamp)
+        val firstScreen = sorted.firstOrNull { it.type == UsageEvents.Event.SCREEN_INTERACTIVE || it.type == UsageEvents.Event.SCREEN_NON_INTERACTIVE }
+        val firstKeyguard = sorted.firstOrNull { it.type == UsageEvents.Event.KEYGUARD_SHOWN || it.type == UsageEvents.Event.KEYGUARD_HIDDEN }
+        var interactive: Boolean? = firstScreen?.type?.let { it == UsageEvents.Event.SCREEN_NON_INTERACTIVE }
+            ?: currentlyInteractive
+        var locked: Boolean? = firstKeyguard?.type?.let { it == UsageEvents.Event.KEYGUARD_HIDDEN }
+            ?: currentlyLocked
+        var previous = start
+        var total = 0L
+
+        for (item in sorted) {
+            if (interactive == true && locked == false) total += (item.timestamp - previous).coerceAtLeast(0L)
             when (item.type) {
                 UsageEvents.Event.SCREEN_INTERACTIVE -> interactive = true
                 UsageEvents.Event.SCREEN_NON_INTERACTIVE -> interactive = false
-                UsageEvents.Event.KEYGUARD_SHOWN -> keyguardShown = true
-                UsageEvents.Event.KEYGUARD_HIDDEN -> keyguardShown = false
-                resumedEvent -> {
-                    foregroundApp = item.packageName.takeIf(String::isNotEmpty)
-                    foregroundKnown = true
-                }
-                pausedEvent -> if (foregroundApp == item.packageName) {
-                    foregroundApp = null
-                    foregroundKnown = true
+                UsageEvents.Event.KEYGUARD_SHOWN -> locked = true
+                UsageEvents.Event.KEYGUARD_HIDDEN -> locked = false
+                UsageEvents.Event.DEVICE_SHUTDOWN, UsageEvents.Event.DEVICE_STARTUP -> {
+                    interactive = null
+                    locked = null
                 }
             }
-            resumeCounting(item.timestamp)
+            previous = item.timestamp
         }
-        if (stateKnownAtMidnight == null) {
-            stateKnownAtMidnight = interactive != null && keyguardShown != null && foregroundKnown
-        }
-        closeSegment(endTime)
-
-        return if (stateKnownAtMidnight == true) appUsage else dailyStatsFallback(manager, midnight, endTime)
+        if (interactive == true && locked == false) total += (end - previous).coerceAtLeast(0L)
+        return total.coerceIn(0L, end - start)
     }
 
-    private fun dailyStatsFallback(
-        manager: UsageStatsManager,
-        midnight: Long,
-        endTime: Long
-    ): Map<String, Long> {
-        val totals = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, midnight, endTime)
-            .groupBy { it.packageName }
-            .mapValues { (_, stats) -> stats.sumOf { it.totalTimeInForeground }.coerceAtLeast(0L) }
-            .filterValues { it > 0 }
-        val total = totals.values.sum()
-        val limit = (endTime - midnight).coerceAtLeast(0L)
-        if (total <= limit) return totals
-        return totals.mapValues { (_, duration) -> (duration.toDouble() * limit / total).toLong() }
+    private fun dailyStatsFallback(manager: UsageStatsManager, start: Long, end: Long): Long {
+        val largestAppTotal = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
+            .maxOfOrNull { it.totalTimeInForeground } ?: 0L
+        return largestAppTotal.coerceIn(0L, end - start)
     }
 
-    @Suppress("DEPRECATION")
-    private val resumedEvent: Int
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            UsageEvents.Event.ACTIVITY_RESUMED
-        } else {
-            UsageEvents.Event.MOVE_TO_FOREGROUND
-        }
+    internal data class TimedEvent(val timestamp: Long, val type: Int)
 
-    @Suppress("DEPRECATION")
-    private val pausedEvent: Int
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            UsageEvents.Event.ACTIVITY_PAUSED
-        } else {
-            UsageEvents.Event.MOVE_TO_BACKGROUND
-        }
-
-    private data class SimpleEvent(val packageName: String, val type: Int, val timestamp: Long)
+    private val TRACKED_EVENTS = setOf(
+        UsageEvents.Event.SCREEN_INTERACTIVE,
+        UsageEvents.Event.SCREEN_NON_INTERACTIVE,
+        UsageEvents.Event.KEYGUARD_SHOWN,
+        UsageEvents.Event.KEYGUARD_HIDDEN,
+        UsageEvents.Event.DEVICE_SHUTDOWN,
+        UsageEvents.Event.DEVICE_STARTUP
+    )
 }

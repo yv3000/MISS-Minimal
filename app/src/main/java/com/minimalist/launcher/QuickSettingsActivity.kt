@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
 import android.location.LocationManager
@@ -24,6 +25,9 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.minimalist.launcher.databinding.ActivityQuickSettingsBinding
 import android.graphics.drawable.GradientDrawable
 import android.database.ContentObserver
@@ -40,6 +44,7 @@ class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var vibrator: Vibrator
     private var torchState = false
     private var cameraId: String? = null
+    private val notificationAdapter = NotificationAdapter()
 
     private val bluetoothPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -66,6 +71,10 @@ class QuickSettingsActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             updateAllStates()
         }
+    }
+
+    private val notificationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) = notificationAdapter.refresh()
     }
 
     private lateinit var gestureDetector: GestureDetector
@@ -105,6 +114,9 @@ class QuickSettingsActivity : AppCompatActivity() {
         setupConnectivity()
         setupSound()
         setupDisplay()
+        binding.rvNotifications.layoutManager = LinearLayoutManager(this)
+        binding.rvNotifications.adapter = notificationAdapter
+        notificationAdapter.attachSwipe(binding.rvNotifications)
     }
 
     private fun setupGestures() {
@@ -155,12 +167,22 @@ class QuickSettingsActivity : AppCompatActivity() {
             addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
         }
         ContextCompat.registerReceiver(this, stateReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            notificationReceiver,
+            IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED)
+        )
+        if (NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)) {
+            notificationAdapter.refresh()
+        } else {
+            notificationAdapter.submit(emptyList())
+        }
     }
 
     override fun onPause() {
         super.onPause()
         unregisterReceiver(volumeReceiver)
         unregisterReceiver(stateReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(notificationReceiver)
         contentResolver.unregisterContentObserver(brightnessObserver)
     }
 
@@ -168,7 +190,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         // WIFI — use system panel (works on all Android 10+ phones)
         binding.btnWifi.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startActivity(Intent(Settings.Panel.ACTION_WIFI))
+                openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
             } else {
                 @Suppress("DEPRECATION")
                 wifiManager.isWifiEnabled = !wifiManager.isWifiEnabled
@@ -183,13 +205,13 @@ class QuickSettingsActivity : AppCompatActivity() {
         // DATA — use internet connectivity panel
         binding.btnData.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
+                openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
             } else {
-                startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+                openSettings(Settings.ACTION_DATA_USAGE_SETTINGS)
             }
         }
         binding.btnData.setOnLongClickListener {
-            startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+            openSettings(Settings.ACTION_DATA_USAGE_SETTINGS)
             true
         }
 
@@ -251,7 +273,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         // LOCATION — third-party apps cannot directly change this setting.
         binding.btnLocation.visibility = View.VISIBLE
         binding.btnLocation.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         }
 
         // HOTSPOT — tethering changes require privileged/carrier access.
@@ -267,7 +289,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         // AIRPLANE — only system apps can change Settings.Global directly.
         binding.btnAirplane.visibility = View.VISIBLE
         binding.btnAirplane.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
+            openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
         }
 
         setupMicroInteractions()
@@ -459,23 +481,30 @@ class QuickSettingsActivity : AppCompatActivity() {
         // Since Android 8.0+, we can\u0027t easily toggle hotspot without high-level permissions.
         // Opening settings is the safest way.
         try {
-            startActivity(Intent(Settings.ACTION_TETHER_SETTINGS))
+            startActivity(Intent("android.settings.TETHER_SETTINGS"))
         } catch (e: Exception) {
             startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+        }
+    }
+
+    private fun openSettings(primary: String, fallback: String = Settings.ACTION_SETTINGS) {
+        try {
+            startActivity(Intent(primary))
+        } catch (_: ActivityNotFoundException) {
+            startActivity(Intent(fallback))
         }
     }
 
     private fun toggleBluetooth() {
         try {
             val adapter = getSystemService(BluetoothManager::class.java).adapter ?: return
-            if (adapter.isEnabled) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) openBluetoothSettings()
-                else @Suppress("DEPRECATION") adapter.disable()
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!adapter.isEnabled) {
                 startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
-            } else {
+            } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                 @Suppress("DEPRECATION")
-                adapter.enable()
+                adapter.disable()
+            } else {
+                openBluetoothSettings()
             }
         } catch (_: SecurityException) {
             openBluetoothSettings()
@@ -483,6 +512,6 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun openBluetoothSettings() {
-        startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
+        openSettings(Settings.ACTION_BLUETOOTH_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
     }
 }

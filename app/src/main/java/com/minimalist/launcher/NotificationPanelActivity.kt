@@ -20,7 +20,7 @@ import com.minimalist.launcher.databinding.RowNotificationBinding
 
 class NotificationPanelActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationPanelBinding
-    private val adapter = NotifAdapter()
+    private val adapter = NotificationAdapter()
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -42,31 +42,7 @@ class NotificationPanelActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED))
         adapter.refresh()
 
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
-
-            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                return if (adapter.itemAt(viewHolder.bindingAdapterPosition)?.clearable == true) {
-                    super.getSwipeDirs(recyclerView, viewHolder)
-                } else {
-                    0
-                }
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.bindingAdapterPosition
-                val item = adapter.itemAt(position)
-                if (item?.clearable == true && NotificationService.instance != null) {
-                    NotificationService.instance?.dismissNotification(item.key)
-                    adapter.removeAt(position)
-                } else if (position != RecyclerView.NO_POSITION) {
-                    adapter.notifyItemChanged(position)
-                }
-            }
-        })
-        itemTouchHelper.attachToRecyclerView(binding.rvNotifications)
+        adapter.attachSwipe(binding.rvNotifications)
 
     }
 
@@ -85,10 +61,12 @@ class NotificationPanelActivity : AppCompatActivity() {
         overridePendingTransition(0, R.anim.slide_up_exit)
     }
 
-    inner class NotifAdapter : RecyclerView.Adapter<NotifAdapter.VH>() {
-        private var items = NotificationService.notifications
+}
 
-        inner class VH(val b: RowNotificationBinding) : RecyclerView.ViewHolder(b.root)
+class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.VH>() {
+        private var items: List<NotificationService.NotificationItem> = emptyList()
+
+        class VH(val b: RowNotificationBinding) : RecyclerView.ViewHolder(b.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
             return VH(RowNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -96,8 +74,10 @@ class NotificationPanelActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: VH, position: Int) {
             val item = items[position]
+            holder.b.ivAppIcon.setImageDrawable(item.appIcon)
+            holder.b.ivAppIcon.visibility = if (item.appIcon == null) View.GONE else View.VISIBLE
             holder.b.tvAppName.text = item.appLabel
-            holder.b.tvTimeCount.text = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            holder.b.tvTimeCount.text = android.text.format.DateFormat.getTimeFormat(holder.itemView.context)
                 .format(java.util.Date(item.postTime))
             holder.b.tvTitle.text = item.title
             holder.b.tvTitle.visibility = if (item.title.isEmpty()) View.GONE else View.VISIBLE
@@ -105,9 +85,10 @@ class NotificationPanelActivity : AppCompatActivity() {
             holder.b.tvText.visibility = if (item.text.isEmpty()) View.GONE else View.VISIBLE
             holder.b.root.setOnClickListener {
                 try {
-                    item.contentIntent?.send()
+                    if (item.contentIntent != null) item.contentIntent.send()
+                    else openApp(holder.itemView.context, item.packageName)
                 } catch (_: PendingIntent.CanceledException) {
-                    refresh()
+                    openApp(holder.itemView.context, item.packageName)
                 }
             }
         }
@@ -117,7 +98,11 @@ class NotificationPanelActivity : AppCompatActivity() {
         fun itemAt(position: Int) = items.getOrNull(position)
 
         fun refresh() {
-            items = NotificationService.notifications
+            submit(NotificationService.notifications)
+        }
+
+        fun submit(newItems: List<NotificationService.NotificationItem>) {
+            items = newItems
             notifyDataSetChanged()
         }
 
@@ -125,5 +110,24 @@ class NotificationPanelActivity : AppCompatActivity() {
             items = items.toMutableList().also { it.removeAt(position) }
             notifyItemRemoved(position)
         }
-    }
+
+        fun attachSwipe(recyclerView: RecyclerView) {
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                override fun onMove(rv: RecyclerView, holder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+                override fun getSwipeDirs(rv: RecyclerView, holder: RecyclerView.ViewHolder) =
+                    if (itemAt(holder.bindingAdapterPosition)?.clearable == true) super.getSwipeDirs(rv, holder) else 0
+                override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = holder.bindingAdapterPosition
+                    val item = itemAt(position)
+                    if (item?.clearable == true && NotificationService.instance != null) {
+                        NotificationService.instance?.dismissNotification(item.key)
+                        removeAt(position)
+                    } else if (position != RecyclerView.NO_POSITION) notifyItemChanged(position)
+                }
+            }).attachToRecyclerView(recyclerView)
+        }
+
+        private fun openApp(context: Context, packageName: String) {
+            context.packageManager.getLaunchIntentForPackage(packageName)?.let(context::startActivity)
+        }
 }

@@ -8,12 +8,20 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityWindowInfo
 
 class StrictModeService : AccessibilityService() {
 
     companion object {
         var instance: StrictModeService? = null
+        private val SYSTEM_UI_PACKAGES = setOf(
+            "com.android.systemui",
+            "com.miui.systemui",
+            "com.samsung.android.systemui",
+            "com.coloros.systemui",
+            "com.oplus.systemui",
+            "com.vivo.systemui"
+        )
+
         fun isEnabled(context: Context): Boolean {
             val enabledServices = Settings.Secure.getString(
                 context.contentResolver,
@@ -32,9 +40,6 @@ class StrictModeService : AccessibilityService() {
             syncOverlay(shouldBlock)
             if (shouldBlock) {
                 dismissNotificationShade()
-                if (PomodoroManager.isWorkSessionActive()) {
-                    checkAndKillFloatingWindows()
-                }
             }
             if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 750)
         }
@@ -46,14 +51,8 @@ class StrictModeService : AccessibilityService() {
     private fun dismissNotificationShade() {
         if (Build.VERSION.SDK_INT >= 31) {
             performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-            return
-        }
-        try {
-            val statusBar = getSystemService("statusbar")
-            Class.forName("android.app.StatusBarManager")
-                .getMethod("collapsePanels")
-                .invoke(statusBar)
-        } catch (_: Exception) {
+        } else {
+            // Android 10-11 expose no public notification-shade dismiss action.
             performGlobalAction(GLOBAL_ACTION_BACK)
         }
     }
@@ -64,29 +63,8 @@ class StrictModeService : AccessibilityService() {
         if (shouldBlock) TopBarBlockerService.start(this) else TopBarBlockerService.stop(this)
     }
 
-    private fun isSystemUi(packageName: String) =
-        packageName.contains("systemui", ignoreCase = true)
-
-    private fun checkAndKillFloatingWindows() {
-        try {
-            val allWindows = windows
-            allWindows?.forEach { window ->
-                val winType = window.type
-                // TYPE_APPLICATION windows that are NOT the launcher and NOT full screen
-                // usually indicate a floating/pop-up window (like OEM sidebar apps)
-                if (winType == AccessibilityWindowInfo.TYPE_APPLICATION || 
-                    winType == AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER) {
-                    
-                    val winPkg = try { window.root?.packageName?.toString() } catch (e: Exception) { null }
-                    val allowed = PomodoroManager.allowedPackages
-                    
-                    if (winPkg != null && winPkg != packageName && !allowed.contains(winPkg)) {
-                        // This is an unauthorized floating window — kill it
-                        performGlobalAction(GLOBAL_ACTION_BACK)
-                    }
-                }
-            }
-        } catch (e: Exception) {}
+    private fun isSystemUi(packageName: String) = SYSTEM_UI_PACKAGES.any {
+        packageName == it || packageName.startsWith("$it.")
     }
 
     fun startBlocking() {
@@ -123,7 +101,11 @@ class StrictModeService : AccessibilityService() {
         syncOverlay(shouldBlock)
         if (!shouldBlock) return
 
-        if (isSystemUi(eventPkg)) dismissNotificationShade()
+        if (isSystemUi(eventPkg) && (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
+                    event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED ||
+                    event.eventType == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED)) {
+            dismissNotificationShade()
+        }
 
         if (PomodoroManager.isWorkSessionActive()) {
             
@@ -162,4 +144,5 @@ class StrictModeService : AccessibilityService() {
     }
 
     override fun onInterrupt() {}
+
 }

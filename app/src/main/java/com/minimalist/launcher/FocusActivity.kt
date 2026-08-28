@@ -11,9 +11,8 @@ import android.animation.ValueAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.app.AlertDialog
 import android.app.NotificationManager
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -43,7 +42,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import kotlin.math.abs
 
 class FocusActivity : AppCompatActivity() {
@@ -86,11 +84,10 @@ class FocusActivity : AppCompatActivity() {
   private var contactNumber: String? = null
 
   private val pomContactPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-    if (result.resultCode == RESULT_OK) result.data?.data?.let(::handlePomContactResult)
-  }
-  private val readContactsPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-    if (granted) launchPomContactPicker()
-    else Toast.makeText(this, "Permission required to select contact", Toast.LENGTH_SHORT).show()
+    if (result.resultCode == RESULT_OK) {
+      result.data?.data?.let(::handlePomContactResult)
+        ?: Toast.makeText(this, "Unable to read selected contact", Toast.LENGTH_SHORT).show()
+    }
   }
 
   private lateinit var panelPomodoro: FrameLayout
@@ -876,7 +873,11 @@ class FocusActivity : AppCompatActivity() {
 
     pom_btnCallContact.setOnClickListener {
       contactNumber?.let { num ->
-        startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$num")))
+        try {
+          startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", num, null)))
+        } catch (_: ActivityNotFoundException) {
+          Toast.makeText(this, "No phone app available", Toast.LENGTH_SHORT).show()
+        }
       }
     }
     pom_btnCancelBreak.setOnClickListener { endPomodoroSession() }
@@ -950,15 +951,13 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun openPomContactPicker() {
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-      launchPomContactPicker()
-    } else {
-      readContactsPermission.launch(Manifest.permission.READ_CONTACTS)
+    try {
+      pomContactPicker.launch(
+        Intent(Intent.ACTION_PICK).setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
+      )
+    } catch (_: ActivityNotFoundException) {
+      Toast.makeText(this, "No contact picker available", Toast.LENGTH_SHORT).show()
     }
-  }
-
-  private fun launchPomContactPicker() {
-    pomContactPicker.launch(Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI))
   }
 
   private fun removePomContact() {
