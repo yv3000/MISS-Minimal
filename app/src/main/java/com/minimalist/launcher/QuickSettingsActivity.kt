@@ -133,7 +133,12 @@ class QuickSettingsActivity : AppCompatActivity() {
         updateDisplayUI()
         updateAllStates()
         
-        registerReceiver(volumeReceiver, IntentFilter("android.media.VOLUME_CHANGED_ACTION"))
+        ContextCompat.registerReceiver(
+            this,
+            volumeReceiver,
+            IntentFilter("android.media.VOLUME_CHANGED_ACTION"),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
         contentResolver.registerContentObserver(
             Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS),
             false, brightnessObserver
@@ -149,7 +154,7 @@ class QuickSettingsActivity : AppCompatActivity() {
             addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
             addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
         }
-        registerReceiver(stateReceiver, filter)
+        ContextCompat.registerReceiver(this, stateReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     override fun onPause() {
