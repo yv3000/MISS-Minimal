@@ -1,0 +1,294 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{background:#111;padding:20px;display:flex;flex-wrap:wrap;gap:20px;justify-content:center;border-radius:16px}
+.col{display:flex;flex-direction:column;align-items:center;gap:8px}
+.label{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;font-family:monospace}
+.phone{width:185px;background:#000;border-radius:32px;border:1.5px solid #222;overflow:hidden;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;padding:10px 16px 4px;font-size:9px;color:#444;font-family:monospace}
+.sc{flex:1;padding:14px 18px 16px;display:flex;flex-direction:column;font-family:monospace}
+
+/* Homescreen */
+.hs-top{display:flex;justify-content:flex-end;margin-bottom:2px}
+.exit-btn{font-size:8px;color:#333;border:0.5px solid #2a2a2a;padding:3px 8px;border-radius:4px;letter-spacing:0.5px}
+.hs-time{color:#fff;font-size:52px;font-weight:200;line-height:1;letter-spacing:-2px;margin-top:4px}
+.hs-date{color:#3a3a3a;font-size:10px;margin-top:6px;letter-spacing:0.5px}
+.hs-apps{margin-top:auto;display:flex;flex-direction:column;gap:12px;padding-top:20px}
+.hs-app{color:#fff;font-size:13px;font-weight:300;letter-spacing:0.3px}
+.hs-app.fixed{color:#444}
+.hs-divider{height:0.5px;background:#1a1a1a;margin:6px 0}
+.hs-toggles{display:flex;gap:8px;margin-top:14px}
+.hs-tog{flex:1;border:0.5px solid #2a2a2a;border-radius:5px;padding:5px 4px;text-align:center;color:#666;font-size:8px;letter-spacing:0.5px}
+.hs-tog.active{border-color:#555;color:#ccc}
+
+/* Notif panel */
+.np-hint{font-size:8px;color:#333;text-align:center;margin-bottom:10px;letter-spacing:0.5px}
+.np-section-label{font-size:8px;color:#444;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.notif-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid #111}
+.notif-row span:first-child{color:#ccc;font-size:10px}
+.notif-row span:last-child{color:#444;font-size:9px}
+.np-divider{height:0.5px;background:#1f1f1f;margin:10px 0}
+
+/* Quick settings */
+.qs-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.pill{border:0.5px solid #2a2a2a;border-radius:4px;padding:3px 7px;font-size:8px;color:#666;letter-spacing:0.3px}
+.pill.on{border-color:#555;color:#ccc}
+.qs-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #111}
+.qs-row span{color:#888;font-size:9px}
+.qs-row .val{color:#555;font-size:8px}
+.slider-wrap{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:0.5px solid #111}
+.slider-wrap span{color:#777;font-size:8px;white-space:nowrap}
+.mini-slider{flex:1;height:2px;background:#1e1e1e;border-radius:1px;position:relative}
+.mini-slider-fill{height:2px;background:#555;border-radius:1px;width:65%}
+.auto-btn{font-size:7px;color:#444;border:0.5px solid #2a2a2a;padding:2px 5px;border-radius:3px}
+
+/* App drawer */
+.drawer-search{background:#0a0a0a;border:0.5px solid #1e1e1e;border-radius:20px;padding:5px 12px;font-size:9px;color:#444;margin-bottom:10px;letter-spacing:0.3px}
+.alpha-wrap{display:flex;gap:0}
+.app-list{flex:1;display:flex;flex-direction:column}
+.alpha-group{margin-bottom:4px}
+.alpha-hdr{font-size:8px;color:#333;letter-spacing:1px;padding:3px 0;border-bottom:0.5px solid #111;margin-bottom:2px}
+.app-item{font-size:10px;color:#aaa;padding:4px 0;border-bottom:0.5px solid #0d0d0d;letter-spacing:0.2px}
+.az-index{display:flex;flex-direction:column;gap:1px;padding-left:4px}
+.az-index span{font-size:6px;color:#333;line-height:1.4}
+
+/* Long press */
+.lp-name{color:#fff;font-size:14px;font-weight:300;margin-bottom:2px}
+.lp-meta{color:#444;font-size:8px;margin-bottom:14px;letter-spacing:0.3px}
+.lp-menu{border:0.5px solid #1e1e1e;border-radius:8px;overflow:hidden}
+.lp-item{padding:9px 12px;color:#bbb;font-size:10px;border-bottom:0.5px solid #111;display:flex;justify-content:space-between;align-items:center;letter-spacing:0.2px}
+.lp-item:last-child{border-bottom:none}
+.lp-item.dim{color:#c05050}
+.lp-item .note{font-size:8px;color:#444}
+
+/* Time limit */
+.tl-app{color:#fff;font-size:13px;font-weight:300;margin-bottom:3px}
+.tl-q{color:#555;font-size:9px;margin-bottom:16px;letter-spacing:0.3px}
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+.tl-btn{border:0.5px solid #222;border-radius:6px;padding:10px;text-align:center;color:#999;font-size:11px}
+.tl-custom{border:0.5px solid #333;border-radius:6px;padding:8px;text-align:center;color:#666;font-size:9px;letter-spacing:0.3px}
+
+/* Focus */
+.focus-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sw-time{color:#fff;font-size:50px;font-weight:200;letter-spacing:-1px}
+.sw-label{color:#333;font-size:9px;margin-top:6px;letter-spacing:1px}
+.sw-cancel{margin-top:40px;border:0.5px solid #2a2a2a;border-radius:20px;padding:7px 22px;color:#555;font-size:9px;letter-spacing:0.5px;text-align:center}
+</style>
+
+<div class="wrap">
+
+  <!-- 1. Homescreen -->
+  <div class="col">
+    <div class="label">Homescreen</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■ ▐</span></div>
+      <div class="sc">
+        <div class="hs-top"><div class="exit-btn">EXIT</div></div>
+        <div class="hs-time">09<br>41</div>
+        <div class="hs-date">THU · 29 MARCH</div>
+        <div class="hs-divider"></div>
+        <div class="hs-apps">
+          <div class="hs-app fixed">Phone</div>
+          <div class="hs-app fixed">Camera</div>
+          <div class="hs-app">Instagram</div>
+          <div class="hs-app">Notes</div>
+          <div class="hs-app">YouTube</div>
+        </div>
+        <div class="hs-toggles">
+          <div class="hs-tog active">FOCUS</div>
+          <div class="hs-tog">TIME</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Notifications (left swipe) -->
+  <div class="col">
+    <div class="label">Notifs · left swipe</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■ ▐</span></div>
+      <div class="sc">
+        <div class="np-hint">← swipe from left</div>
+        <div class="np-section-label">Notifications</div>
+        <div class="notif-row"><span>WhatsApp</span><span>9:38 · 5</span></div>
+        <div class="notif-row"><span>Instagram</span><span>9:22 · 3</span></div>
+        <div class="notif-row"><span>Gmail</span><span>9:10 · 1</span></div>
+        <div class="notif-row"><span>YouTube</span><span>8:55 · 2</span></div>
+        <div class="notif-row"><span>Telegram</span><span>8:40 · 7</span></div>
+        <div class="notif-row"><span>Twitter</span><span>8:20 · 4</span></div>
+        <div class="notif-row"><span>Chrome</span><span>7:58 · 1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Quick Settings (right swipe) -->
+  <div class="col">
+    <div class="label">Quick settings · right swipe</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■ ▐</span></div>
+      <div class="sc">
+        <div class="np-hint">→ swipe from right</div>
+        <div class="np-section-label">Connectivity</div>
+        <div class="qs-pills">
+          <div class="pill on">WiFi</div>
+          <div class="pill on">Mobile</div>
+          <div class="pill">Bluetooth</div>
+          <div class="pill on">Hotspot</div>
+          <div class="pill">Flashlight</div>
+          <div class="pill">DND</div>
+        </div>
+        <div class="np-section-label" style="margin-top:6px">Sound</div>
+        <div class="qs-row"><span>Silent</span><div style="width:20px;height:10px;border:0.5px solid #333;border-radius:5px;background:#111"></div></div>
+        <div class="qs-row"><span>Vibration</span><div style="width:20px;height:10px;border:0.5px solid #444;border-radius:5px;background:#333"></div></div>
+        <div class="slider-wrap">
+          <span>Vol</span>
+          <div class="mini-slider"><div class="mini-slider-fill" style="width:55%"></div></div>
+        </div>
+        <div class="np-section-label" style="margin-top:6px">Display</div>
+        <div class="slider-wrap">
+          <span>Brightness</span>
+          <div class="mini-slider"><div class="mini-slider-fill" style="width:70%"></div></div>
+          <div class="auto-btn">AUTO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. App Drawer -->
+  <div class="col">
+    <div class="label">App Drawer</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>APPS</span></div>
+      <div class="sc" style="padding-bottom:10px">
+        <div class="drawer-search">Search apps...</div>
+        <div class="alpha-wrap">
+          <div class="app-list">
+            <div class="alpha-group">
+              <div class="alpha-hdr">C</div>
+              <div class="app-item">Calculator</div>
+              <div class="app-item">Calendar</div>
+              <div class="app-item">Camera</div>
+              <div class="app-item">Chrome</div>
+              <div class="app-item">Clock</div>
+              <div class="app-item">Contacts</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">D</div>
+              <div class="app-item">Discord</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">F</div>
+              <div class="app-item">Files</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">G</div>
+              <div class="app-item">Gallery</div>
+              <div class="app-item">Gmail</div>
+              <div class="app-item">Google Maps</div>
+              <div class="app-item">Google Pay</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">I</div>
+              <div class="app-item">Instagram</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">M</div>
+              <div class="app-item">Messages</div>
+              <div class="app-item">Music</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">N</div>
+              <div class="app-item">Notes</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">P</div>
+              <div class="app-item">Phone</div>
+              <div class="app-item">Photos</div>
+              <div class="app-item">Play Store</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">S</div>
+              <div class="app-item">Settings</div>
+              <div class="app-item">Spotify</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">T</div>
+              <div class="app-item">Telegram</div>
+              <div class="app-item">Twitter</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">W</div>
+              <div class="app-item">WhatsApp</div>
+            </div>
+            <div class="alpha-group">
+              <div class="alpha-hdr">Y</div>
+              <div class="app-item">YouTube</div>
+            </div>
+          </div>
+          <div class="az-index">
+            <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span>
+            <span>F</span><span>G</span><span>H</span><span>I</span><span>J</span>
+            <span>K</span><span>L</span><span>M</span><span>N</span><span>O</span>
+            <span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span>
+            <span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span>
+            <span>Z</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Long Press -->
+  <div class="col">
+    <div class="label">Long Press</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■</span></div>
+      <div class="sc" style="padding-top:20px">
+        <div class="lp-name">Instagram</div>
+        <div class="lp-meta">Last opened · 9:22 am</div>
+        <div class="lp-menu">
+          <div class="lp-item">Add to home <span class="note">max 3</span></div>
+          <div class="lp-item">Set time limit</div>
+          <div class="lp-item">Rename</div>
+          <div class="lp-item">App info</div>
+          <div class="lp-item dim">Uninstall</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Time Limit -->
+  <div class="col">
+    <div class="label">Time Limit</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■</span></div>
+      <div class="sc" style="padding-top:22px">
+        <div class="tl-app">Instagram</div>
+        <div class="tl-q">how long this session?</div>
+        <div class="tl-grid">
+          <div class="tl-btn">1 min</div>
+          <div class="tl-btn">5 min</div>
+          <div class="tl-btn">10 min</div>
+          <div class="tl-btn">15 min</div>
+        </div>
+        <div class="tl-custom">Custom...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Focus Mode -->
+  <div class="col">
+    <div class="label">Focus Mode</div>
+    <div class="phone">
+      <div class="sb"><span>9:41</span><span>■■■</span></div>
+      <div class="sc">
+        <div class="focus-wrap">
+          <div class="sw-time">00:00</div>
+          <div class="sw-label">FOCUS SESSION</div>
+          <div class="sw-cancel">Cancel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

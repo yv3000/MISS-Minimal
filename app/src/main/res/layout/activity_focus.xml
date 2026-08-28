@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#000000"
+  android:animateLayoutChanges="true">
+
+
+  <!-- TAB BAR -->
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginTop="24dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp">
+
+    <View android:id="@+id/tabIndicator"
+      android:layout_width="0dp"
+      android:layout_height="36dp"
+      android:background="@drawable/bg_tab_bubble"
+      android:layout_gravity="center_vertical"
+      android:visibility="visible"/>
+
+    <LinearLayout
+      android:id="@+id/tabBar"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:orientation="horizontal"
+      android:gravity="center_vertical">
+      <TextView android:id="@+id/tabStopwatch"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Stopwatch"
+        android:textColor="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:tag="fixed_size"
+        android:gravity="center"/>
+
+      <TextView android:id="@+id/tabTimer"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Timer"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:tag="fixed_size"
+        android:gravity="center"/>
+
+      <TextView android:id="@+id/tabStrict"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Strict"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:tag="fixed_size"
+        android:gravity="center"/>
+
+      <TextView android:id="@+id/tabPomodoro"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Pomodoro"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:tag="fixed_size"
+        android:gravity="center"/>
+    </LinearLayout>
+  </FrameLayout>
+
+  <!-- STOPWATCH PANEL -->
+  <LinearLayout
+    android:id="@+id/panelStopwatch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="visible">
+    <TextView android:id="@+id/tvStopwatch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="00:00"
+      android:textColor="#ffffff"
+      android:textSize="64sp"
+      android:fontFamily="@font/plus_jakarta_sans_light"
+
+      android:fontWeight="200"/>
+
+    <LinearLayout
+      android:id="@+id/swBtnRow"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginTop="32dp"
+      android:gravity="center">
+
+      <TextView android:id="@+id/btnSwFlag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FLAG"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/bg_pill"
+        android:visibility="gone"/>
+
+      <TextView android:id="@+id/btnSwPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAUSE"
+        android:textColor="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="10dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_pill"
+        android:visibility="gone"/>
+
+      <TextView android:id="@+id/btnSwResume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESUME"
+        android:textColor="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="10dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_pill"
+        android:visibility="gone"/>
+
+      <TextView android:id="@+id/btnSwStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="10dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_pill"
+        android:visibility="gone"/>
+
+      <TextView android:id="@+id/btnSwStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:textColor="@color/black"
+        android:fontFamily="@font/plus_jakarta_sans_extra_bold"
+        android:textSize="13sp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="14dp"
+        android:background="@drawable/bg_pill"
+        android:backgroundTint="@color/white"/>
+    </LinearLayout>
+
+    <!-- Timestamps list -->
+    <ScrollView
+      android:id="@+id/scrollTimestamps"
+      android:layout_width="wrap_content"
+      android:layout_height="120dp"
+      android:layout_marginTop="24dp"
+      android:visibility="gone">
+      <TextView android:id="@+id/tvTimestamps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="11sp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"/>
+    </ScrollView>
+  </LinearLayout>
+
+  <!-- TIMER PANEL -->
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+  <LinearLayout
+    android:id="@+id/panelTimer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <!-- Picker row — shown before start -->
+    <LinearLayout
+      android:id="@+id/layoutPickers"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:gravity="center_vertical">
+      <NumberPicker android:id="@+id/pickerHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <TextView android:text=" H  "
+        android:textColor="#444444"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <NumberPicker android:id="@+id/pickerMinutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <TextView android:text=" M  "
+        android:textColor="#444444"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <NumberPicker android:id="@+id/pickerSeconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+      <TextView android:text=" S"
+        android:textColor="#444444"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!-- Countdown — shown after start -->
+    <TextView android:id="@+id/tvTimerCountdown"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="00:00:00"
+      android:textColor="#ffffff"
+      android:textSize="48sp"
+      android:fontFamily="@font/plus_jakarta_sans"
+      android:fontWeight="200"
+      android:visibility="gone"/>
+
+    <TextView android:id="@+id/tvTimeUp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="TIME UP"
+      android:textColor="#ffffff"
+      android:textSize="24sp"
+      android:fontFamily="@font/plus_jakarta_sans"
+      android:visibility="gone"
+      android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+      android:id="@+id/timerBtnRow"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginTop="24dp">
+      <TextView android:id="@+id/btnTimerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:textColor="#888888"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/btn_border"/>
+      <TextView android:id="@+id/btnTimerPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAUSE"
+        android:textColor="#888888"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/btn_border"
+        android:visibility="gone"/>
+      <TextView android:id="@+id/btnTimerStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP"
+        android:textColor="#888888"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/btn_border"
+        android:visibility="gone"/>
+      <TextView android:id="@+id/btnTimerResume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESUME"
+        android:textColor="#888888"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/btn_border"
+        android:visibility="gone"/>
+      <TextView android:id="@+id/btnTimerReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESET"
+        android:textColor="#888888"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="12sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/btn_border"
+        android:visibility="gone"/>
+    </LinearLayout>
+  </LinearLayout>
+  </ScrollView>
+
+  <!-- STRICT MODE PANEL -->
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+  <LinearLayout
+    android:id="@+id/panelStrict"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:visibility="gone">
+
+    <!-- Warning box — always shown -->
+    <LinearLayout
+      android:id="@+id/layoutStrictWarning"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="24dp"
+      android:background="@drawable/bg_card_premium"
+
+      android:gravity="center"
+      android:layout_gravity="center"
+      android:layout_marginStart="24dp"
+      android:layout_marginEnd="24dp">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STRICT MODE"
+        android:textColor="@color/white"
+        android:fontFamily="@font/plus_jakarta_sans_extra_bold"
+
+        android:textSize="16sp"
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:layout_marginBottom="12dp"/>
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
+        android:textColor="@color/text_secondary"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:lineSpacingExtra="6dp"/>
+
+    </LinearLayout>
+
+    <TextView android:id="@+id/btnEnableStrict"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="ENABLE STRICT MODE"
+      android:textColor="#888888"
+      android:fontFamily="@font/plus_jakarta_sans"
+      android:textSize="12sp"
+      android:paddingStart="24dp"
+      android:paddingEnd="24dp"
+      android:paddingTop="12dp"
+      android:paddingBottom="12dp"
+      android:layout_marginTop="24dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:background="@drawable/btn_border"/>
+  </LinearLayout>
+  </ScrollView>
+
+  <!-- STRICT ACTIVE PANEL — fullscreen countdown -->
+  <FrameLayout
+    android:id="@+id/panelStrictActive"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:visibility="gone">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="vertical"
+      android:gravity="center">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STRICT MODE"
+        android:textColor="#444444"
+        android:fontFamily="@font/plus_jakarta_sans_light"
+
+        android:textSize="11sp"
+        android:letterSpacing="0.4"
+        android:tag="fixed_size"
+        android:layout_marginBottom="12dp"/>
+      <TextView android:id="@+id/tvStrictCountdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25:00"
+        android:textColor="#ffffff"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="64sp"
+        android:fontWeight="200"
+        android:tag="fixed_size"/>
+
+      <TextView android:id="@+id/tvStrictStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="focus session active"
+        android:textColor="#333333"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textSize="9sp"
+        android:layout_marginTop="12dp"/>
+      
+      <LinearLayout android:id="@+id/layoutStrictComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <TextView android:id="@+id/btnStartAgain"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="START AGAIN"
+          android:textColor="#ffffff"
+          android:fontFamily="@font/plus_jakarta_sans"
+          android:textSize="12sp"
+          android:paddingStart="24dp"
+          android:paddingEnd="24dp"
+          android:paddingTop="12dp"
+          android:paddingBottom="12dp"
+          android:layout_marginTop="32dp"
+          android:background="@drawable/btn_border"/>
+        <TextView android:id="@+id/btnExitStrict"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="EXIT"
+          android:textColor="#333333"
+          android:fontFamily="@font/plus_jakarta_sans"
+          android:textSize="12sp"
+          android:paddingStart="24dp"
+          android:paddingEnd="24dp"
+          android:paddingTop="12dp"
+          android:paddingBottom="12dp"
+          android:layout_marginTop="12dp"
+          android:background="@drawable/border_box"/>
+      </LinearLayout>
+    </LinearLayout>
+  </FrameLayout>
+
+  <!-- POMODORO PANEL -->
+  <FrameLayout
+    android:id="@+id/panelPomodoro"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone">
+
+    <!-- SETUP SCREEN -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/pom_layoutSetup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center"
+        android:visibility="visible"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SESSION"
+            android:textColor="#444444"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:textAllCaps="true"
+            android:letterSpacing="0.2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <TextView android:id="@+id/pom_btnDur25"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="25 min"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:backgroundTint="@color/white"
+                android:padding="10dp"/>
+
+            <TextView android:id="@+id/pom_btnDur50"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="50 min"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:layout_marginStart="8dp"
+                android:padding="10dp"/>
+
+            <TextView android:id="@+id/pom_btnDur75"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="75 min"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:layout_marginStart="8dp"
+                android:padding="10dp"/>
+
+            <TextView android:id="@+id/pom_btnDur100"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="100 min"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:layout_marginStart="8dp"
+                android:padding="10dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALLOWED APPS"
+            android:textColor="#444444"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:textAllCaps="true"
+            android:letterSpacing="0.2"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="select up to 3 apps allowed during session\n(0 is also fine — blocks everything)\nPhone calls always allowed"
+            android:textColor="#444444"
+            android:textSize="12sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <TextView android:id="@+id/pom_slotApp1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="+ add"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:background="@drawable/btn_border"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="2dp"/>
+            
+            <TextView android:id="@+id/pom_slotApp2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="+ add"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:background="@drawable/btn_border"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginStart="16dp"
+                android:padding="2dp"/>
+
+            <TextView android:id="@+id/pom_slotApp3"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="+ add"
+                android:gravity="center"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:background="@drawable/btn_border"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginStart="16dp"
+                android:padding="2dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EMERGENCY CONTACT"
+            android:textColor="#444444"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans_medium"
+            android:textAllCaps="true"
+            android:letterSpacing="0.2"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="optional — one person you can call during session"
+            android:textColor="#444444"
+            android:textSize="12sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:id="@+id/pom_layoutContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/border_box"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginBottom="40dp">
+            
+            <TextView android:id="@+id/pom_tvContactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ select contact"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:layout_marginEnd="8dp"/>
+            
+            <TextView android:id="@+id/pom_btnRemoveContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="×"
+                android:textColor="#888888"
+                android:textSize="14sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/pom_btnStartPomodoro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="START POMODORO"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:fontFamily="@font/plus_jakarta_sans_extra_bold"
+            android:background="@drawable/bg_pill"
+            android:backgroundTint="@color/white"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"/>
+    </LinearLayout>
+    </ScrollView>
+
+    <!-- WORK/BREAK SCREEN -->
+    <LinearLayout
+        android:id="@+id/pom_layoutActive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/pom_tvPhaseLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POMODORO"
+            android:textColor="#333333"
+            android:textSize="9sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:textAllCaps="true"
+            android:letterSpacing="0.4"
+            android:tag="fixed_size"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView android:id="@+id/pom_tvCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25:00"
+            android:textColor="#ffffff"
+            android:textSize="72sp"
+            android:fontFamily="@font/plus_jakarta_sans_light"
+            android:fontWeight="200"
+            android:tag="fixed_size"/>
+
+        <TextView android:id="@+id/pom_tvSessionCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="session 1 of ∞"
+            android:textColor="#444444"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:tag="fixed_size"
+            android:layout_marginTop="12dp"/>
+
+        <!-- ACTIVE APPS SLOTS -->
+        <LinearLayout
+            android:id="@+id/pom_layoutActiveApps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="40dp">
+
+            <TextView android:id="@+id/pom_active_slot1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:backgroundTint="#1A1A1A"
+                android:visibility="gone"
+                android:padding="8dp"/>
+
+            <TextView android:id="@+id/pom_active_slot2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:backgroundTint="#1A1A1A"
+                android:layout_marginStart="16dp"
+                android:visibility="gone"
+                android:padding="8dp"/>
+
+            <TextView android:id="@+id/pom_active_slot3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                android:fontFamily="@font/plus_jakarta_sans_medium"
+                android:background="@drawable/bg_pill"
+                android:backgroundTint="#1A1A1A"
+                android:layout_marginStart="16dp"
+                android:visibility="gone"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/pom_btnCallContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CALL EMERGENCY CONTACT"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans_bold"
+            android:background="@drawable/bg_pill"
+            android:backgroundTint="#CC0000"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="32dp"
+            android:visibility="gone"/>
+
+        <TextView android:id="@+id/pom_btnCancelBreak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL SESSION"
+            android:textColor="#666666"
+            android:textSize="10sp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:background="@drawable/btn_border"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginTop="48dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+  </FrameLayout>
+
+</FrameLayout>
