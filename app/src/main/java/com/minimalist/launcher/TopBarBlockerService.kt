@@ -41,15 +41,17 @@ class TopBarBlockerService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        when (intent?.action) {
-            "START" -> addOverlays()
-            "STOP" -> {
-                removeOverlays()
-                stopSelf()
-            }
+        if (shouldBlock()) {
+            addOverlays()
+        } else {
+            removeOverlays()
+            stopSelf()
         }
         return START_STICKY
     }
+
+    private fun shouldBlock() =
+        StrictModeManager.isActive() || PomodoroManager.isWorkSessionActive()
 
     private fun addOverlays() {
         if (topOverlayView != null) return
@@ -63,20 +65,15 @@ class TopBarBlockerService : Service() {
             
         val statusBarH = getStatusBarHeight()
         
-        // ── TOP OVERLAY (blocks notification shade pull-down) ──
         addTopOverlay(type, statusBarH)
-        
-        // ── RIGHT EDGE OVERLAY (blocks OEM sidebar swipe) ──
         addEdgeOverlay(type, Gravity.END)
-        
-        // ── LEFT EDGE OVERLAY (blocks OEM sidebar swipe) ──
         addEdgeOverlay(type, Gravity.START)
     }
 
     private fun addTopOverlay(type: Int, statusBarH: Int) {
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            statusBarH * 2, // Double height to catch the start of the swipe
+            statusBarH + dpToPx(8),
             0, 0, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
@@ -112,8 +109,7 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addEdgeOverlay(type: Int, gravity: Int) {
-        // Cover 40dp of screen edges to block sidebar gestures
-        val edgeWidth = dpToPx(40)
+        val edgeWidth = dpToPx(16)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,

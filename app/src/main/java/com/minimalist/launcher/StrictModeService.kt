@@ -24,39 +24,48 @@ class StrictModeService : AccessibilityService() {
     }
 
     private val handler = Handler(Looper.getMainLooper())
+    private var overlayBlocking = false
 
-    // ── SHADE BLOCKER ──
-    // Runs every 50ms when blocking is active.
-    // This is the PRIMARY defense against the notification shade.
-    // It runs continuously in a tight loop regardless of accessibility events.
     private val shadeBlocker = object : Runnable {
         override fun run() {
-            val shouldBlock = StrictModeManager.isActive() || PomodoroManager.isActive
+            val shouldBlock = shouldBlock()
+            syncOverlay(shouldBlock)
             if (shouldBlock) {
-                // ALWAYS dismiss the shade — this is the core mechanism
-                if (Build.VERSION.SDK_INT >= 31) {
-                    performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-                } else {
-                    // Pre-Android 12: collapse status bar via reflection
-                    try {
-                        val sbService = getSystemService("statusbar")
-                        val sbClass = Class.forName("android.app.StatusBarManager")
-                        val collapse = sbClass.getMethod("collapsePanels")
-                        collapse.invoke(sbService)
-                    } catch (e: Exception) {
-                        performGlobalAction(GLOBAL_ACTION_BACK)
-                    }
-                }
-                
-                // ALSO check for floating windows here proactively
-                if (PomodoroManager.isActive) {
+                dismissNotificationShade()
+                if (PomodoroManager.isWorkSessionActive()) {
                     checkAndKillFloatingWindows()
                 }
-
-                handler.postDelayed(this, 50)
             }
+            if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 750)
         }
     }
+
+    private fun shouldBlock() =
+        StrictModeManager.isActive() || PomodoroManager.isWorkSessionActive()
+
+    private fun dismissNotificationShade() {
+        if (Build.VERSION.SDK_INT >= 31) {
+            performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            return
+        }
+        try {
+            val statusBar = getSystemService("statusbar")
+            Class.forName("android.app.StatusBarManager")
+                .getMethod("collapsePanels")
+                .invoke(statusBar)
+        } catch (_: Exception) {
+            performGlobalAction(GLOBAL_ACTION_BACK)
+        }
+    }
+
+    private fun syncOverlay(shouldBlock: Boolean) {
+        if (overlayBlocking == shouldBlock) return
+        overlayBlocking = shouldBlock
+        if (shouldBlock) TopBarBlockerService.start(this) else TopBarBlockerService.stop(this)
+    }
+
+    private fun isSystemUi(packageName: String) =
+        packageName.contains("systemui", ignoreCase = true)
 
     private fun checkAndKillFloatingWindows() {
         try {
@@ -87,23 +96,22 @@ class StrictModeService : AccessibilityService() {
 
     fun stopBlocking() {
         handler.removeCallbacks(shadeBlocker)
+        if (shouldBlock()) handler.post(shadeBlocker) else syncOverlay(false)
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        
-        // ── AUTO-START BLOCKING ──
-        val shouldAutoBlock = getSharedPreferences("miss_prefs", MODE_PRIVATE)
-            .getBoolean("pomodoro_shade_block", false)
-        
-        if (shouldAutoBlock || PomodoroManager.isActive || StrictModeManager.isActive()) {
+        StrictModeManager.serviceRef = this
+
+        if (shouldBlock()) {
             startBlocking()
         }
     }
 
     override fun onDestroy() {
         instance = null
+        if (StrictModeManager.serviceRef === this) StrictModeManager.serviceRef = null
         handler.removeCallbacks(shadeBlocker)
         super.onDestroy()
     }
@@ -111,14 +119,13 @@ class StrictModeService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
         val eventPkg = event.packageName?.toString() ?: return
+        val shouldBlock = shouldBlock()
+        syncOverlay(shouldBlock)
+        if (!shouldBlock) return
 
-        // ── POMODORO BLOCKING ──
-        if (PomodoroManager.isActive) {
-            
-            // ALWAYS dismiss notification shade on EVERY event
-            if (Build.VERSION.SDK_INT >= 31) {
-                performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-            }
+        if (isSystemUi(eventPkg)) dismissNotificationShade()
+
+        if (PomodoroManager.isWorkSessionActive()) {
             
             val allowed = PomodoroManager.allowedPackages
             
@@ -146,12 +153,7 @@ class StrictModeService : AccessibilityService() {
             return
         }
 
-        // ── STRICT MODE BLOCKING ──
         if (StrictModeManager.isActive()) {
-            if (Build.VERSION.SDK_INT >= 31) {
-                performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
-            }
-            
             val blockedPkgs = StrictModeManager.getBlockedPackages()
             if (blockedPkgs.isNotEmpty() && blockedPkgs.contains(eventPkg)) {
                 performGlobalAction(GLOBAL_ACTION_HOME)

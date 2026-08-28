@@ -188,12 +188,18 @@ class QuickSettingsActivity : AppCompatActivity() {
             true
         }
 
-        // BLUETOOTH — use system settings (no dedicated Panel for Bluetooth in Android 10+)
+        // BLUETOOTH
         binding.btnBluetooth.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
+            ) {
+                bluetoothPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
+            } else {
+                toggleBluetooth()
+            }
         }
         binding.btnBluetooth.setOnLongClickListener {
-            startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
+            openBluetoothSettings()
             true
         }
 
@@ -237,36 +243,27 @@ class QuickSettingsActivity : AppCompatActivity() {
             }
         }
 
-        // LOCATION
-        /*
+        // LOCATION — third-party apps cannot directly change this setting.
+        binding.btnLocation.visibility = View.VISIBLE
         binding.btnLocation.setOnClickListener {
-            toggleLocation(this)
+            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         }
-        */
 
-        // HOTSPOT
-        /*
+        // HOTSPOT — tethering changes require privileged/carrier access.
+        binding.btnHotspot.visibility = View.VISIBLE
         binding.btnHotspot.setOnClickListener {
-            toggleHotspot(this)
+            openTetherSettings()
         }
         binding.btnHotspot.setOnLongClickListener {
-            try {
-                val i = Intent(Intent.ACTION_MAIN)
-                i.setClassName("com.android.settings", "com.android.settings.TetherSettings")
-                startActivity(i)
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-            }
+            openTetherSettings()
             true
         }
-        */
 
-        // AIRPLANE
-        /*
+        // AIRPLANE — only system apps can change Settings.Global directly.
+        binding.btnAirplane.visibility = View.VISIBLE
         binding.btnAirplane.setOnClickListener {
-            toggleAirplaneMode(this)
+            startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
         }
-        */
 
         setupMicroInteractions()
     }
@@ -306,65 +303,56 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun animateClick(view: View) {
-        view.animate()
-            .scaleX(0.92f)
-            .scaleY(0.92f)
-            .setDuration(100)
-            .withEndAction {
-                view.animate()
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
-                    .setDuration(150)
-                    .start()
-            }
-            .start()
-    }
-
     private fun updateAllStates() {
         val dpToPx = resources.displayMetrics.density
 
         // Wifi
-        setButtonState(binding.btnWifi, wifiManager.isWifiEnabled, dpToPx)
+        setButtonState(binding.btnWifi, stateOf { wifiManager.isWifiEnabled }, dpToPx)
 
-        // Data
-        try {
-            @Suppress("DEPRECATION")
+        // Data indicates that the active network is cellular; Android exposes no
+        // unprivileged API for reading the user's mobile-data toggle.
+        setButtonState(binding.btnData, stateOf {
             val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            @Suppress("DEPRECATION")
-            val isDataOn = cm.activeNetworkInfo?.type == ConnectivityManager.TYPE_MOBILE
-            setButtonState(binding.btnData, isDataOn, dpToPx)
-        } catch (e: Exception) {
-            setButtonState(binding.btnData, false, dpToPx)
-        }
+            cm.getNetworkCapabilities(cm.activeNetwork)
+                ?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) == true
+        }, dpToPx)
 
-        @Suppress("DEPRECATION")
-        val btAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
-        setButtonState(binding.btnBluetooth, btAdapter?.isEnabled == true, dpToPx)
+        setButtonState(binding.btnBluetooth, stateOf {
+            getSystemService(BluetoothManager::class.java).adapter?.isEnabled == true
+        }, dpToPx)
 
         // DND
-        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val isDndOn = nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
-        setButtonState(binding.btnDnd, isDndOn, dpToPx)
+        setButtonState(binding.btnDnd, stateOf {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
+        }, dpToPx)
 
         // Flashlight
         setButtonState(binding.btnFlashlightText, torchState, dpToPx)
 
         // Rotate
-        val isRotateOn = Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
-        setButtonState(binding.btnRotate, isRotateOn, dpToPx)
+        setButtonState(binding.btnRotate, stateOf {
+            Settings.System.getInt(contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0) == 1
+        }, dpToPx)
 
         // Location
-        // setButtonState(binding.btnLocation, isLocationOn, dpToPx)
-
-        // Hotspot
-        // setButtonState(binding.btnHotspot, isHotspotEnabled(this), dpToPx)
+        setButtonState(binding.btnLocation, stateOf {
+            getSystemService(LocationManager::class.java).isLocationEnabled
+        }, dpToPx)
 
         // Airplane
-        // setButtonState(binding.btnAirplane, isAirplaneOn, dpToPx)
+        setButtonState(binding.btnAirplane, stateOf {
+            Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+        }, dpToPx)
         
         updateSoundUI()
         updateDisplayUI()
+    }
+
+    private fun stateOf(read: () -> Boolean) = try {
+        read()
+    } catch (_: SecurityException) {
+        false
     }
 
     private fun setButtonState(view: View, active: Boolean, dpToPx: Float) {

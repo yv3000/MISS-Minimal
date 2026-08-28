@@ -3,6 +3,7 @@ package com.minimalist.launcher
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Intent
+import android.os.Build
 import android.view.accessibility.AccessibilityEvent
 
 class NotificationBlockAccessibility : AccessibilityService() {
@@ -23,31 +24,30 @@ class NotificationBlockAccessibility : AccessibilityService() {
   override fun onAccessibilityEvent(event: AccessibilityEvent?) {
     if (!shouldBlock()) return
     val pkg = event?.packageName?.toString() ?: return
-    if (isSystemUI(pkg)) {
-      performGlobalAction(GLOBAL_ACTION_BACK)
-    }
+    if (isSystemUI(pkg)) dismissNotificationShade()
   }
 
   fun shouldBlock(): Boolean {
-    val prefs = getSharedPreferences(
-      "miss_prefs", MODE_PRIVATE)
-    val launcherBlocking = prefs.getBoolean(
-      "block_notif_panel", false)
-    // Also block if Pomodoro work phase is active
-    val pomodoroBlocking = PomodoroManager.isActive && 
-      PomodoroManager.isWorkPhase
-    return launcherBlocking || pomodoroBlocking
+    return StrictModeManager.isActive() || PomodoroManager.isWorkSessionActive()
   }
 
   fun isSystemUI(pkg: String): Boolean {
-    val sysUIPkgs = listOf(
-      "com.android.systemui",
-      "com.iqoo.systemui",
-      "com.vivo.systemui",
-      "com.realme.systemui",
-      "com.oppo.systemui"
-    )
-    return pkg in sysUIPkgs
+    return pkg.contains("systemui", ignoreCase = true)
+  }
+
+  private fun dismissNotificationShade() {
+    if (Build.VERSION.SDK_INT >= 31) {
+      performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+      return
+    }
+    try {
+      val statusBar = getSystemService("statusbar")
+      Class.forName("android.app.StatusBarManager")
+        .getMethod("collapsePanels")
+        .invoke(statusBar)
+    } catch (_: Exception) {
+      performGlobalAction(GLOBAL_ACTION_BACK)
+    }
   }
 
   override fun onInterrupt() { isActive = false }
