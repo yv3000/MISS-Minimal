@@ -1,9 +1,13 @@
 package com.minimalist.launcher
 
+import android.Manifest
 import android.app.NotificationManager
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.media.AudioManager
 import android.net.Uri
@@ -15,9 +19,9 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.Settings
-import android.telephony.TelephonyManager
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.minimalist.launcher.databinding.ActivityQuickSettingsBinding
@@ -36,6 +40,12 @@ class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var vibrator: Vibrator
     private var torchState = false
     private var cameraId: String? = null
+
+    private val bluetoothPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) toggleBluetooth() else openBluetoothSettings()
+    }
 
     private val volumeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -134,9 +144,8 @@ class QuickSettingsActivity : AppCompatActivity() {
         )
 
         val filter = IntentFilter().apply {
-            // addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-            // addAction("android.net.wifi.WIFI_AP_STATE_CHANGED")
-            // addAction("android.location.PROVIDERS_CHANGED")
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
             addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
             addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
         }

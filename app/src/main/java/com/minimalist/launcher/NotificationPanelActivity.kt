@@ -39,6 +39,7 @@ class NotificationPanelActivity : AppCompatActivity() {
 
         binding.rvNotifications.layoutManager = LinearLayoutManager(this)
         binding.rvNotifications.adapter = adapter
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED))
         adapter.refresh()
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -67,7 +68,6 @@ class NotificationPanelActivity : AppCompatActivity() {
         })
         itemTouchHelper.attachToRecyclerView(binding.rvNotifications)
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED))
     }
 
     override fun onDestroy() {

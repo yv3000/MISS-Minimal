@@ -1,5 +1,7 @@
 package com.minimalist.launcher
 
+import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -38,21 +40,60 @@ class AppPickerActivity : AppCompatActivity() {
         val pm = packageManager
         val installedApps = pm.getInstalledApplications(PackageManager.GET_META_DATA)
         for (app in installedApps) {
-            val isGame = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                app.category == android.content.pm.ApplicationInfo.CATEGORY_GAME
-            } else {
-                @Suppress("DEPRECATION")
-                (app.flags and android.content.pm.ApplicationInfo.FLAG_IS_GAME) != 0
-            }
-            
-            if (!isGame && pm.getLaunchIntentForPackage(app.packageName) != null) {
+            if (pm.getLaunchIntentForPackage(app.packageName) != null) {
                 val name = pm.getApplicationLabel(app).toString()
+                if (isPomodoroMode && isLikelyGame(app, name)) continue
                 apps.add(AppItem(app.packageName, name))
             }
         }
         apps.sortBy { it.name.lowercase() }
         
         binding.rvApps.adapter = PickerAdapter()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun isLikelyGame(app: ApplicationInfo, name: String): Boolean {
+        if (app.category == ApplicationInfo.CATEGORY_GAME ||
+            app.flags and ApplicationInfo.FLAG_IS_GAME != 0
+        ) return true
+
+        val packageName = app.packageName.lowercase()
+        val launcherIntent = Intent(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_LAUNCHER)
+            .setPackage(app.packageName)
+        val gameIntent = Intent(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_APP_GAME)
+            .setPackage(app.packageName)
+        if (packageManager.queryIntentActivities(launcherIntent, PackageManager.GET_RESOLVED_FILTER)
+                .any { it.filter?.hasCategory(Intent.CATEGORY_APP_GAME) == true } ||
+            packageManager.queryIntentActivities(gameIntent, PackageManager.GET_RESOLVED_FILTER).isNotEmpty()
+        ) return true
+
+        if (app.metaData?.keySet()?.any { key ->
+                val normalized = key.lowercase()
+                GAME_METADATA_PREFIXES.any(normalized::startsWith)
+            } == true
+        ) return true
+
+        val packageTokens = packageName.split('.', '_', '-')
+        val nameTokens = name.lowercase().split(Regex("[^a-z0-9]+"))
+        return GAME_PUBLISHER_PACKAGES.any { packageName == it || packageName.startsWith("$it.") } ||
+            packageTokens.any(GAME_PACKAGE_TOKENS::contains) ||
+            nameTokens.any(GAME_NAME_TOKENS::contains)
+    }
+
+    companion object {
+        private val GAME_METADATA_PREFIXES = setOf(
+            "com.google.android.gms.games.",
+            "com.epicgames.unreal."
+        )
+        private val GAME_PUBLISHER_PACKAGES = setOf(
+            "com.activision", "com.ea.gp", "com.electronicarts", "com.gameloft",
+            "com.king", "com.miniclip", "com.mojang", "com.nianticlabs", "com.playrix",
+            "com.roblox", "com.rovio", "com.scopely", "com.supercell", "com.ubisoft", "com.zynga"
+        )
+        private val GAME_PACKAGE_TOKENS = setOf("arcade", "game", "games", "gaming")
+        private val GAME_NAME_TOKENS = setOf("arcade", "game", "games", "solitaire", "sudoku")
     }
 
     inner class PickerAdapter : RecyclerView.Adapter<PickerAdapter.ViewHolder>() {
