@@ -29,4 +29,32 @@
         app:layout_constraintTop_toTopOf="@+id/tvAppName"
         app:layout_constraintBottom_toBottomOf="@+id/tvAppName" />
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/plus_jakarta_sans_medium"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAppName" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:maxLines="2"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,9 @@ import android.animation.ValueAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.app.AlertDialog
 import android.app.NotificationManager
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +23,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.Settings
+import android.provider.ContactsContract
+import android.telephony.PhoneNumberUtils
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.View
@@ -37,7 +41,9 @@ import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import kotlin.math.abs
 
 class FocusActivity : AppCompatActivity() {
@@ -78,6 +84,14 @@ class FocusActivity : AppCompatActivity() {
   private val selectedApps = mutableListOf<String>()
   private var contactName: String? = null
   private var contactNumber: String? = null
+
+  private val pomContactPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    if (result.resultCode == RESULT_OK) result.data?.data?.let(::handlePomContactResult)
+  }
+  private val readContactsPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+    if (granted) launchPomContactPicker()
+    else Toast.makeText(this, "Permission required to select contact", Toast.LENGTH_SHORT).show()
+  }
 
   private lateinit var panelPomodoro: FrameLayout
   private lateinit var pom_layoutSetup: LinearLayout
@@ -936,12 +950,15 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun openPomContactPicker() {
-    if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-      androidx.core.app.ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS), 7001)
-      return
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+      launchPomContactPicker()
+    } else {
+      readContactsPermission.launch(Manifest.permission.READ_CONTACTS)
     }
-    val intent = Intent(Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
-    startActivityForResult(intent, 2002)
+  }
+
+  private fun launchPomContactPicker() {
+    pomContactPicker.launch(Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI))
   }
 
   private fun removePomContact() {
@@ -970,87 +987,34 @@ class FocusActivity : AppCompatActivity() {
           selectedApps.add(pkg)
           updatePomAppSlotsUI()
         }
-      } else if (requestCode == 2002) {
-        handlePomContactResult(data)
       }
     }
   }
 
-  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    if (requestCode == 7001 && grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-      openPomContactPicker()
-    } else if (requestCode == 7001) {
-      Toast.makeText(this, "Permission required to select contact", Toast.LENGTH_SHORT).show()
-    }
-  }
-
-  private fun handlePomContactResult(data: Intent) {
+  private fun handlePomContactResult(uri: Uri) {
     try {
-        val uri = data.data ?: return
-        var foundName: String? = null
-        var foundNumber: String? = null
-        
-        // ── STEP 1: Direct query from the returned URI ──
-        contentResolver.query(uri, null, null, null, null)?.use {
-            if (it.moveToFirst()) {
-                val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                
-                if (numIdx != -1) foundNumber = it.getString(numIdx)
-                if (nameIdx != -1) foundName = it.getString(nameIdx)
-            }
-        }
-        
-        // ── STEP 2: Lookup by URI path if direct query failed ──
-        if (foundNumber == null) {
-            val contactId = uri.lastPathSegment
-            if (contactId != null) {
-                // Try as Phone.CONTENT_URI lookup
-                contentResolver.query(
-                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    null,
-                    android.provider.ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? OR " + android.provider.ContactsContract.Data._ID + " = ?",
-                    arrayOf(contactId, contactId),
-                    null
-                )?.use {
-                    if (it.moveToFirst()) {
-                        val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                        val nameIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                        if (numIdx != -1) foundNumber = it.getString(numIdx)
-                        if (nameIdx != -1 && foundName == null) foundName = it.getString(nameIdx)
-                    }
-                }
-            }
-        }
+      val projection = arrayOf(
+        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+        ContactsContract.CommonDataKinds.Phone.NUMBER
+      )
+      contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
+        if (!cursor.moveToFirst()) return@use
+        val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+        val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+        val name = if (nameIndex >= 0) cursor.getString(nameIndex)?.trim()?.takeIf { it.isNotEmpty() } else null
+        val number = if (numberIndex >= 0) cursor.getString(numberIndex)?.trim()?.takeIf { it.isNotEmpty() } else null
+        val sanitizedNumber = number?.let(PhoneNumberUtils::stripSeparators)?.takeIf { it.isNotEmpty() }
 
-        // ── STEP 3: Last resort - query all data for this contact ──
-        if (foundNumber == null && foundName != null) {
-             contentResolver.query(
-                android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null,
-                android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?",
-                arrayOf(foundName),
-                null
-            )?.use {
-                if (it.moveToFirst()) {
-                    val numIdx = it.getColumnIndex(android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER)
-                    if (numIdx != -1) foundNumber = it.getString(numIdx)
-                }
-            }
-        }
-        
-        if (foundName != null && foundNumber != null) {
-            contactName = foundName
-            contactNumber = foundNumber!!.replace("[^0-9+]".toRegex(), "")
-            updatePomContactUI()
-        } else if (foundName != null) {
-            Toast.makeText(this, "$foundName has no details", Toast.LENGTH_SHORT).show()
+        if (sanitizedNumber != null) {
+          contactName = name ?: sanitizedNumber
+          contactNumber = sanitizedNumber
+          updatePomContactUI()
         } else {
-            Toast.makeText(this, "Selected contact has no details", Toast.LENGTH_SHORT).show()
+          Toast.makeText(this, "Selected contact has no phone number", Toast.LENGTH_SHORT).show()
         }
+      } ?: Toast.makeText(this, "Unable to read selected contact", Toast.LENGTH_SHORT).show()
     } catch (e: Exception) {
-        Toast.makeText(this, "Error reading contact: ${e.message}", Toast.LENGTH_SHORT).show()
+      Toast.makeText(this, "Error reading contact: ${e.message ?: "unknown error"}", Toast.LENGTH_SHORT).show()
     }
   }
 

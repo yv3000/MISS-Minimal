@@ -1,23 +1,35 @@
 package com.minimalist.launcher
 
+import android.app.Notification
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class NotificationService : NotificationListenerService() {
     companion object {
         const val ACTION_NOTIFY_UPDATED = "com.minimalist.launcher.NOTIFY_UPDATED"
-        val notifications = mutableListOf<NotificationItem>()
+
+        @Volatile
+        var notifications: List<NotificationItem> = emptyList()
+            private set
+
+        @Volatile
         var instance: NotificationService? = null
+            private set
     }
 
     data class NotificationItem(
-        val appName: String,
-        val time: Long,
-        var count: Int = 1,
-        val keys: List<String> = listOf()
+        val key: String,
+        val packageName: String,
+        val appLabel: String,
+        val title: String,
+        val text: String,
+        val postTime: Long,
+        val contentIntent: PendingIntent?,
+        val clearable: Boolean
     )
 
     override fun onListenerConnected() {
@@ -43,31 +55,32 @@ class NotificationService : NotificationListenerService() {
 
     private fun updateList() {
         val active = activeNotifications ?: return
-        val newList = mutableListOf<NotificationItem>()
-        
-        val groups = active.groupBy { it.packageName }
-        for ((pkg, sbns) in groups) {
-            val appName = try {
-                val info = packageManager.getApplicationInfo(pkg, 0)
+        notifications = active.map { sbn ->
+            val appLabel = try {
+                val info = packageManager.getApplicationInfo(sbn.packageName, 0)
                 packageManager.getApplicationLabel(info).toString()
-            } catch (e: Exception) { pkg }
-            
-            val time = sbns.maxOf { it.postTime }
-            val keys = sbns.map { it.key }
-            newList.add(NotificationItem(appName, time, sbns.size, keys))
-        }
-        
-        notifications.clear()
-        notifications.addAll(newList.sortedByDescending { it.time })
-        
+            } catch (_: Exception) {
+                sbn.packageName
+            }
+            NotificationItem(
+                key = sbn.key,
+                packageName = sbn.packageName,
+                appLabel = appLabel,
+                title = sbn.notification.extras.getCharSequence(Notification.EXTRA_TITLE)?.toString().orEmpty(),
+                text = sbn.notification.extras.getCharSequence(Notification.EXTRA_TEXT)?.toString().orEmpty(),
+                postTime = sbn.postTime,
+                contentIntent = sbn.notification.contentIntent,
+                clearable = sbn.isClearable
+            )
+        }.sortedByDescending { it.postTime }
+
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION_NOTIFY_UPDATED))
     }
 
-    fun dismissNotifications(keys: List<String>) {
+    fun dismissNotification(key: String) {
         if (Build.VERSION.SDK_INT >= 21) {
-            keys.forEach { cancelNotification(it) }
+            cancelNotification(key)
         } else {
-            // Deprecated fallback for very old APIs
             cancelAllNotifications()
         }
     }

@@ -1,11 +1,13 @@
 package com.minimalist.launcher
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
@@ -22,7 +24,7 @@ class NotificationPanelActivity : AppCompatActivity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            adapter.notifyDataSetChanged()
+            adapter.refresh()
         }
     }
 
@@ -37,21 +39,29 @@ class NotificationPanelActivity : AppCompatActivity() {
 
         binding.rvNotifications.layoutManager = LinearLayoutManager(this)
         binding.rvNotifications.adapter = adapter
+        adapter.refresh()
 
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
 
+            override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                return if (adapter.itemAt(viewHolder.bindingAdapterPosition)?.clearable == true) {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                } else {
+                    0
+                }
+            }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                if (position >= 0 && position < NotificationService.notifications.size) {
-                    val item = NotificationService.notifications[position]
-                    NotificationService.instance?.dismissNotifications(item.keys)
-                    // The updateList broadcast will refresh the RecyclerView anyway,
-                    // but we can proactively notify item removal for smoother anims
-                    NotificationService.notifications.removeAt(position)
-                    adapter.notifyItemRemoved(position)
+                val position = viewHolder.bindingAdapterPosition
+                val item = adapter.itemAt(position)
+                if (item?.clearable == true && NotificationService.instance != null) {
+                    NotificationService.instance?.dismissNotification(item.key)
+                    adapter.removeAt(position)
+                } else if (position != RecyclerView.NO_POSITION) {
+                    adapter.notifyItemChanged(position)
                 }
             }
         })
@@ -76,6 +86,8 @@ class NotificationPanelActivity : AppCompatActivity() {
     }
 
     inner class NotifAdapter : RecyclerView.Adapter<NotifAdapter.VH>() {
+        private var items = NotificationService.notifications
+
         inner class VH(val b: RowNotificationBinding) : RecyclerView.ViewHolder(b.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -83,12 +95,35 @@ class NotificationPanelActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: VH, position: Int) {
-            val item = NotificationService.notifications[position]
-            val time = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date(item.time))
-            holder.b.tvAppName.text = item.appName
-            holder.b.tvTimeCount.text = if (item.count > 1) "${time} · ${item.count}" else time
+            val item = items[position]
+            holder.b.tvAppName.text = item.appLabel
+            holder.b.tvTimeCount.text = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+                .format(java.util.Date(item.postTime))
+            holder.b.tvTitle.text = item.title
+            holder.b.tvTitle.visibility = if (item.title.isEmpty()) View.GONE else View.VISIBLE
+            holder.b.tvText.text = item.text
+            holder.b.tvText.visibility = if (item.text.isEmpty()) View.GONE else View.VISIBLE
+            holder.b.root.setOnClickListener {
+                try {
+                    item.contentIntent?.send()
+                } catch (_: PendingIntent.CanceledException) {
+                    refresh()
+                }
+            }
         }
 
-        override fun getItemCount() = NotificationService.notifications.size
+        override fun getItemCount() = items.size
+
+        fun itemAt(position: Int) = items.getOrNull(position)
+
+        fun refresh() {
+            items = NotificationService.notifications
+            notifyDataSetChanged()
+        }
+
+        fun removeAt(position: Int) {
+            items = items.toMutableList().also { it.removeAt(position) }
+            notifyItemRemoved(position)
+        }
     }
 }
