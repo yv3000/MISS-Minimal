@@ -450,34 +450,34 @@ class QuickSettingsActivity : AppCompatActivity() {
         binding.seekBrightness.progress = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 128)
     }
 
-    private fun toggleLocation(context: Context) {
-        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-    }
-
-    private fun toggleAirplaneMode(context: Context) {
-        startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
-    }
-
-    private fun toggleHotspot(context: Context) {
+    private fun openTetherSettings() {
         // Since Android 8.0+, we can\u0027t easily toggle hotspot without high-level permissions.
         // Opening settings is the safest way.
         try {
-            val intent = Intent()
-            intent.setClassName("com.android.settings", "com.android.settings.TetherSettings")
-            startActivity(intent)
+            startActivity(Intent(Settings.ACTION_TETHER_SETTINGS))
         } catch (e: Exception) {
             startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
         }
     }
 
-    private fun isHotspotEnabled(context: Context): Boolean {
-        return try {
-            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val method = wm.javaClass.getDeclaredMethod("getWifiApState")
-            val state = method.invoke(wm) as Int
-            state == 13 // WIFI_AP_STATE_ENABLED
-        } catch (e: Exception) {
-            false
+    private fun toggleBluetooth() {
+        try {
+            val adapter = getSystemService(BluetoothManager::class.java).adapter ?: return
+            if (adapter.isEnabled) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) openBluetoothSettings()
+                else @Suppress("DEPRECATION") adapter.disable()
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
+            } else {
+                @Suppress("DEPRECATION")
+                adapter.enable()
+            }
+        } catch (_: SecurityException) {
+            openBluetoothSettings()
         }
+    }
+
+    private fun openBluetoothSettings() {
+        startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
     }
 }

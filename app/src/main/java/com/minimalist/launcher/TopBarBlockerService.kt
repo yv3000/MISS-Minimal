@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.provider.Settings
 import android.view.Gravity
 import android.view.MotionEvent
@@ -18,9 +20,20 @@ class TopBarBlockerService : Service() {
     private var rightEdgeView: View? = null
     private var leftEdgeView: View? = null
     private lateinit var windowManager: WindowManager
+    private val handler = Handler(Looper.getMainLooper())
     
     private var touchStartY = 0f
     private var panelOpenedThisGesture = false
+    private val stateCheck = object : Runnable {
+        override fun run() {
+            if (shouldBlock()) addOverlays() else removeOverlays()
+            if (shouldBlock() || PomodoroManager.isActive) {
+                handler.postDelayed(this, 750)
+            } else {
+                stopSelf()
+            }
+        }
+    }
 
     companion object {
         fun start(context: Context) {
@@ -41,12 +54,8 @@ class TopBarBlockerService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (shouldBlock()) {
-            addOverlays()
-        } else {
-            removeOverlays()
-            stopSelf()
-        }
+        handler.removeCallbacks(stateCheck)
+        handler.post(stateCheck)
         return START_STICKY
     }
 
@@ -152,6 +161,7 @@ class TopBarBlockerService : Service() {
     }
 
     override fun onDestroy() {
+        handler.removeCallbacks(stateCheck)
         removeOverlays()
         super.onDestroy()
     }

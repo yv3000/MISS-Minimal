@@ -998,7 +998,10 @@ class FocusActivity : AppCompatActivity() {
         ContactsContract.CommonDataKinds.Phone.NUMBER
       )
       contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-        if (!cursor.moveToFirst()) return@use
+        if (!cursor.moveToFirst()) {
+          Toast.makeText(this, "Selected contact has no phone number", Toast.LENGTH_SHORT).show()
+          return@use
+        }
         val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
         val numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
         val name = if (nameIndex >= 0) cursor.getString(nameIndex)?.trim()?.takeIf { it.isNotEmpty() } else null

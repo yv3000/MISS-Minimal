@@ -130,7 +130,7 @@ class StrictModeService : AccessibilityService() {
             val allowed = PomodoroManager.allowedPackages
             
             // If the event itself is from a non-allowed source, kill it
-            if (!allowed.contains(eventPkg) && eventPkg != "com.android.systemui") {
+            if (!allowed.contains(eventPkg) && !isSystemUi(eventPkg)) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 
                 // Bring FocusActivity back to front
