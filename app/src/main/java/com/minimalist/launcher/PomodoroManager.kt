@@ -16,8 +16,7 @@ object PomodoroManager {
     val userSelectedApps = mutableListOf<String>()
     val allowedPackages = mutableSetOf<String>()
     
-    var emergencyContactName: String? = null
-    var emergencyContactNumber: String? = null
+    val emergencyContacts = MutableList<Pair<String, String>?>(2) { null }
 
     private val ALWAYS_ALLOWED = setOf(
         "com.minimalist.launcher",
@@ -36,8 +35,7 @@ object PomodoroManager {
     fun start(
         durationMinutes: Int,
         allowedApps: List<String>,
-        emergencyContact: String?,
-        emergencyName: String?,
+        contacts: List<Pair<String, String>?>,
         context: Context
     ) {
         workDurationSeconds = durationMinutes * 60
@@ -48,8 +46,7 @@ object PomodoroManager {
         isWorkPhase = true
         sessionCount = 1
         
-        emergencyContactNumber = emergencyContact
-        emergencyContactName = emergencyName
+        emergencyContacts.indices.forEach { emergencyContacts[it] = contacts.getOrNull(it) }
 
         val safeApps = allowedApps.distinct().filter { packageName ->
             runCatching {
@@ -84,8 +81,7 @@ object PomodoroManager {
         isActive = false
         isWorkPhase = true
         sessionCount = 0
-        emergencyContactName = null
-        emergencyContactNumber = null
+        emergencyContacts.fill(null)
         userSelectedApps.clear()
         allowedPackages.clear()
         

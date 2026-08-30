@@ -82,6 +82,7 @@ class PomodoroTimerService : Service() {
                     } else {
                         // All work done -> Finish
                         isRunning = false
+                        PomodoroManager.stop(this@PomodoroTimerService)
                         val completeIntent = Intent(BROADCAST_COMPLETE)
                         sendBroadcast(completeIntent)
                         stopForeground(STOP_FOREGROUND_REMOVE)

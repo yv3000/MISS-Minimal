@@ -45,6 +45,8 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.abs
 
 class FocusActivity : AppCompatActivity() {
+  private var portraitUiInitialized = false
+  private var timerReceiverRegistered = false
 
   private val handler = Handler(Looper.getMainLooper())
   private var swSeconds = 0
@@ -80,8 +82,8 @@ class FocusActivity : AppCompatActivity() {
   // Pomodoro Fields
   private var selectedDurationMins = 25
   private val selectedApps = mutableListOf<String>()
-  private var contactName: String? = null
-  private var contactNumber: String? = null
+  private val emergencyContacts = MutableList<Pair<String, String>?>(2) { null }
+  private var pendingContactIndex = 0
 
   private val pomContactPicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
     if (result.resultCode == RESULT_OK) {
@@ -101,12 +103,15 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var pom_slotApp2: TextView
   private lateinit var pom_slotApp3: TextView
   private lateinit var pom_tvContactName: TextView
+  private lateinit var pom_tvContactName2: TextView
   private lateinit var pom_btnRemoveContact: View
+  private lateinit var pom_btnRemoveContact2: View
   private lateinit var pom_btnStartPomodoro: View
   private lateinit var pom_tvPhaseLabel: TextView
   private lateinit var pom_tvCountdown: TextView
   private lateinit var pom_tvSessionCount: TextView
   private lateinit var pom_btnCallContact: View
+  private lateinit var pom_btnCallContact2: View
   private lateinit var pom_btnCancelBreak: View
   private lateinit var pom_active_slot1: TextView
   private lateinit var pom_active_slot2: TextView
@@ -147,6 +152,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun handleIntent(intent: Intent?) {
+    if (!portraitUiInitialized) return
     intent ?: return
     
     val tab = intent.getStringExtra("tab")
@@ -169,6 +175,14 @@ class FocusActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    if (savedInstanceState != null) {
+      emergencyContacts.indices.forEach { index ->
+        val name = savedInstanceState.getString("pom_contact_${index}_name")
+        val number = savedInstanceState.getString("pom_contact_${index}_number")
+        emergencyContacts[index] = number?.takeIf(String::isNotBlank)?.let { (name ?: it) to it }
+      }
+      pendingContactIndex = savedInstanceState.getInt("pom_pending_contact", 0).coerceIn(0, 1)
+    }
     
     // Check orientation first to prevent crashes and show requirement message
     val isLandscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
@@ -194,6 +208,7 @@ class FocusActivity : AppCompatActivity() {
       setupTimer()
       setupStrictMode()
       setupPomodoro()
+      portraitUiInitialized = true
 
       // Restore Pomodoro state if session is still active
       restorePomodoroState()
@@ -214,8 +229,7 @@ class FocusActivity : AppCompatActivity() {
       selectedApps.clear()
       selectedApps.addAll(PomodoroManager.userSelectedApps)
       // Restore contact info
-      contactName = PomodoroManager.emergencyContactName
-      contactNumber = PomodoroManager.emergencyContactNumber
+      emergencyContacts.indices.forEach { emergencyContacts[it] = PomodoroManager.emergencyContacts[it] }
     }
   }
 
@@ -250,7 +264,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-    gestureDetector.onTouchEvent(ev)
+    if (portraitUiInitialized) gestureDetector.onTouchEvent(ev)
     return super.dispatchTouchEvent(ev)
   }
 
@@ -423,12 +437,15 @@ class FocusActivity : AppCompatActivity() {
     pom_slotApp2 = findViewById(R.id.pom_slotApp2)
     pom_slotApp3 = findViewById(R.id.pom_slotApp3)
     pom_tvContactName = findViewById(R.id.pom_tvContactName)
+    pom_tvContactName2 = findViewById(R.id.pom_tvContactName2)
     pom_btnRemoveContact = findViewById(R.id.pom_btnRemoveContact)
+    pom_btnRemoveContact2 = findViewById(R.id.pom_btnRemoveContact2)
     pom_btnStartPomodoro = findViewById(R.id.pom_btnStartPomodoro)
     pom_tvPhaseLabel = findViewById(R.id.pom_tvPhaseLabel)
     pom_tvCountdown = findViewById(R.id.pom_tvCountdown)
     pom_tvSessionCount = findViewById(R.id.pom_tvSessionCount)
     pom_btnCallContact = findViewById(R.id.pom_btnCallContact)
+    pom_btnCallContact2 = findViewById(R.id.pom_btnCallContact2)
     pom_btnCancelBreak = findViewById(R.id.pom_btnCancelBreak)
     pom_active_slot1 = findViewById(R.id.pom_active_slot1)
     pom_active_slot2 = findViewById(R.id.pom_active_slot2)
@@ -638,6 +655,7 @@ class FocusActivity : AppCompatActivity() {
   override fun onResume() {
     super.onResume()
     AppFont.applyToActivity(this)
+    if (!portraitUiInitialized) return
     
     val navPrefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
     val proceed = navPrefs.getBoolean("proceed", false)
@@ -694,13 +712,13 @@ class FocusActivity : AppCompatActivity() {
     } else {
       registerReceiver(timerReceiver, filter)
     }
+    timerReceiverRegistered = true
 
     if (PomodoroManager.isActive) {
       // Restore state from manager
       selectedApps.clear()
       selectedApps.addAll(PomodoroManager.userSelectedApps)
-      contactName = PomodoroManager.emergencyContactName
-      contactNumber = PomodoroManager.emergencyContactNumber
+      emergencyContacts.indices.forEach { emergencyContacts[it] = PomodoroManager.emergencyContacts[it] }
       
       showPomActiveScreen()
     } else {
@@ -712,8 +730,11 @@ class FocusActivity : AppCompatActivity() {
   }
 
   override fun onPause() {
+    if (timerReceiverRegistered) {
+      unregisterReceiver(timerReceiver)
+      timerReceiverRegistered = false
+    }
     super.onPause()
-    unregisterReceiver(timerReceiver)
   }
 
   private fun updateStrictWarningUI() {
@@ -867,16 +888,22 @@ class FocusActivity : AppCompatActivity() {
     pom_slotApp2.setOnLongClickListener { selectedApps.getOrNull(1)?.let { selectedApps.removeAt(1); updatePomAppSlotsUI() }; true }
     pom_slotApp3.setOnLongClickListener { selectedApps.getOrNull(2)?.let { selectedApps.removeAt(2); updatePomAppSlotsUI() }; true }
 
-    pom_tvContactName.setOnClickListener { openPomContactPicker() }
-    pom_btnRemoveContact.setOnClickListener { removePomContact() }
+    listOf(pom_tvContactName, pom_tvContactName2).forEachIndexed { index, view ->
+      view.setOnClickListener { openPomContactPicker(index) }
+    }
+    listOf(pom_btnRemoveContact, pom_btnRemoveContact2).forEachIndexed { index, view ->
+      view.setOnClickListener { removePomContact(index) }
+    }
     pom_btnStartPomodoro.setOnClickListener { startPomodoro() }
 
-    pom_btnCallContact.setOnClickListener {
-      contactNumber?.let { num ->
+    listOf(pom_btnCallContact, pom_btnCallContact2).forEachIndexed { index, view ->
+      view.setOnClickListener {
+        emergencyContacts[index]?.second?.let { num ->
         try {
           startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", num, null)))
         } catch (_: ActivityNotFoundException) {
           Toast.makeText(this, "No phone app available", Toast.LENGTH_SHORT).show()
+        }
         }
       }
     }
@@ -898,8 +925,8 @@ class FocusActivity : AppCompatActivity() {
     
     listOf(pom_btnDur25, pom_btnDur50, pom_btnDur75, pom_btnDur100, 
            pom_slotApp1, pom_slotApp2, pom_slotApp3, pom_btnStartPomodoro,
-           pom_tvContactName, pom_btnRemoveContact,
-           pom_btnCallContact, pom_btnCancelBreak,
+           pom_tvContactName, pom_tvContactName2, pom_btnRemoveContact, pom_btnRemoveContact2,
+           pom_btnCallContact, pom_btnCallContact2, pom_btnCancelBreak,
            pom_active_slot1, pom_active_slot2, pom_active_slot3).forEach { it.addPressEffect() }
   }
 
@@ -950,7 +977,8 @@ class FocusActivity : AppCompatActivity() {
     style(pom_slotApp3, selectedApps.getOrNull(2))
   }
 
-  private fun openPomContactPicker() {
+  private fun openPomContactPicker(index: Int) {
+    pendingContactIndex = index
     try {
       pomContactPicker.launch(
         Intent(Intent.ACTION_PICK).setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
@@ -960,20 +988,19 @@ class FocusActivity : AppCompatActivity() {
     }
   }
 
-  private fun removePomContact() {
-    contactName = null; contactNumber = null
+  private fun removePomContact(index: Int) {
+    emergencyContacts[index] = null
     updatePomContactUI()
   }
 
   private fun updatePomContactUI() {
-    if (contactName != null) {
-      pom_tvContactName.text = contactName
-      pom_tvContactName.setTextColor(android.graphics.Color.WHITE)
-      pom_btnRemoveContact.visibility = View.VISIBLE
-    } else {
-      pom_tvContactName.text = "+ select contact"
-      pom_tvContactName.setTextColor(android.graphics.Color.parseColor("#666666"))
-      pom_btnRemoveContact.visibility = View.GONE
+    val names = listOf(pom_tvContactName, pom_tvContactName2)
+    val removeButtons = listOf(pom_btnRemoveContact, pom_btnRemoveContact2)
+    names.forEachIndexed { index, view ->
+      val contact = emergencyContacts[index]
+      view.text = contact?.first ?: "+ select contact"
+      view.setTextColor(if (contact == null) android.graphics.Color.parseColor("#666666") else android.graphics.Color.WHITE)
+      removeButtons[index].visibility = if (contact == null) View.GONE else View.VISIBLE
     }
   }
 
@@ -1008,9 +1035,8 @@ class FocusActivity : AppCompatActivity() {
         val sanitizedNumber = number?.let(PhoneNumberUtils::stripSeparators)?.takeIf { it.isNotEmpty() }
 
         if (sanitizedNumber != null) {
-          contactName = name ?: sanitizedNumber
-          contactNumber = sanitizedNumber
-          updatePomContactUI()
+          emergencyContacts[pendingContactIndex] = (name ?: sanitizedNumber) to sanitizedNumber
+          if (portraitUiInitialized) updatePomContactUI()
         } else {
           Toast.makeText(this, "Selected contact has no phone number", Toast.LENGTH_SHORT).show()
         }
@@ -1027,8 +1053,7 @@ class FocusActivity : AppCompatActivity() {
     PomodoroManager.start(
         durationMinutes = selectedDurationMins,
         allowedApps = selectedApps,
-        emergencyContact = contactNumber,
-        emergencyName = contactName,
+        contacts = emergencyContacts,
         context = this
     )
     
@@ -1075,13 +1100,14 @@ class FocusActivity : AppCompatActivity() {
     pom_layoutActive.visibility = View.VISIBLE
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE
+    pom_tvSessionCount.text = "session ${PomodoroManager.sessionCount}"
     
-    // Read contact from PomodoroManager (survives activity recreation)
-    if (contactNumber == null && PomodoroManager.emergencyContactNumber != null) {
-        contactNumber = PomodoroManager.emergencyContactNumber
-        contactName = PomodoroManager.emergencyContactName
+    emergencyContacts.indices.forEach { emergencyContacts[it] = PomodoroManager.emergencyContacts[it] }
+    listOf(pom_btnCallContact, pom_btnCallContact2).forEachIndexed { index, view ->
+        val contact = emergencyContacts[index]
+        view.visibility = if (contact == null) View.GONE else View.VISIBLE
+        (view as TextView).text = contact?.let { "CALL ${it.first}" } ?: ""
     }
-    pom_btnCallContact.visibility = if (contactNumber != null) View.VISIBLE else View.GONE
     
     // Populate active app slots from PomodoroManager.userSelectedApps
     // NOT from local selectedApps — because selectedApps is empty after activity recreate
@@ -1143,6 +1169,15 @@ class FocusActivity : AppCompatActivity() {
   override fun onDestroy() {
     handler.removeCallbacksAndMessages(null)
     super.onDestroy()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    emergencyContacts.forEachIndexed { index, contact ->
+      outState.putString("pom_contact_${index}_name", contact?.first)
+      outState.putString("pom_contact_${index}_number", contact?.second)
+    }
+    outState.putInt("pom_pending_contact", pendingContactIndex)
+    super.onSaveInstanceState(outState)
   }
 
   private fun vibrateTick() {

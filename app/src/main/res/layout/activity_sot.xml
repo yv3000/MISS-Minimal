@@ -12,18 +12,20 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tvSotValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upcoming soon..."
+            android:text="0m"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:fontFamily="@font/plus_jakarta_sans_light"
             android:layout_marginBottom="16dp"/>
 
         <TextView
+            android:id="@+id/tvSotDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="If you know how to build this feature, please contribute to the MISS-Minimal v2 project on GitHub. Your help is appreciated!"
+            android:text="screen time today"
             android:textColor="#666666"
             android:textSize="12sp"
             android:fontFamily="@font/plus_jakarta_sans"

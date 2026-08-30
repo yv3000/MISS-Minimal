@@ -9,10 +9,11 @@ import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
 import android.hardware.camera2.CameraManager
 import android.location.LocationManager
-import android.net.ConnectivityManager
 import android.media.AudioManager
 import android.net.Uri
 import android.net.wifi.WifiManager
+import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -189,12 +190,19 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun setupConnectivity() {
         // WIFI — use system panel (works on all Android 10+ phones)
         binding.btnWifi.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
-            } else {
+            val enable = !wifiManager.isWifiEnabled
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 @Suppress("DEPRECATION")
-                wifiManager.isWifiEnabled = !wifiManager.isWifiEnabled
-                android.os.Handler(Looper.getMainLooper()).postDelayed({ updateAllStates() }, 600)
+                wifiManager.isWifiEnabled = enable
+            } else PrivilegedToggle.runRoot(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                    "cmd wifi set-wifi-enabled ${if (enable) "enabled" else "disabled"}"
+                else "svc wifi ${if (enable) "enable" else "disable"}",
+                { wifiManager.isWifiEnabled == enable }
+            ) { changed ->
+                if (isFinishing || isDestroyed) return@runRoot
+                updateAllStates()
+                if (!changed) openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
             }
         }
         binding.btnWifi.setOnLongClickListener {
@@ -204,10 +212,21 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // DATA — use internet connectivity panel
         binding.btnData.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val current = isMobileDataEnabled()
+            if (current == null) {
                 openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
-            } else {
-                openSettings(Settings.ACTION_DATA_USAGE_SETTINGS)
+                return@setOnClickListener
+            }
+            val enable = !current
+            PrivilegedToggle.runRoot(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                    "cmd phone data ${if (enable) "enable" else "disable"}"
+                else "svc data ${if (enable) "enable" else "disable"}",
+                { isMobileDataEnabled() == enable }
+            ) { changed ->
+                if (isFinishing || isDestroyed) return@runRoot
+                updateAllStates()
+                if (!changed) openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
             }
         }
         binding.btnData.setOnLongClickListener {
@@ -273,13 +292,13 @@ class QuickSettingsActivity : AppCompatActivity() {
         // LOCATION — third-party apps cannot directly change this setting.
         binding.btnLocation.visibility = View.VISIBLE
         binding.btnLocation.setOnClickListener {
-            openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            toggleLocation()
         }
 
         // HOTSPOT — tethering changes require privileged/carrier access.
         binding.btnHotspot.visibility = View.VISIBLE
         binding.btnHotspot.setOnClickListener {
-            openTetherSettings()
+            toggleHotspot()
         }
         binding.btnHotspot.setOnLongClickListener {
             openTetherSettings()
@@ -289,7 +308,15 @@ class QuickSettingsActivity : AppCompatActivity() {
         // AIRPLANE — only system apps can change Settings.Global directly.
         binding.btnAirplane.visibility = View.VISIBLE
         binding.btnAirplane.setOnClickListener {
-            openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
+            val enable = !isAirplaneModeEnabled()
+            PrivilegedToggle.runRoot(
+                "cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}",
+                { isAirplaneModeEnabled() == enable }
+            ) { changed ->
+                if (isFinishing || isDestroyed) return@runRoot
+                updateAllStates()
+                if (!changed) openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
+            }
         }
 
         setupMicroInteractions()
@@ -336,13 +363,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         // Wifi
         setButtonState(binding.btnWifi, stateOf { wifiManager.isWifiEnabled }, dpToPx)
 
-        // Data indicates that the active network is cellular; Android exposes no
-        // unprivileged API for reading the user's mobile-data toggle.
-        setButtonState(binding.btnData, stateOf {
-            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            cm.getNetworkCapabilities(cm.activeNetwork)
-                ?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_CELLULAR) == true
-        }, dpToPx)
+        setButtonState(binding.btnData, isMobileDataEnabled() == true, dpToPx)
 
         setButtonState(binding.btnBluetooth, stateOf {
             getSystemService(BluetoothManager::class.java).adapter?.isEnabled == true
@@ -369,7 +390,7 @@ class QuickSettingsActivity : AppCompatActivity() {
 
         // Airplane
         setButtonState(binding.btnAirplane, stateOf {
-            Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+            isAirplaneModeEnabled()
         }, dpToPx)
         
         updateSoundUI()
@@ -487,6 +508,11 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
+    private fun toggleHotspot() {
+        // No stable API 29-34 state callback or shell command preserves the user's tether config.
+        openTetherSettings()
+    }
+
     private fun openSettings(primary: String, fallback: String = Settings.ACTION_SETTINGS) {
         try {
             startActivity(Intent(primary))
@@ -498,13 +524,22 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun toggleBluetooth() {
         try {
             val adapter = getSystemService(BluetoothManager::class.java).adapter ?: return
-            if (!adapter.isEnabled) {
-                startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
-            } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            val enable = !adapter.isEnabled
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
                 @Suppress("DEPRECATION")
-                adapter.disable()
+                if (enable) adapter.enable() else adapter.disable()
             } else {
-                openBluetoothSettings()
+                PrivilegedToggle.runRoot(
+                    "cmd bluetooth_manager ${if (enable) "enable" else "disable"}",
+                    { adapter.isEnabled == enable }
+                ) { changed ->
+                    if (isFinishing || isDestroyed) return@runRoot
+                    updateAllStates()
+                    if (!changed) {
+                        if (enable) startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                        else openBluetoothSettings()
+                    }
+                }
             }
         } catch (_: SecurityException) {
             openBluetoothSettings()
@@ -513,5 +548,43 @@ class QuickSettingsActivity : AppCompatActivity() {
 
     private fun openBluetoothSettings() {
         openSettings(Settings.ACTION_BLUETOOTH_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
+    }
+
+    private fun isMobileDataEnabled(): Boolean? = try {
+        val subId = SubscriptionManager.getDefaultDataSubscriptionId()
+        getSystemService(TelephonyManager::class.java)
+            .createForSubscriptionId(subId)
+            .isDataEnabled
+    } catch (_: Exception) { null }
+
+    private fun isAirplaneModeEnabled() =
+        Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
+
+    private fun toggleLocation() {
+        val locationManager = getSystemService(LocationManager::class.java)
+        val enable = !locationManager.isLocationEnabled
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R &&
+            ContextCompat.checkSelfPermission(this, "android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED
+        ) {
+            val changed = Settings.Secure.putInt(
+                contentResolver,
+                Settings.Secure.LOCATION_MODE,
+                if (enable) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
+            )
+            if (changed && locationManager.isLocationEnabled == enable) {
+                updateAllStates()
+                return
+            }
+        }
+        PrivilegedToggle.runRoot(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                "cmd location set-location-enabled $enable --user current"
+            else "settings put secure location_mode ${if (enable) 3 else 0}",
+            { locationManager.isLocationEnabled == enable }
+        ) { changed ->
+            if (isFinishing || isDestroyed) return@runRoot
+            updateAllStates()
+            if (!changed) openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        }
     }
 }

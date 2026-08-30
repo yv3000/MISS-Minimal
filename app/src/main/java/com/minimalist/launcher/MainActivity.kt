@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateSOT() {
         val tvSot = binding.tvSOT ?: return
-        if (!hasUsageStatsPermission()) {
+        if (!UsageAccess.isGranted(this)) {
             tvSot.text = "SOT unavailable (grant usage access)"
             return
         }
@@ -231,17 +231,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             tvSot.text = "${m}m screen time"
         }
-    }
-
-    private fun hasUsageStatsPermission(): Boolean {
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as android.app.AppOpsManager
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOps.unsafeCheckOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
-        } else {
-            @Suppress("DEPRECATION")
-            appOps.checkOpNoThrow(android.app.AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
-        }
-        return mode == android.app.AppOpsManager.MODE_ALLOWED
     }
 
     private fun setupClickListeners() {

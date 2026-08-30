@@ -669,7 +669,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="optional — one person you can call during session"
+            android:text="optional — up to two people you can call during session"
             android:textColor="#444444"
             android:textSize="12sp"
             android:fontFamily="@font/plus_jakarta_sans"
@@ -689,7 +689,7 @@
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:layout_marginBottom="40dp">
+            android:layout_marginBottom="12dp">
             
             <TextView android:id="@+id/pom_tvContactName"
                 android:layout_width="wrap_content"
@@ -701,6 +701,38 @@
                 android:layout_marginEnd="8dp"/>
             
             <TextView android:id="@+id/pom_btnRemoveContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="×"
+                android:textColor="#888888"
+                android:textSize="14sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pom_layoutContact2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/border_box"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginBottom="40dp">
+
+            <TextView android:id="@+id/pom_tvContactName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ select contact"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView android:id="@+id/pom_btnRemoveContact2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="×"
@@ -829,6 +861,22 @@
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:layout_marginTop="32dp"
+            android:visibility="gone"/>
+
+        <TextView android:id="@+id/pom_btnCallContact2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CALL EMERGENCY CONTACT"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:fontFamily="@font/plus_jakarta_sans_bold"
+            android:background="@drawable/bg_pill"
+            android:backgroundTint="#CC0000"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="12dp"
             android:visibility="gone"/>
 
         <TextView android:id="@+id/pom_btnCancelBreak"
