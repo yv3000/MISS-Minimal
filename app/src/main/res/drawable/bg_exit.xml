@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- EXIT button only: subtle rounded rectangle instead of the pill (bg_pill = 100dp). -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#40FFFFFF">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/grey_2a2a2a" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</ripple>

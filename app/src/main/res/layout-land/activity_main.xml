@@ -22,7 +22,7 @@
         android:layout_marginTop="12dp"
         android:paddingHorizontal="12dp"
         android:paddingVertical="6dp"
-        android:background="@drawable/bg_pill"
+        android:background="@drawable/bg_exit"
         android:fontFamily="@font/plus_jakarta_sans_medium"
         android:text="EXIT"
         android:textColor="@color/white"

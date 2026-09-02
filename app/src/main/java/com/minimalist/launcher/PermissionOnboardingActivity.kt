@@ -3,6 +3,8 @@ package com.minimalist.launcher
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.AppOpsManager
 import android.app.NotificationManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -17,6 +19,7 @@ import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class PermissionOnboardingActivity : AppCompatActivity() {
@@ -84,6 +87,15 @@ class PermissionOnboardingActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
 
+        findViewById<TextView>(R.id.tvAdbCommand).text = PrivilegedToggle.ADB_GRANT_COMMAND
+        findViewById<View>(R.id.btnCopyAdbCommand).setOnClickListener {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            clipboard.setPrimaryClip(
+                ClipData.newPlainText("adb command", PrivilegedToggle.ADB_GRANT_COMMAND)
+            )
+            Toast.makeText(this, "Command copied — run it from a PC, then come back", Toast.LENGTH_LONG).show()
+        }
+
         btnContinue.setOnClickListener {
             val prefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
             prefs.edit().putBoolean("proceed", true).apply()
@@ -98,6 +110,14 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         updateRow(rowDnd, R.id.btnAllowDnd, R.id.tvStatusDnd, isNotificationPolicyGranted())
         updateRow(rowBattery, R.id.btnAllowBattery, R.id.tvStatusBattery, isBatteryOptimizationIgnored())
         updateRow(rowNotificationListener, R.id.btnAllowNotifListener, R.id.tvStatusNotifListener, isNotificationListenerGranted())
+
+        // Optional row: adb-only permission, detected on every resume so the user sees the tick
+        // as soon as they run the command. Never blocks CONTINUE.
+        val secureGranted = PrivilegedToggle.hasSecureSettings(this)
+        findViewById<TextView>(R.id.tvStatusSecureSettings).visibility =
+            if (secureGranted) View.VISIBLE else View.GONE
+        findViewById<View>(R.id.tvAdbCommand).visibility = if (secureGranted) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.btnCopyAdbCommand).visibility = if (secureGranted) View.GONE else View.VISIBLE
 
         val allGranted = isAccessibilityServiceEnabled() &&
                 isUsageStatsGranted() &&

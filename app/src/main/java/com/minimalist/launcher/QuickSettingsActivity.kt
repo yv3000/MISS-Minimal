@@ -139,9 +139,19 @@ class QuickSettingsActivity : AppCompatActivity() {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
     }
 
+    /**
+     * The panel's root is a ScrollView, which consumes every vertical gesture, so
+     * onTouchEvent above is never reached and swipe-up-to-close looked "broken".
+     * dispatchTouchEvent sees the whole gesture before any child does; we only observe it
+     * here (return value untouched) so scrolling and button taps keep working.
+     */
+    override fun dispatchTouchEvent(ev: android.view.MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
     override fun onResume() {
         super.onResume()
-        AppFont.applyToActivity(this)
         updateSoundUI()
         updateDisplayUI()
         updateAllStates()
@@ -188,21 +198,32 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupConnectivity() {
-        // WIFI — use system panel (works on all Android 10+ phones)
+        // WIFI
         binding.btnWifi.setOnClickListener {
             val enable = !wifiManager.isWifiEnabled
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                @Suppress("DEPRECATION")
-                wifiManager.isWifiEnabled = enable
-            } else PrivilegedToggle.runRoot(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                    "cmd wifi set-wifi-enabled ${if (enable) "enabled" else "disabled"}"
-                else "svc wifi ${if (enable) "enable" else "disable"}",
+            PrivilegedToggle.chain(
+                "wifi",
+                listOf(
+                    // Still honoured on Android 9 and below (CHANGE_WIFI_STATE).
+                    PrivilegedToggle.Attempt("WifiManager.setWifiEnabled") {
+                        @Suppress("DEPRECATION")
+                        wifiManager.setWifiEnabled(enable)
+                    },
+                    PrivilegedToggle.Attempt("Settings.Global wifi_on") {
+                        PrivilegedToggle.writeGlobal(this, "wifi_on", if (enable) 1 else 0)
+                    },
+                    PrivilegedToggle.root(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                            "cmd wifi set-wifi-enabled ${if (enable) "enabled" else "disabled"}"
+                        else "svc wifi ${if (enable) "enable" else "disable"}"
+                    )
+                ),
                 { wifiManager.isWifiEnabled == enable }
-            ) { changed ->
-                if (isFinishing || isDestroyed) return@runRoot
+            ) { winner ->
+                if (isFinishing || isDestroyed) return@chain
                 updateAllStates()
-                if (!changed) openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
+                // Panel = slim bottom sheet, not the full Settings app.
+                if (winner == null) openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
             }
         }
         binding.btnWifi.setOnLongClickListener {
@@ -218,15 +239,27 @@ class QuickSettingsActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val enable = !current
-            PrivilegedToggle.runRoot(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                    "cmd phone data ${if (enable) "enable" else "disable"}"
-                else "svc data ${if (enable) "enable" else "disable"}",
+            val subId = SubscriptionManager.getDefaultDataSubscriptionId()
+            PrivilegedToggle.chain(
+                "data",
+                listOf(
+                    PrivilegedToggle.Attempt("Settings.Global mobile_data") {
+                        val value = if (enable) 1 else 0
+                        // Per-SIM key first, then the legacy single-SIM key.
+                        PrivilegedToggle.writeGlobal(this, "mobile_data$subId", value) or
+                            PrivilegedToggle.writeGlobal(this, "mobile_data", value)
+                    },
+                    PrivilegedToggle.root(
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                            "cmd phone data ${if (enable) "enable" else "disable"}"
+                        else "svc data ${if (enable) "enable" else "disable"}"
+                    )
+                ),
                 { isMobileDataEnabled() == enable }
-            ) { changed ->
-                if (isFinishing || isDestroyed) return@runRoot
+            ) { winner ->
+                if (isFinishing || isDestroyed) return@chain
                 updateAllStates()
-                if (!changed) openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
+                if (winner == null) openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
             }
         }
         binding.btnData.setOnLongClickListener {
@@ -305,17 +338,40 @@ class QuickSettingsActivity : AppCompatActivity() {
             true
         }
 
-        // AIRPLANE — only system apps can change Settings.Global directly.
+        // AIRPLANE
         binding.btnAirplane.visibility = View.VISIBLE
         binding.btnAirplane.setOnClickListener {
             val enable = !isAirplaneModeEnabled()
-            PrivilegedToggle.runRoot(
-                "cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}",
+            PrivilegedToggle.chain(
+                "airplane",
+                listOf(
+                    PrivilegedToggle.Attempt("Settings.Global AIRPLANE_MODE_ON + broadcast") {
+                        val written = PrivilegedToggle.writeGlobal(
+                            this, Settings.Global.AIRPLANE_MODE_ON, if (enable) 1 else 0
+                        )
+                        if (written) {
+                            // Writing the value alone does not flip the radios; the system only
+                            // reacts to this broadcast. On Android 11+ it is a protected broadcast
+                            // and throws SecurityException for non-system apps — logged, not fatal.
+                            runCatching {
+                                sendBroadcast(
+                                    Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+                                        .putExtra("state", enable)
+                                )
+                            }.onFailure {
+                                android.util.Log.w(PrivilegedToggle.TAG, "airplane broadcast refused: $it")
+                            }
+                        }
+                        written
+                    },
+                    PrivilegedToggle.root("cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}"),
+                    PrivilegedToggle.root("settings put global airplane_mode_on ${if (enable) 1 else 0}")
+                ),
                 { isAirplaneModeEnabled() == enable }
-            ) { changed ->
-                if (isFinishing || isDestroyed) return@runRoot
+            ) { winner ->
+                if (isFinishing || isDestroyed) return@chain
                 updateAllStates()
-                if (!changed) openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
+                if (winner == null) openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
             }
         }
 
@@ -387,6 +443,9 @@ class QuickSettingsActivity : AppCompatActivity() {
         setButtonState(binding.btnLocation, stateOf {
             getSystemService(LocationManager::class.java).isLocationEnabled
         }, dpToPx)
+
+        // Hotspot
+        setButtonState(binding.btnHotspot, stateOf { isHotspotEnabled() }, dpToPx)
 
         // Airplane
         setButtonState(binding.btnAirplane, stateOf {
@@ -509,9 +568,35 @@ class QuickSettingsActivity : AppCompatActivity() {
     }
 
     private fun toggleHotspot() {
-        // No stable API 29-34 state callback or shell command preserves the user's tether config.
-        openTetherSettings()
+        val enable = !isHotspotEnabled()
+        PrivilegedToggle.chain(
+            "hotspot",
+            listOf(
+                // Removed from the public SDK in API 26 and permission-gated (TETHER_PRIVILEGED)
+                // since then; tried anyway because some OEM builds still expose it.
+                PrivilegedToggle.Attempt("WifiManager.setWifiApEnabled (reflection)") {
+                    val method = wifiManager.javaClass.getMethod(
+                        "setWifiApEnabled",
+                        android.net.wifi.WifiConfiguration::class.java,
+                        Boolean::class.javaPrimitiveType
+                    )
+                    method.invoke(wifiManager, null, enable) as? Boolean ?: true
+                },
+                PrivilegedToggle.root("svc wifi ${if (enable) "enable" else "disable"}ap"),
+                PrivilegedToggle.root("cmd wifi ${if (enable) "start-softap" else "stop-softap"}")
+            ),
+            { isHotspotEnabled() == enable }
+        ) { winner ->
+            if (isFinishing || isDestroyed) return@chain
+            updateAllStates()
+            if (winner == null) openTetherSettings()
+        }
     }
+
+    private fun isHotspotEnabled(): Boolean = runCatching {
+        val method = wifiManager.javaClass.getMethod("isWifiApEnabled")
+        method.invoke(wifiManager) as? Boolean ?: false
+    }.getOrDefault(false)
 
     private fun openSettings(primary: String, fallback: String = Settings.ACTION_SETTINGS) {
         try {
@@ -525,20 +610,25 @@ class QuickSettingsActivity : AppCompatActivity() {
         try {
             val adapter = getSystemService(BluetoothManager::class.java).adapter ?: return
             val enable = !adapter.isEnabled
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-                @Suppress("DEPRECATION")
-                if (enable) adapter.enable() else adapter.disable()
-            } else {
-                PrivilegedToggle.runRoot(
-                    "cmd bluetooth_manager ${if (enable) "enable" else "disable"}",
-                    { adapter.isEnabled == enable }
-                ) { changed ->
-                    if (isFinishing || isDestroyed) return@runRoot
-                    updateAllStates()
-                    if (!changed) {
-                        if (enable) startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
-                        else openBluetoothSettings()
-                    }
+            PrivilegedToggle.chain(
+                "bluetooth",
+                listOf(
+                    // Public until API 32, hidden (but usually still present) on 33+.
+                    PrivilegedToggle.Attempt("BluetoothAdapter.${if (enable) "enable" else "disable"}") {
+                        val method = adapter.javaClass.getMethod(if (enable) "enable" else "disable")
+                        method.invoke(adapter) as? Boolean ?: true
+                    },
+                    PrivilegedToggle.root("cmd bluetooth_manager ${if (enable) "enable" else "disable"}"),
+                    PrivilegedToggle.root("svc bluetooth ${if (enable) "enable" else "disable"}")
+                ),
+                { adapter.isEnabled == enable }
+            ) { winner ->
+                if (isFinishing || isDestroyed) return@chain
+                updateAllStates()
+                if (winner == null) {
+                    // Small system dialog beats the full Settings app.
+                    if (enable) startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
+                    else openBluetoothSettings()
                 }
             }
         } catch (_: SecurityException) {
@@ -563,28 +653,30 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun toggleLocation() {
         val locationManager = getSystemService(LocationManager::class.java)
         val enable = !locationManager.isLocationEnabled
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R &&
-            ContextCompat.checkSelfPermission(this, "android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED
-        ) {
-            val changed = Settings.Secure.putInt(
-                contentResolver,
-                Settings.Secure.LOCATION_MODE,
-                if (enable) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
-            )
-            if (changed && locationManager.isLocationEnabled == enable) {
-                updateAllStates()
-                return
-            }
-        }
-        PrivilegedToggle.runRoot(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                "cmd location set-location-enabled $enable --user current"
-            else "settings put secure location_mode ${if (enable) 3 else 0}",
+        PrivilegedToggle.chain(
+            "location",
+            listOf(
+                // This is exactly what `adb shell settings put secure location_mode` does, and it
+                // keeps working on Android 12-16 as long as WRITE_SECURE_SETTINGS is granted.
+                // The old code gated this to API <= 30, so on newer phones it never even tried.
+                PrivilegedToggle.Attempt("Settings.Secure LOCATION_MODE") {
+                    PrivilegedToggle.writeSecure(
+                        this,
+                        Settings.Secure.LOCATION_MODE,
+                        if (enable) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
+                    )
+                },
+                PrivilegedToggle.root(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                        "cmd location set-location-enabled $enable --user current"
+                    else "settings put secure location_mode ${if (enable) 3 else 0}"
+                )
+            ),
             { locationManager.isLocationEnabled == enable }
-        ) { changed ->
-            if (isFinishing || isDestroyed) return@runRoot
+        ) { winner ->
+            if (isFinishing || isDestroyed) return@chain
             updateAllStates()
-            if (!changed) openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            if (winner == null) openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         }
     }
 }

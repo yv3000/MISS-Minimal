@@ -80,6 +80,7 @@ class AppPickerActivity : AppCompatActivity() {
                     }.start()
                 }.start()
             }
+            AppFont.applyToRow(holder.itemView)
         }
 
         override fun getItemCount() = apps.size

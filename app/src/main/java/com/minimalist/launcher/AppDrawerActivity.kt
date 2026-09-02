@@ -227,8 +227,7 @@ class AppDrawerActivity : AppCompatActivity() {
                     true
                 }
             }
-            val size = AppFont.get(holder.itemView.context)
-            AppFont.applyToAllTextViews(holder.itemView, size)
+            AppFont.applyToRow(holder.itemView)
         }
 
         override fun getItemCount() = items.size

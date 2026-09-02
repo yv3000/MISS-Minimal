@@ -6,10 +6,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center_horizontal">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tvSotValue"
@@ -33,19 +37,22 @@
             android:lineSpacingExtra="6dp"
             android:layout_marginBottom="32dp"/>
 
-        <TextView android:id="@+id/tvGithubLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://github.com/yv3000"
-            android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:fontFamily="@font/plus_jakarta_sans_medium"
-            android:background="@drawable/border_box"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="10dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:scrollbars="none">
 
+            <LinearLayout
+                android:id="@+id/layoutAppUsage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
     </LinearLayout>
 
     <TextView android:id="@+id/btnBack"
