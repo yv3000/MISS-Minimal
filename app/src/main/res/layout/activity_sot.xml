@@ -22,6 +22,7 @@
             android:text="0m"
             android:textColor="#ffffff"
             android:textSize="20sp"
+            android:tag="fixed_size"
             android:fontFamily="@font/plus_jakarta_sans_light"
             android:layout_marginBottom="16dp"/>
 
@@ -61,6 +62,7 @@
         android:text="BACK"
         android:textColor="#444444"
         android:textSize="10sp"
+        android:tag="fixed_size"
         android:fontFamily="@font/plus_jakarta_sans"
         android:layout_gravity="bottom|center_horizontal"
         android:padding="16dp"/>

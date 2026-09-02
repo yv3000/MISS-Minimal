@@ -173,18 +173,11 @@ class LauncherSettingsActivity : AppCompatActivity() {
     }
 
     private fun toggleAirplaneMode() {
+        // A bare Settings.Global.AIRPLANE_MODE_ON write does nothing useful: the radios only react
+        // to ACTION_AIRPLANE_MODE_CHANGED, which only the system may broadcast. So go straight to
+        // the slimmest surface the platform offers.
         if (Build.VERSION.SDK_INT >= 29) {
             startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
-        } else if (Settings.System.canWrite(this)) {
-            try {
-                val isOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-                Settings.Global.putInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, if (isOn) 0 else 1)
-                val intent = Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED).apply { putExtra("state", !isOn) }
-                sendBroadcast(intent)
-                updateAllStates()
-            } catch (e: Exception) {
-                startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
-            }
         } else {
             startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
         }

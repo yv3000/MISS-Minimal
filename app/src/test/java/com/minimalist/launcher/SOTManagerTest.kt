@@ -37,10 +37,10 @@ class SOTManagerTest {
         )
 
         val usage = SOTManager.computeAppUsage(0, 50, events, countAll)
-        assertEquals(10, usage["one"])   // 10..20
-        assertEquals(20, usage["two"])   // 20..40, late PAUSED of "one" must not cut it
+        assertEquals(10L, usage["one"]!!)   // 10..20
+        assertEquals(20L, usage["two"]!!)   // 20..40, late PAUSED of "one" must not cut it
         assertFalse(usage.containsKey("launcher"))
-        assertEquals(30, usage.values.sum())
+        assertEquals(30L, usage.values.sum())
     }
 
     @Test

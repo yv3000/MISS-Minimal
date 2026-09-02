@@ -37,10 +37,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gestureDetector: GestureDetector
     private lateinit var vibrator: Vibrator
 
+    private var sotTick = 0
+
     private val timeRunnable = object : Runnable {
         override fun run() {
             updateTime()
-            updateSOT()
+            // SOT needs a 48h usage-event query; once every 30s is plenty and keeps the
+            // clock tick cheap. It also runs off the main thread now.
+            if (sotTick % 30 == 0) updateSOT()
+            sotTick++
             handler.postDelayed(this, 1000)
         }
     }
@@ -222,15 +227,14 @@ class MainActivity : AppCompatActivity() {
             tvSot.text = "SOT unavailable (grant usage access)"
             return
         }
-        val sotMs = SOTManager.getScreenOnTimeToday(this)
-        val sotMins = sotMs / (1000 * 60)
-        val h = sotMins / 60
-        val m = sotMins % 60
-        if (h > 0) {
-            tvSot.text = "${h}h ${m}m screen time"
-        } else {
-            tvSot.text = "${m}m screen time"
-        }
+        Thread {
+            val sotMs = SOTManager.getScreenOnTimeToday(this)
+            val sotMins = sotMs / (1000 * 60)
+            val h = sotMins / 60
+            val m = sotMins % 60
+            val text = if (h > 0) "${h}h ${m}m screen time" else "${m}m screen time"
+            runOnUiThread { if (!isFinishing && !isDestroyed) tvSot.text = text }
+        }.start()
     }
 
     private fun setupClickListeners() {

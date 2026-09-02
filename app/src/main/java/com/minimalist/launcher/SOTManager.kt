@@ -115,20 +115,34 @@ object SOTManager {
     }
 
     /**
-     * ponytail: "has a launcher entry" is a cheap proxy for "app the user can actually open",
-     * which is how Digital Wellbeing decides what shows up in its chart. Ceiling: an app that
-     * hides its launcher icon (rare) drops out of the list. Upgrade path would be reading
-     * ApplicationInfo.category / FLAG_SYSTEM per package if that ever matters.
+     * ponytail: cached for [LAUNCHABLE_TTL_MS] because this is a PackageManager enumeration plus
+     * one binder call per installed app — far too expensive to redo on every SOT refresh.
+     * Ceiling: an app installed/removed in the last minute is misclassified for that minute.
+     * Upgrade path: invalidate from a PACKAGE_ADDED/REMOVED receiver.
      */
-    private fun launchablePackages(context: Context): Set<String> = runCatching {
-        val pm = context.packageManager
-        pm.getInstalledApplications(0)
-            .filter { pm.getLaunchIntentForPackage(it.packageName) != null }
-            .map { it.packageName }
-            .toSet()
-    }.getOrElse {
-        Log.w(TAG, "could not list launchable packages: ${it.message}")
-        emptySet()
+    @Volatile private var launchableCache: Set<String> = emptySet()
+    @Volatile private var launchableCachedAt = 0L
+    private const val LAUNCHABLE_TTL_MS = 60_000L
+
+    private fun launchablePackages(context: Context): Set<String> {
+        val now = System.currentTimeMillis()
+        val cached = launchableCache
+        if (cached.isNotEmpty() && now - launchableCachedAt < LAUNCHABLE_TTL_MS) return cached
+        val fresh = runCatching {
+            val pm = context.packageManager
+            pm.getInstalledApplications(0)
+                .filter { pm.getLaunchIntentForPackage(it.packageName) != null }
+                .map { it.packageName }
+                .toSet()
+        }.getOrElse {
+            Log.w(TAG, "could not list launchable packages: ${it.message}")
+            emptySet()
+        }
+        if (fresh.isNotEmpty()) {
+            launchableCache = fresh
+            launchableCachedAt = now
+        }
+        return fresh
     }
 
     internal fun isCountedPackage(

@@ -135,15 +135,11 @@ class QuickSettingsActivity : AppCompatActivity() {
         })
     }
 
-    override fun onTouchEvent(event: android.view.MotionEvent): Boolean {
-        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event)
-    }
-
     /**
-     * The panel's root is a ScrollView, which consumes every vertical gesture, so
-     * onTouchEvent above is never reached and swipe-up-to-close looked "broken".
-     * dispatchTouchEvent sees the whole gesture before any child does; we only observe it
-     * here (return value untouched) so scrolling and button taps keep working.
+     * The panel's root is a ScrollView, which consumes every vertical gesture, so an
+     * Activity.onTouchEvent override is never reached — that is why swipe-up-to-close looked
+     * "broken". dispatchTouchEvent sees the whole gesture before any child does; we only observe
+     * it here (return value untouched) so scrolling and button taps keep working.
      */
     override fun dispatchTouchEvent(ev: android.view.MotionEvent): Boolean {
         gestureDetector.onTouchEvent(ev)
@@ -204,13 +200,14 @@ class QuickSettingsActivity : AppCompatActivity() {
             PrivilegedToggle.chain(
                 "wifi",
                 listOf(
-                    // Still honoured on Android 9 and below (CHANGE_WIFI_STATE).
+                    // Still honoured on Android 9 and below (CHANGE_WIFI_STATE). On Q+ WifiService
+                    // requires the signature-level NETWORK_SETTINGS/NETWORK_STACK, so this returns
+                    // false and we fall through. Writing Settings.Global "wifi_on" is deliberately
+                    // NOT attempted: the write succeeds but WifiSettingsStore never reads it back,
+                    // so it changes nothing and corrupts the stored state after a reboot.
                     PrivilegedToggle.Attempt("WifiManager.setWifiEnabled") {
                         @Suppress("DEPRECATION")
                         wifiManager.setWifiEnabled(enable)
-                    },
-                    PrivilegedToggle.Attempt("Settings.Global wifi_on") {
-                        PrivilegedToggle.writeGlobal(this, "wifi_on", if (enable) 1 else 0)
                     },
                     PrivilegedToggle.root(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
@@ -239,16 +236,13 @@ class QuickSettingsActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val enable = !current
-            val subId = SubscriptionManager.getDefaultDataSubscriptionId()
             PrivilegedToggle.chain(
                 "data",
                 listOf(
-                    PrivilegedToggle.Attempt("Settings.Global mobile_data") {
-                        val value = if (enable) 1 else 0
-                        // Per-SIM key first, then the legacy single-SIM key.
-                        PrivilegedToggle.writeGlobal(this, "mobile_data$subId", value) or
-                            PrivilegedToggle.writeGlobal(this, "mobile_data", value)
-                    },
+                    // No third-party path exists: setDataEnabled needs MODIFY_PHONE_STATE
+                    // (signature|privileged, not adb-grantable). Writing Settings.Global
+                    // "mobile_data" is telephony's own persisted state, not a command, so it is
+                    // not attempted — it would only make the UI lie.
                     PrivilegedToggle.root(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                             "cmd phone data ${if (enable) "enable" else "disable"}"
@@ -345,33 +339,22 @@ class QuickSettingsActivity : AppCompatActivity() {
             PrivilegedToggle.chain(
                 "airplane",
                 listOf(
-                    PrivilegedToggle.Attempt("Settings.Global AIRPLANE_MODE_ON + broadcast") {
-                        val written = PrivilegedToggle.writeGlobal(
-                            this, Settings.Global.AIRPLANE_MODE_ON, if (enable) 1 else 0
-                        )
-                        if (written) {
-                            // Writing the value alone does not flip the radios; the system only
-                            // reacts to this broadcast. On Android 11+ it is a protected broadcast
-                            // and throws SecurityException for non-system apps — logged, not fatal.
-                            runCatching {
-                                sendBroadcast(
-                                    Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-                                        .putExtra("state", enable)
-                                )
-                            }.onFailure {
-                                android.util.Log.w(PrivilegedToggle.TAG, "airplane broadcast refused: $it")
-                            }
-                        }
-                        written
-                    },
-                    PrivilegedToggle.root("cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}"),
-                    PrivilegedToggle.root("settings put global airplane_mode_on ${if (enable) 1 else 0}")
+                    // Settings.Global.AIRPLANE_MODE_ON is writable with WRITE_SECURE_SETTINGS, but
+                    // the radios only react to Intent.ACTION_AIRPLANE_MODE_CHANGED, which is a
+                    // protected broadcast that only the system may send. A bare write would
+                    // therefore make the UI claim success while nothing changed, so it is not
+                    // attempted. Root is the only non-privileged path that really works.
+                    PrivilegedToggle.root("cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}")
                 ),
                 { isAirplaneModeEnabled() == enable }
             ) { winner ->
                 if (isFinishing || isDestroyed) return@chain
                 updateAllStates()
-                if (winner == null) openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
+                // Internet panel exposes airplane mode and is a slim sheet, not the Settings app.
+                if (winner == null) openSettings(
+                    Settings.Panel.ACTION_INTERNET_CONNECTIVITY,
+                    Settings.ACTION_AIRPLANE_MODE_SETTINGS
+                )
             }
         }
 
@@ -440,9 +423,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         }, dpToPx)
 
         // Location
-        setButtonState(binding.btnLocation, stateOf {
-            getSystemService(LocationManager::class.java).isLocationEnabled
-        }, dpToPx)
+        setButtonState(binding.btnLocation, stateOf { isLocationOn() }, dpToPx)
 
         // Hotspot
         setButtonState(binding.btnHotspot, stateOf { isHotspotEnabled() }, dpToPx)
@@ -650,9 +631,17 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun isAirplaneModeEnabled() =
         Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
 
+    /** LocationManager.isLocationEnabled is API 28; minSdk is 26, so fall back to LOCATION_MODE. */
+    private fun isLocationOn(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getSystemService(LocationManager::class.java).isLocationEnabled
+        } else {
+            Settings.Secure.getInt(contentResolver, Settings.Secure.LOCATION_MODE, 0) !=
+                Settings.Secure.LOCATION_MODE_OFF
+        }
+
     private fun toggleLocation() {
-        val locationManager = getSystemService(LocationManager::class.java)
-        val enable = !locationManager.isLocationEnabled
+        val enable = !isLocationOn()
         PrivilegedToggle.chain(
             "location",
             listOf(
@@ -672,7 +661,7 @@ class QuickSettingsActivity : AppCompatActivity() {
                     else "settings put secure location_mode ${if (enable) 3 else 0}"
                 )
             ),
-            { locationManager.isLocationEnabled == enable }
+            { isLocationOn() == enable }
         ) { winner ->
             if (isFinishing || isDestroyed) return@chain
             updateAllStates()

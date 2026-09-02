@@ -41,7 +41,7 @@ class SotActivity : AppCompatActivity() {
             val rows = usage.mapNotNull { (pkg, ms) ->
                 SOTManager.labelFor(packageManager, pkg)?.let { it to ms }
             }
-            val total = usage.values.sum()
+            val total = rows.sumOf { it.second }
             runOnUiThread {
                 if (generation != refreshGeneration || !UsageAccess.isGranted(this)) return@runOnUiThread
                 value.text = SOTManager.format(total)
