@@ -101,10 +101,10 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         AppFont.applyToActivity(this)
         
-        // AUTO-RETURN TO POMODORO IF ACTIVE
-        if (PomodoroManager.isActive) {
+        // AUTO-RETURN TO POMODORO OR STRICT MODE IF ACTIVE
+        if (PomodoroManager.isActive || StrictModeManager.isActive()) {
             val intent = Intent(this, FocusActivity::class.java)
-            intent.putExtra("tab", "pomodoro")
+            intent.putExtra("tab", if (PomodoroManager.isActive) "pomodoro" else "strict")
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             return

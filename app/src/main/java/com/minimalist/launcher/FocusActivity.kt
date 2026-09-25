@@ -38,6 +38,7 @@ import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.NumberPicker
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -62,6 +63,10 @@ class FocusActivity : AppCompatActivity() {
 
   private var strictRemainingSeconds = 0
   private var strictCountdownRunnable: Runnable? = null
+
+  private lateinit var scrollTimer: ScrollView
+  private lateinit var scrollStrict: ScrollView
+  private lateinit var scrollPomodoroSetup: ScrollView
 
   private lateinit var tabStopwatch: TextView
   private lateinit var tabTimer: TextView
@@ -240,6 +245,7 @@ class FocusActivity : AppCompatActivity() {
 
       override fun onFling(e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
         if (e1 == null) return false
+        if (StrictModeManager.isActive() || PomodoroManager.isActive) return false
         val diffX = e2.x - e1.x
         val diffY = e2.y - e1.y
         if (abs(diffX) > abs(diffY) && abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
@@ -271,9 +277,9 @@ class FocusActivity : AppCompatActivity() {
   private fun selectStrictTab() {
     updateTabUI(tabStrict)
 
-    panelStrict.visibility = View.VISIBLE
+    scrollStrict.visibility = View.VISIBLE
     panelStopwatch.visibility = View.GONE
-    panelTimer.visibility = View.GONE
+    scrollTimer.visibility = View.GONE
     panelPomodoro.visibility = View.GONE
   }
 
@@ -339,8 +345,8 @@ class FocusActivity : AppCompatActivity() {
     tabPomodoro.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
 
     panelStopwatch.visibility = View.GONE
-    panelTimer.visibility = View.GONE
-    panelStrict.visibility = View.GONE
+    scrollTimer.visibility = View.GONE
+    scrollStrict.visibility = View.GONE
     panelPomodoro.visibility = View.GONE
 
     when (tab) {
@@ -352,12 +358,12 @@ class FocusActivity : AppCompatActivity() {
       "timer" -> {
         currentTabIndex = 1
         updateTabUI(tabTimer)
-        panelTimer.visibility = View.VISIBLE
+        scrollTimer.visibility = View.VISIBLE
       }
       "strict" -> {
         currentTabIndex = 2
         updateTabUI(tabStrict)
-        panelStrict.visibility = View.VISIBLE
+        scrollStrict.visibility = View.VISIBLE
       }
       "pomodoro" -> {
         currentTabIndex = 3
@@ -427,6 +433,9 @@ class FocusActivity : AppCompatActivity() {
     tabIndicator = findViewById(R.id.tabIndicator)
 
     panelPomodoro = findViewById(R.id.panelPomodoro)
+    scrollTimer = findViewById(R.id.scrollTimer)
+    scrollStrict = findViewById(R.id.scrollStrict)
+    scrollPomodoroSetup = findViewById(R.id.scrollPomodoroSetup)
     pom_layoutSetup = findViewById(R.id.pom_layoutSetup)
     pom_layoutActive = findViewById(R.id.pom_layoutActive)
     pom_btnDur25 = findViewById(R.id.pom_btnDur25)
@@ -454,6 +463,7 @@ class FocusActivity : AppCompatActivity() {
 
   private fun setupTabs() {
     fun resolveTab(tab: Int) {
+      if (StrictModeManager.isActive() || PomodoroManager.isActive) return
       when (tab) {
         0 -> selectTab("stopwatch")
         1 -> selectTab("timer")
@@ -1088,7 +1098,7 @@ class FocusActivity : AppCompatActivity() {
 
   private fun showPomSetupScreen() {
     TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
-    pom_layoutSetup.visibility = View.VISIBLE
+    scrollPomodoroSetup.visibility = View.VISIBLE
     pom_layoutActive.visibility = View.GONE
     findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
     tabIndicator.visibility = View.VISIBLE
@@ -1096,7 +1106,7 @@ class FocusActivity : AppCompatActivity() {
 
   private fun showPomActiveScreen() {
     TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
-    pom_layoutSetup.visibility = View.GONE
+    scrollPomodoroSetup.visibility = View.GONE
     pom_layoutActive.visibility = View.VISIBLE
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE

@@ -86,14 +86,7 @@ class PermissionOnboardingActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
 
-        findViewById<TextView>(R.id.tvAdbCommand).text = PrivilegedToggle.ADB_GRANT_COMMAND
-        findViewById<View>(R.id.btnCopyAdbCommand).setOnClickListener {
-            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText("adb command", PrivilegedToggle.ADB_GRANT_COMMAND)
-            )
-            Toast.makeText(this, "Command copied — run it from a PC, then come back", Toast.LENGTH_LONG).show()
-        }
+
 
         btnContinue.setOnClickListener {
             val prefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
@@ -110,13 +103,7 @@ class PermissionOnboardingActivity : AppCompatActivity() {
         updateRow(rowBattery, R.id.btnAllowBattery, R.id.tvStatusBattery, isBatteryOptimizationIgnored())
         updateRow(rowNotificationListener, R.id.btnAllowNotifListener, R.id.tvStatusNotifListener, isNotificationListenerGranted())
 
-        // Optional row: adb-only permission, detected on every resume so the user sees the tick
-        // as soon as they run the command. Never blocks CONTINUE.
-        val secureGranted = PrivilegedToggle.hasSecureSettings(this)
-        findViewById<TextView>(R.id.tvStatusSecureSettings).visibility =
-            if (secureGranted) View.VISIBLE else View.GONE
-        findViewById<View>(R.id.tvAdbCommand).visibility = if (secureGranted) View.GONE else View.VISIBLE
-        findViewById<View>(R.id.btnCopyAdbCommand).visibility = if (secureGranted) View.GONE else View.VISIBLE
+
 
         val allGranted = isAccessibilityServiceEnabled() &&
                 isUsageStatsGranted() &&

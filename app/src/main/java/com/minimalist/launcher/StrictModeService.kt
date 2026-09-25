@@ -55,6 +55,8 @@ class StrictModeService : AccessibilityService() {
             // Android 10-11 expose no public notification-shade dismiss action.
             performGlobalAction(GLOBAL_ACTION_BACK)
         }
+        @Suppress("DEPRECATION")
+        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
     }
 
     private fun syncOverlay(shouldBlock: Boolean) {
@@ -113,6 +115,7 @@ class StrictModeService : AccessibilityService() {
             
             // If the event itself is from a non-allowed source, kill it
             if (!allowed.contains(eventPkg) && !isSystemUi(eventPkg)) {
+                performGlobalAction(GLOBAL_ACTION_HOME)
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 
                 // Bring FocusActivity back to front
@@ -136,9 +139,25 @@ class StrictModeService : AccessibilityService() {
         }
 
         if (StrictModeManager.isActive()) {
-            val blockedPkgs = StrictModeManager.getBlockedPackages()
-            if (blockedPkgs.isNotEmpty() && blockedPkgs.contains(eventPkg)) {
+            if (!isSystemUi(eventPkg) && eventPkg != packageName) {
                 performGlobalAction(GLOBAL_ACTION_HOME)
+                performGlobalAction(GLOBAL_ACTION_BACK)
+                
+                handler.postDelayed({
+                    try {
+                        val intent = Intent(this, FocusActivity::class.java).apply {
+                            addFlags(
+                                Intent.FLAG_ACTIVITY_NEW_TASK or
+                                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
+                                Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            )
+                            putExtra("tab", "strict")
+                        }
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        performGlobalAction(GLOBAL_ACTION_HOME)
+                    }
+                }, 50)
             }
         }
     }

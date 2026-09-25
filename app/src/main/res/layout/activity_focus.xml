@@ -195,16 +195,17 @@
 
   <!-- TIMER PANEL -->
   <ScrollView
+    android:id="@+id/scrollTimer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:visibility="gone">
   <LinearLayout
     android:id="@+id/panelTimer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center"
-    android:visibility="gone">
+    android:gravity="center">
 
     <!-- Picker row — shown before start -->
     <LinearLayout
@@ -343,17 +344,18 @@
 
   <!-- STRICT MODE PANEL -->
   <ScrollView
+    android:id="@+id/scrollStrict"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:visibility="gone">
   <LinearLayout
     android:id="@+id/panelStrict"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp"
-    android:visibility="gone">
+    android:padding="32dp">
 
     <!-- Warning box — always shown -->
     <LinearLayout
@@ -500,6 +502,7 @@
 
     <!-- SETUP SCREEN -->
     <ScrollView
+        android:id="@+id/scrollPomodoroSetup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -510,7 +513,6 @@
         android:orientation="vertical"
         android:padding="24dp"
         android:gravity="center"
-        android:visibility="visible"
         android:animateLayoutChanges="true">
 
         <TextView

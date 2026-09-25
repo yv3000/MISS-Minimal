@@ -326,72 +326,7 @@
             </LinearLayout>
             <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#1a1a1a"/>
 
-            <!-- Step 6: Direct connectivity toggles (optional, adb only) -->
-            <LinearLayout
-                android:id="@+id/rowSecureSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingVertical="16dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Direct toggles (optional)"
-                            android:textColor="#FFFFFF"
-                            android:textStyle="bold"
-                            android:textSize="16sp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lets Location / Airplane / Data switch inside the launcher, without opening Settings"
-                            android:textColor="#666666"
-                            android:textSize="12sp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/tvStatusSecureSettings"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✓ Granted"
-                        android:visibility="gone"
-                        android:textColor="#4CAF50"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvAdbCommand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/border_box"
-                    android:fontFamily="monospace"
-                    android:padding="12dp"
-                    android:textColor="#999999"
-                    android:textIsSelectable="true"
-                    android:textSize="11sp"/>
-
-                <Button
-                    android:id="@+id/btnCopyAdbCommand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/btn_border"
-                    android:gravity="center"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
-                    android:text="Copy command"/>
-            </LinearLayout>
-            <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#1a1a1a"/>
 
         </LinearLayout>
     </ScrollView>

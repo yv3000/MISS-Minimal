@@ -84,7 +84,7 @@ class TopBarBlockerService : Service() {
     private fun addTopOverlay(type: Int, statusBarH: Int) {
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            statusBarH + dpToPx(16),
+            statusBarH * 4,
             0, 0, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
