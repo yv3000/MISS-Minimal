@@ -4,6 +4,7 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.UserManager
 import android.util.Log
 import java.util.Calendar
 
@@ -21,27 +22,35 @@ object SOTManager {
     /**
      * Per-package foreground time for today, in ms, descending by duration.
      *
-     * Attribution matches Digital Wellbeing's convention: only the *top* activity's package
-     * earns time, the screen must be interactive, and the launcher / systemui / packages with no
-     * launcher entry are excluded. Total screen time is the sum of this map, so the headline
-     * number and the list can never disagree.
+     * Estimates time for the latest resumed activity while interactive and not keyguard-locked.
+     * The existing launcher/system/launchable-package filter is applied to that time.
      */
     fun getTodayAppUsage(context: Context): Map<String, Long> {
+        check(UsageAccess.isGranted(context)) { "Usage access is unavailable" }
+        check(context.getSystemService(UserManager::class.java)?.isUserUnlocked == true) {
+            "Usage history is unavailable before user unlock"
+        }
         val start = startOfToday()
         val end = System.currentTimeMillis()
         val manager = context.getSystemService(UsageStatsManager::class.java)
-            ?: return emptyMap()
+            ?: error("Usage stats service is unavailable")
 
         // Look one day back so an app that was already in the foreground at midnight is seeded.
         val cursor = manager.queryEvents(start - DAY_MS, end)
+            ?: error("Usage history is unavailable")
+        // Android can also hide service failures behind an empty event cursor.
+        check(cursor.hasNextEvent()) { "No usage history is available" }
         val events = mutableListOf<TimedEvent>()
         val event = UsageEvents.Event()
         while (cursor.hasNextEvent()) {
-            cursor.getNextEvent(event)
+            check(cursor.getNextEvent(event)) { "Could not read usage event" }
             if (event.eventType in TRACKED_TYPES) {
-                events += TimedEvent(event.timeStamp, event.eventType, event.packageName.orEmpty())
+                events += TimedEvent(
+                    event.timeStamp, event.eventType, event.packageName.orEmpty(), event.className
+                )
             }
         }
+        check(UsageAccess.isGranted(context)) { "Usage access is unavailable" }
 
         val launchable = launchablePackages(context)
         val usage = computeAppUsage(start, end, events) { pkg ->
@@ -68,15 +77,17 @@ object SOTManager {
         counted: (String) -> Boolean
     ): Map<String, Long> {
         val totals = mutableMapOf<String, Long>()
-        var top: String? = null
-        var interactive = true
+        var top: TimedEvent? = null
+        // API 26/27 have no screen events: unknown falls back to activity lifecycle events.
+        var interactive: Boolean? = null
+        var locked = false
         var cursor = start
 
         fun credit(until: Long) {
             val from = maxOf(cursor, start)
             val to = minOf(until, end)
-            if (to <= from || !interactive) return
-            val pkg = top ?: return
+            if (to <= from || interactive == false || locked) return
+            val pkg = top?.packageName ?: return
             if (!counted(pkg)) return
             totals[pkg] = (totals[pkg] ?: 0L) + (to - from)
         }
@@ -86,25 +97,32 @@ object SOTManager {
             .sortedBy(TimedEvent::timestamp)
             .forEach { item ->
                 if (item.timestamp > start) {
-                    credit(item.timestamp)
+                    // A startup without a shutdown leaves the previous interval's end unknown.
+                    if (item.type != UsageEvents.Event.DEVICE_STARTUP) credit(item.timestamp)
                     cursor = minOf(item.timestamp, end)
                 }
                 when (item.type) {
                     UsageEvents.Event.ACTIVITY_RESUMED -> {
-                        top = item.packageName
-                        interactive = true
+                        top = item
                     }
                     UsageEvents.Event.ACTIVITY_PAUSED,
                     UsageEvents.Event.ACTIVITY_STOPPED -> {
-                        // Only the app that is actually on top can end the interval; a late PAUSED
-                        // from the previous app must not cancel the app that just resumed.
-                        if (item.packageName == top) top = null
+                        // A late close from another activity in the same package is not ours.
+                        if (item.packageName == top?.packageName && item.className == top?.className) {
+                            top = null
+                        }
                     }
                     UsageEvents.Event.SCREEN_INTERACTIVE -> interactive = true
                     UsageEvents.Event.SCREEN_NON_INTERACTIVE -> interactive = false
-                    UsageEvents.Event.DEVICE_SHUTDOWN,
-                    UsageEvents.Event.DEVICE_STARTUP -> {
+                    UsageEvents.Event.KEYGUARD_SHOWN -> locked = true
+                    UsageEvents.Event.KEYGUARD_HIDDEN -> locked = false
+                    UsageEvents.Event.DEVICE_SHUTDOWN -> {
                         interactive = false
+                        top = null
+                    }
+                    UsageEvents.Event.DEVICE_STARTUP -> {
+                        interactive = null
+                        locked = false
                         top = null
                     }
                 }
@@ -162,14 +180,15 @@ object SOTManager {
         return if (minutes >= 60) "${minutes / 60}h ${minutes % 60}m" else "${minutes}m"
     }
 
-    fun labelFor(pm: PackageManager, packageName: String): String? = runCatching {
+    fun labelFor(pm: PackageManager, packageName: String): String = runCatching {
         pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString()
-    }.getOrNull()
+    }.getOrNull()?.takeIf { it.isNotBlank() } ?: packageName
 
     internal data class TimedEvent(
         val timestamp: Long,
         val type: Int,
-        val packageName: String
+        val packageName: String,
+        val className: String? = null
     )
 
     private const val DAY_MS = 24 * 60 * 60 * 1000L
@@ -180,6 +199,8 @@ object SOTManager {
         UsageEvents.Event.ACTIVITY_STOPPED,
         UsageEvents.Event.SCREEN_INTERACTIVE,
         UsageEvents.Event.SCREEN_NON_INTERACTIVE,
+        UsageEvents.Event.KEYGUARD_SHOWN,
+        UsageEvents.Event.KEYGUARD_HIDDEN,
         UsageEvents.Event.DEVICE_SHUTDOWN,
         UsageEvents.Event.DEVICE_STARTUP
     )

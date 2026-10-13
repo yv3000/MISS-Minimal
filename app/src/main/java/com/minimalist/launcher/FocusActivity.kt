@@ -7,6 +7,9 @@
  */
 package com.minimalist.launcher
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import android.animation.ValueAnimator
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.app.AlertDialog
@@ -39,6 +42,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.ScrollView
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,6 +87,12 @@ class FocusActivity : AppCompatActivity() {
   private lateinit var btnStartAgain: TextView
   private lateinit var btnExitStrict: TextView
   private lateinit var btnEnableStrict: TextView
+  private var strictDurationMins: Int = 15
+  private var tvStrictDesc: TextView? = null
+  private var btnStrictMinus: TextView? = null
+  private var btnStrictPlus: TextView? = null
+  private var tvStrictDurationVal: TextView? = null
+  private var seekStrictDuration: SeekBar? = null
 
   // Pomodoro Fields
   private var selectedDurationMins = 25
@@ -95,6 +105,18 @@ class FocusActivity : AppCompatActivity() {
       result.data?.data?.let(::handlePomContactResult)
         ?: Toast.makeText(this, "Unable to read selected contact", Toast.LENGTH_SHORT).show()
     }
+  }
+
+  private var pendingCallNumber: String? = null
+  private val callPermissionLauncher = registerForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { isGranted ->
+    if (isGranted) {
+      pendingCallNumber?.let { makeDirectCall(it) }
+    } else {
+      Toast.makeText(this, "Call permission required for direct emergency calls", Toast.LENGTH_SHORT).show()
+    }
+    pendingCallNumber = null
   }
 
   private lateinit var panelPomodoro: FrameLayout
@@ -369,6 +391,11 @@ class FocusActivity : AppCompatActivity() {
         currentTabIndex = 3
         updateTabUI(tabPomodoro)
         panelPomodoro.visibility = View.VISIBLE
+        if (PomodoroManager.isActive) {
+          showPomActiveScreen()
+        } else {
+          showPomSetupScreen()
+        }
       }
     }
     savePersistedTab(tab)
@@ -429,6 +456,11 @@ class FocusActivity : AppCompatActivity() {
     btnStartAgain = findViewById(R.id.btnStartAgain)
     btnExitStrict = findViewById(R.id.btnExitStrict)
     btnEnableStrict = findViewById(R.id.btnEnableStrict)
+    tvStrictDesc = findViewById(R.id.tvStrictDesc)
+    btnStrictMinus = findViewById(R.id.btnStrictMinus)
+    btnStrictPlus = findViewById(R.id.btnStrictPlus)
+    tvStrictDurationVal = findViewById(R.id.tvStrictDurationVal)
+    seekStrictDuration = findViewById(R.id.seekStrictDuration)
 
     tabIndicator = findViewById(R.id.tabIndicator)
 
@@ -493,7 +525,11 @@ class FocusActivity : AppCompatActivity() {
     listOf(tabStopwatch, tabTimer, tabStrict, tabPomodoro).forEach { it.addPressEffect() }
   }
 
+  private var stopwatchRunnable: Runnable? = null
+  private var timerRunnable: Runnable? = null
+
   private fun setupStopwatch() {
+    FocusTimerManager.init(this)
     val btnStart = findViewById<TextView>(R.id.btnSwStart)
     val btnPause = findViewById<TextView>(R.id.btnSwPause)
     val btnStop = findViewById<TextView>(R.id.btnSwStop)
@@ -502,43 +538,63 @@ class FocusActivity : AppCompatActivity() {
     val btnFlag = findViewById<TextView>(R.id.btnSwFlag)
     val scrollTimestamps = findViewById<View>(R.id.scrollTimestamps)
     val tvTimestamps = findViewById<TextView>(R.id.tvTimestamps)
-    val timestamps = mutableListOf<String>()
+
+    // Restore state from FocusTimerManager
+    if (FocusTimerManager.swRunning) {
+      btnStart.visibility = View.GONE
+      btnStop.visibility = View.VISIBLE
+      scrollTimestamps.visibility = View.VISIBLE
+      tvTimestamps.text = FocusTimerManager.swLaps.joinToString("\n")
+      val elapsed = FocusTimerManager.getStopwatchElapsedSeconds()
+      tvStopwatch.text = "%02d:%02d".format(elapsed / 60, elapsed % 60)
+      if (FocusTimerManager.swPaused) {
+        btnPause.visibility = View.GONE
+        btnResume.visibility = View.VISIBLE
+        btnFlag.visibility = View.GONE
+      } else {
+        btnPause.visibility = View.VISIBLE
+        btnResume.visibility = View.GONE
+        btnFlag.visibility = View.VISIBLE
+        runStopwatch()
+      }
+    }
 
     btnStart.setOnClickListener {
-      swRunning = true; swPaused = false
+      FocusTimerManager.startStopwatch(this)
       btnStart.visibility = View.GONE
       btnPause.visibility = View.VISIBLE
       btnStop.visibility = View.VISIBLE
       btnFlag.visibility = View.VISIBLE
       scrollTimestamps.visibility = View.VISIBLE
+      tvTimestamps.text = ""
       runStopwatch()
     }
     listOf(btnStart, btnPause, btnStop, btnResume, btnFlag).forEach { it.addPressEffect() }
     btnPause.setOnClickListener {
-      swPaused = true
-      handler.removeCallbacksAndMessages(null)
+      FocusTimerManager.pauseStopwatch(this)
+      stopwatchRunnable?.let { handler.removeCallbacks(it) }
       btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE
       btnFlag.visibility = View.GONE
+      val elapsed = FocusTimerManager.getStopwatchElapsedSeconds()
+      tvStopwatch.text = "%02d:%02d".format(elapsed / 60, elapsed % 60)
     }
     btnResume.setOnClickListener {
-      swPaused = false
+      FocusTimerManager.resumeStopwatch(this)
       btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE
       btnFlag.visibility = View.VISIBLE
       runStopwatch()
     }
     btnFlag.setOnClickListener {
-      val m = swSeconds / 60; val s = swSeconds % 60
+      val elapsed = FocusTimerManager.getStopwatchElapsedSeconds()
+      val m = elapsed / 60; val s = elapsed % 60
       val ts = "%02d:%02d".format(m, s)
-      timestamps.add(ts)
-      tvTimestamps.text = timestamps.joinToString("\n")
+      FocusTimerManager.addStopwatchLap(this, ts)
+      tvTimestamps.text = FocusTimerManager.swLaps.joinToString("\n")
     }
     btnStop.setOnClickListener {
-      handler.removeCallbacksAndMessages(null)
-      swRunning = false; swPaused = false
-      val elapsedSeconds = swSeconds
-      swSeconds = 0
+      stopwatchRunnable?.let { handler.removeCallbacks(it) }
+      val elapsedSeconds = FocusTimerManager.stopStopwatch(this)
       tvStopwatch.text = "00:00"
-      timestamps.clear()
       tvTimestamps.text = ""
       btnStart.visibility = View.VISIBLE; btnPause.visibility = View.GONE
       btnStop.visibility = View.GONE; btnResume.visibility = View.GONE
@@ -546,22 +602,24 @@ class FocusActivity : AppCompatActivity() {
       scrollTimestamps.visibility = View.GONE
       SotActivity.saveModeSession(this, "stopwatch", elapsedSeconds / 60)
     }
-
   }
 
   private fun runStopwatch() {
-    handler.post(object : Runnable {
+    stopwatchRunnable?.let { handler.removeCallbacks(it) }
+    stopwatchRunnable = object : Runnable {
       override fun run() {
-        if (!swRunning || swPaused) return
-        swSeconds++
-        val m = swSeconds / 60; val s = swSeconds % 60
+        if (!FocusTimerManager.swRunning || FocusTimerManager.swPaused) return
+        val elapsed = FocusTimerManager.getStopwatchElapsedSeconds()
+        val m = elapsed / 60; val s = elapsed % 60
         tvStopwatch.text = "%02d:%02d".format(m, s)
         handler.postDelayed(this, 1000)
       }
-    })
+    }
+    handler.post(stopwatchRunnable!!)
   }
 
   private fun setupTimer() {
+    FocusTimerManager.init(this)
     val hPicker = findViewById<NumberPicker>(R.id.pickerHours)
     val mPicker = findViewById<NumberPicker>(R.id.pickerMinutes)
     val sPicker = findViewById<NumberPicker>(R.id.pickerSeconds)
@@ -579,53 +637,98 @@ class FocusActivity : AppCompatActivity() {
     val tvCountdown = findViewById<TextView>(R.id.tvTimerCountdown)
     val tvUp = findViewById<TextView>(R.id.tvTimeUp)
 
+    // Restore Timer from FocusTimerManager
+    if (FocusTimerManager.timerRunning) {
+      val remaining = FocusTimerManager.getTimerRemainingSeconds()
+      if (remaining <= 0) {
+        layoutPickers.visibility = View.GONE; tvCountdown.visibility = View.GONE
+        tvUp.visibility = View.VISIBLE; btnStart.visibility = View.GONE
+        btnPause.visibility = View.GONE; btnStop.visibility = View.GONE
+        btnResume.visibility = View.GONE; btnReset.visibility = View.VISIBLE
+      } else {
+        layoutPickers.visibility = View.GONE; tvCountdown.visibility = View.VISIBLE; tvUp.visibility = View.GONE
+        btnStart.visibility = View.GONE; btnStop.visibility = View.VISIBLE
+        val h = remaining / 3600; val m = (remaining % 3600) / 60; val s = remaining % 60
+        tvCountdown.text = "%02d:%02d:%02d".format(h, m, s)
+        if (FocusTimerManager.timerPaused) {
+          btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE
+        } else {
+          btnPause.visibility = View.VISIBLE; btnResume.visibility = View.GONE
+          runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset)
+        }
+      }
+    }
+
     btnStart.setOnClickListener {
       val total = hPicker.value * 3600 + mPicker.value * 60 + sPicker.value
       if (total <= 0) {
         Toast.makeText(this, "Set a time first", Toast.LENGTH_SHORT).show()
         return@setOnClickListener
       }
-      timerRemaining = total; timerRunning = true; timerPaused = false
-      layoutPickers.visibility = View.GONE; tvCountdown.visibility = View.VISIBLE
+      FocusTimerManager.startTimer(this, total)
+      layoutPickers.visibility = View.GONE; tvCountdown.visibility = View.VISIBLE; tvUp.visibility = View.GONE
       btnStart.visibility = View.GONE; btnPause.visibility = View.VISIBLE; btnStop.visibility = View.VISIBLE
+      val h = total / 3600; val m = (total % 3600) / 60; val s = total % 60
+      tvCountdown.text = "%02d:%02d:%02d".format(h, m, s)
       runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset)
     }
 
-    btnPause.setOnClickListener { timerPaused = true; btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE }
-    btnResume.setOnClickListener { timerPaused = false; btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE; runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset) }
-    btnStop.setOnClickListener { resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker) }
-    btnReset.setOnClickListener { resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker) }
+    btnPause.setOnClickListener {
+      FocusTimerManager.pauseTimer(this)
+      timerRunnable?.let { handler.removeCallbacks(it) }
+      btnPause.visibility = View.GONE; btnResume.visibility = View.VISIBLE
+      val remaining = FocusTimerManager.getTimerRemainingSeconds()
+      val h = remaining / 3600; val m = (remaining % 3600) / 60; val s = remaining % 60
+      tvCountdown.text = "%02d:%02d:%02d".format(h, m, s)
+    }
+    btnResume.setOnClickListener {
+      FocusTimerManager.resumeTimer(this)
+      btnResume.visibility = View.GONE; btnPause.visibility = View.VISIBLE
+      runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset)
+    }
+    btnStop.setOnClickListener {
+      timerRunnable?.let { handler.removeCallbacks(it) }
+      FocusTimerManager.resetTimer(this)
+      resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker)
+    }
+    btnReset.setOnClickListener {
+      timerRunnable?.let { handler.removeCallbacks(it) }
+      FocusTimerManager.resetTimer(this)
+      resetTimer(layoutPickers, tvCountdown, tvUp, btnStart, btnPause, btnStop, btnResume, btnReset, hPicker, mPicker, sPicker)
+    }
   }
 
   private fun runTimer(tv: TextView, up: TextView, pause: View, stop: View, reset: View) {
-    handler.post(object : Runnable {
+    timerRunnable?.let { handler.removeCallbacks(it) }
+    timerRunnable = object : Runnable {
       override fun run() {
-        if (!timerRunning || timerPaused) return
-        if (timerRemaining <= 0) {
-          timerRunning = false; up.visibility = View.VISIBLE; pause.visibility = View.GONE; stop.visibility = View.GONE; reset.visibility = View.VISIBLE
+        if (!FocusTimerManager.timerRunning || FocusTimerManager.timerPaused) return
+        val remaining = FocusTimerManager.getTimerRemainingSeconds()
+        if (remaining <= 0) {
+          FocusTimerManager.resetTimer(this@FocusActivity)
+          up.visibility = View.VISIBLE; tv.visibility = View.GONE
+          pause.visibility = View.GONE; stop.visibility = View.GONE; reset.visibility = View.VISIBLE
           val pattern = longArrayOf(0, 300, 200, 300, 200, 300, 200)
           if (Build.VERSION.SDK_INT >= 26) vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
           else @Suppress("DEPRECATION") vibrator.vibrate(pattern, -1)
-          val hPicker = findViewById<NumberPicker>(R.id.pickerHours)
-          val mPicker = findViewById<NumberPicker>(R.id.pickerMinutes)
-          val sPicker = findViewById<NumberPicker>(R.id.pickerSeconds)
-          val totalMins = (hPicker.value * 3600 + mPicker.value * 60 + sPicker.value) / 60
-          SotActivity.saveModeSession(this@FocusActivity, "timer", totalMins)
+          SotActivity.saveModeSession(this@FocusActivity, "timer", FocusTimerManager.timerTotalSeconds / 60)
           return
         }
-        val h = timerRemaining / 3600; val m = (timerRemaining % 3600) / 60; val s = timerRemaining % 60
+        val h = remaining / 3600; val m = (remaining % 3600) / 60; val s = remaining % 60
         tv.text = "%02d:%02d:%02d".format(h, m, s)
-        timerRemaining--; handler.postDelayed(this, 1000)
+        handler.postDelayed(this, 1000)
       }
-    })
+    }
+    handler.post(timerRunnable!!)
   }
 
   private fun resetTimer(lp: View, tv: View, up: View, start: View, pause: View, stop: View, resume: View, reset: View, hp: NumberPicker, mp: NumberPicker, sp: NumberPicker) {
-    timerRunning = false; timerPaused = false; timerRemaining = 0
+    FocusTimerManager.resetTimer(this)
     lp.visibility = View.VISIBLE; tv.visibility = View.GONE; up.visibility = View.GONE
     start.visibility = View.VISIBLE; pause.visibility = View.GONE; stop.visibility = View.GONE; resume.visibility = View.GONE; reset.visibility = View.GONE
     hp.value = 0; mp.value = 0; sp.value = 0
   }
+
 
   private fun styleNumberPicker(p: NumberPicker) {
     try {
@@ -667,12 +770,30 @@ class FocusActivity : AppCompatActivity() {
     AppFont.applyToActivity(this)
     if (!portraitUiInitialized) return
     
+    if (FocusTimerManager.swRunning && !FocusTimerManager.swPaused) {
+      runStopwatch()
+    }
+    if (FocusTimerManager.timerRunning && !FocusTimerManager.timerPaused) {
+      val tvCountdown = findViewById<TextView>(R.id.tvTimerCountdown)
+      val tvUp = findViewById<TextView>(R.id.tvTimeUp)
+      val btnPause = findViewById<TextView>(R.id.btnTimerPause)
+      val btnStop = findViewById<TextView>(R.id.btnTimerStop)
+      val btnReset = findViewById<TextView>(R.id.btnTimerReset)
+      runTimer(tvCountdown, tvUp, btnPause, btnStop, btnReset)
+    }
+    
     val navPrefs = getSharedPreferences("strict_nav", MODE_PRIVATE)
     val proceed = navPrefs.getBoolean("proceed", false)
+    val proceedTarget = navPrefs.getString("proceed_target", "strict")
     if (proceed) {
-      navPrefs.edit().remove("proceed").apply()
-      selectTab("strict")
-      startStrictMode()
+      navPrefs.edit().remove("proceed").remove("proceed_target").apply()
+      if (proceedTarget == "pomodoro") {
+        selectTab("pomodoro")
+        startPomodoro()
+      } else {
+        selectTab("strict")
+        startStrictMode()
+      }
       return
     }
 
@@ -712,6 +833,7 @@ class FocusActivity : AppCompatActivity() {
     }
 
     // Pomodoro restoration
+    PomodoroManager.restoreFromPrefs(this)
     val filter = IntentFilter().apply {
       addAction(PomodoroTimerService.BROADCAST_TICK)
       addAction(PomodoroTimerService.BROADCAST_PHASE_CHANGE)
@@ -730,6 +852,7 @@ class FocusActivity : AppCompatActivity() {
       selectedApps.addAll(PomodoroManager.userSelectedApps)
       emergencyContacts.indices.forEach { emergencyContacts[it] = PomodoroManager.emergencyContacts[it] }
       
+      selectTab("pomodoro")
       showPomActiveScreen()
     } else {
       showPomSetupScreen()
@@ -740,6 +863,8 @@ class FocusActivity : AppCompatActivity() {
   }
 
   override fun onPause() {
+    stopwatchRunnable?.let { handler.removeCallbacks(it) }
+    timerRunnable?.let { handler.removeCallbacks(it) }
     if (timerReceiverRegistered) {
       unregisterReceiver(timerReceiver)
       timerReceiverRegistered = false
@@ -747,9 +872,17 @@ class FocusActivity : AppCompatActivity() {
     super.onPause()
   }
 
+  private fun updateStrictDuration(mins: Int) {
+    strictDurationMins = mins.coerceIn(1, 30)
+    getSharedPreferences("strict", Context.MODE_PRIVATE).edit()
+      .putInt("selected_duration_mins", strictDurationMins)
+      .apply()
+    tvStrictDurationVal?.text = "$strictDurationMins min"
+    seekStrictDuration?.progress = strictDurationMins - 1
+    updateStrictWarningUI()
+  }
+
   private fun updateStrictWarningUI() {
-    val layoutStrictWarning = findViewById<LinearLayout>(R.id.layoutStrictWarning)
-    val tvStrictDesc = layoutStrictWarning.getChildAt(1) as? TextView
     if (!isAccessibilityServiceEnabled()) {
       tvStrictDesc?.text = "To use Strict Mode:\n1. Tap 'Open Settings' below\n2. Find 'MISS-Minimal v2 Strict Mode'\n3. Toggle it ON\n4. Come back here"
       btnEnableStrict.text = "Open Settings →"
@@ -757,15 +890,39 @@ class FocusActivity : AppCompatActivity() {
       tvStrictDesc?.text = "Additional permissions required for Strict Mode.\nPlease tap below to set up."
       btnEnableStrict.text = "COMPLETE SETUP"
     } else {
-      tvStrictDesc?.text = "Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
+      tvStrictDesc?.text = "Enabling this will silence ALL calls,\nmessages and notifications for $strictDurationMins minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
       btnEnableStrict.text = "ENABLE STRICT MODE"
     }
   }
 
   private fun setupStrictMode() {
+    strictDurationMins = getSharedPreferences("strict", Context.MODE_PRIVATE)
+      .getInt("selected_duration_mins", 15).coerceIn(1, 30)
+    tvStrictDurationVal?.text = "$strictDurationMins min"
+    seekStrictDuration?.progress = strictDurationMins - 1
+
+    btnStrictMinus?.setOnClickListener {
+      vibrateTick()
+      updateStrictDuration(strictDurationMins - 1)
+    }
+    btnStrictPlus?.setOnClickListener {
+      vibrateTick()
+      updateStrictDuration(strictDurationMins + 1)
+    }
+    seekStrictDuration?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+      override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if (fromUser) {
+          updateStrictDuration(progress + 1)
+        }
+      }
+      override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+      override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    })
+
     btnEnableStrict.setOnClickListener {
       vibrateTick()
       if (!checkAllStrictPermissions()) {
+        getSharedPreferences("strict_nav", MODE_PRIVATE).edit().putString("proceed_target", "strict").apply()
         startActivity(Intent(this, PermissionOnboardingActivity::class.java))
       } else {
         showStrictConfirmDialog()
@@ -792,13 +949,13 @@ class FocusActivity : AppCompatActivity() {
 
   private fun showStrictConfirmDialog() {
     AlertDialog.Builder(this)
-      .setMessage("25 more minutes of strict focus.\nNo apps. No notifications.\nAre you ready?")
+      .setMessage("$strictDurationMins minutes of strict focus.\nNo apps. No notifications.\nAre you ready?")
       .setPositiveButton("YES") { _, _ -> startStrictMode() }
       .setNegativeButton("NO", null).show()
   }
 
   private fun startStrictMode() {
-    val durationMs = 25 * 60 * 1000L
+    val durationMs = strictDurationMins * 60 * 1000L
     StrictModeManager.start(this, durationMs)
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     if (nm.isNotificationPolicyAccessGranted) nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
@@ -836,8 +993,8 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun onStrictTimerDone() {
-    val completedMs = 25 * 60 * 1000 - StrictModeManager.getRemainingMs()
-    val completedMins = (completedMs.toInt() / 60_000).coerceAtLeast(0)
+    val completedMs = StrictModeManager.initialDurationMs - StrictModeManager.getRemainingMs()
+    val completedMins = (completedMs.toInt() / 60_000).coerceAtLeast(1)
     
     StrictModeManager.stop(this)
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -904,16 +1061,23 @@ class FocusActivity : AppCompatActivity() {
     listOf(pom_btnRemoveContact, pom_btnRemoveContact2).forEachIndexed { index, view ->
       view.setOnClickListener { removePomContact(index) }
     }
-    pom_btnStartPomodoro.setOnClickListener { startPomodoro() }
+    pom_btnStartPomodoro.setOnClickListener {
+      vibrateTick()
+      if (!checkAllStrictPermissions()) {
+        getSharedPreferences("strict_nav", MODE_PRIVATE).edit().putString("proceed_target", "pomodoro").apply()
+        startActivity(Intent(this, PermissionOnboardingActivity::class.java))
+      } else if (emergencyContacts.any { it != null } &&
+                 ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        callPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+      } else {
+        startPomodoro()
+      }
+    }
 
     listOf(pom_btnCallContact, pom_btnCallContact2).forEachIndexed { index, view ->
       view.setOnClickListener {
         emergencyContacts[index]?.second?.let { num ->
-        try {
-          startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", num, null)))
-        } catch (_: ActivityNotFoundException) {
-          Toast.makeText(this, "No phone app available", Toast.LENGTH_SHORT).show()
-        }
+          performDirectCall(num)
         }
       }
     }
@@ -989,6 +1153,9 @@ class FocusActivity : AppCompatActivity() {
 
   private fun openPomContactPicker(index: Int) {
     pendingContactIndex = index
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+      callPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+    }
     try {
       pomContactPicker.launch(
         Intent(Intent.ACTION_PICK).setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
@@ -1060,6 +1227,11 @@ class FocusActivity : AppCompatActivity() {
     // Keep screen on
     window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    if (nm.isNotificationPolicyAccessGranted) {
+      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
+    }
+
     PomodoroManager.start(
         durationMinutes = selectedDurationMins,
         allowedApps = selectedApps,
@@ -1069,17 +1241,44 @@ class FocusActivity : AppCompatActivity() {
     
     // Start blocker for work phase
     TopBarBlockerService.start(this)
+    StrictModeService.instance?.startBlocking()
     
     val intent = Intent(this, PomodoroTimerService::class.java)
     intent.action = PomodoroTimerService.ACTION_START
     intent.putExtra(PomodoroTimerService.EXTRA_DURATION, selectedDurationMins * 60)
     startService(intent)
     showPomActiveScreen()
+    updatePomTimerUI(selectedDurationMins * 60, true)
+  }
+
+  private fun performDirectCall(num: String) {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+      makeDirectCall(num)
+    } else {
+      pendingCallNumber = num
+      callPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+    }
+  }
+
+  private fun makeDirectCall(num: String) {
+    try {
+      val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${Uri.encode(num)}")).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+      }
+      startActivity(intent)
+    } catch (e: Exception) {
+      Toast.makeText(this, "Direct call failed: ${e.message}", Toast.LENGTH_SHORT).show()
+    }
   }
 
   private fun endPomodoroSession() {
+    val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    if (nm.isNotificationPolicyAccessGranted) {
+      nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+    }
     PomodoroManager.stop(this)
     TopBarBlockerService.stop(this) // stop blocker
+    StrictModeService.instance?.stopBlocking()
     val intent = Intent(this, PomodoroTimerService::class.java)
     stopService(intent)
     showPomSetupScreen()
@@ -1097,16 +1296,16 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun showPomSetupScreen() {
-    TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
     scrollPomodoroSetup.visibility = View.VISIBLE
+    pom_layoutSetup.visibility = View.VISIBLE
     pom_layoutActive.visibility = View.GONE
     findViewById<View>(R.id.tabBar).visibility = View.VISIBLE
     tabIndicator.visibility = View.VISIBLE
   }
 
   private fun showPomActiveScreen() {
-    TransitionManager.beginDelayedTransition(panelPomodoro, Fade())
     scrollPomodoroSetup.visibility = View.GONE
+    pom_layoutSetup.visibility = View.GONE
     pom_layoutActive.visibility = View.VISIBLE
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE

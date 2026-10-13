@@ -36,7 +36,7 @@ class PomodoroTimerService : Service() {
                 val totalSecs = intent.getIntExtra(EXTRA_DURATION, 25 * 60)
                 isWorkPhase = true
                 isRunning = true
-                remainingSeconds = minOf(totalSecs, PomodoroManager.workChunkSeconds)
+                remainingSeconds = totalSecs
                 startForegroundNotification()
                 startTicking()
             }
@@ -107,7 +107,12 @@ class PomodoroTimerService : Service() {
 
     private fun startTicking() {
         handler.removeCallbacks(tickRunnable)
-        handler.post(tickRunnable)
+        val tickIntent = Intent(BROADCAST_TICK)
+        tickIntent.putExtra("remaining", remainingSeconds)
+        tickIntent.putExtra("is_work", isWorkPhase)
+        sendBroadcast(tickIntent)
+        updateNotification(remainingSeconds, isWorkPhase)
+        handler.postDelayed(tickRunnable, 1000)
     }
 
     private fun stopTicking() {

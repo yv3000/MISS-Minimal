@@ -3,6 +3,8 @@ package com.minimalist.launcher
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.TypedValue
 import android.view.Gravity
@@ -13,6 +15,8 @@ import androidx.core.content.res.ResourcesCompat
 
 class SotActivity : AppCompatActivity() {
     private var refreshGeneration = 0
+    private val handler = Handler(Looper.getMainLooper())
+    private val refresh = Runnable { refreshUsage() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,31 +27,57 @@ class SotActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        refreshUsage()
+    }
+
+    override fun onPause() {
+        ++refreshGeneration
+        handler.removeCallbacks(refresh)
+        super.onPause()
+    }
+
+    private fun refreshUsage() {
         val generation = ++refreshGeneration
         val value = findViewById<TextView>(R.id.tvSotValue)
         val description = findViewById<TextView>(R.id.tvSotDescription)
         val list = findViewById<LinearLayout>(R.id.layoutAppUsage)
 
-        if (!UsageAccess.isGranted(this)) {
-            list.removeAllViews()
-            value.text = "Usage access required"
-            description.text = "Tap here to grant usage access"
-            description.setOnClickListener { startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
-            return
-        }
-
         Thread {
-            val usage = SOTManager.getTodayAppUsage(this)
-            val rows = usage.mapNotNull { (pkg, ms) ->
-                SOTManager.labelFor(packageManager, pkg)?.let { it to ms }
+            val result = runCatching {
+                if (!UsageAccess.isGranted(this)) null else {
+                    val usage = SOTManager.getTodayAppUsage(this)
+                    usage.map { (pkg, ms) -> SOTManager.labelFor(packageManager, pkg) to ms }
+                }
             }
-            val total = rows.sumOf { it.second }
             runOnUiThread {
-                if (generation != refreshGeneration || !UsageAccess.isGranted(this)) return@runOnUiThread
-                value.text = SOTManager.format(total)
-                description.text = "screen time today"
+                if (generation != refreshGeneration || isFinishing || isDestroyed) return@runOnUiThread
+                val current = result.mapCatching { rows ->
+                    if (UsageAccess.isGranted(this)) rows else null
+                }
+                val rows = current.getOrNull()
                 description.setOnClickListener(null)
-                renderList(list, rows)
+                when {
+                    current.isFailure -> {
+                        list.removeAllViews()
+                        value.text = "Screen time unavailable"
+                        description.text = "Could not load usage history. Retrying shortly."
+                    }
+                    rows == null -> {
+                        list.removeAllViews()
+                        value.text = "Usage access required"
+                        description.text = "Tap here to grant usage access"
+                        description.setOnClickListener {
+                            runCatching { startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
+                                .onFailure { description.text = "Open usage access in Android Settings" }
+                        }
+                    }
+                    else -> {
+                        value.text = SOTManager.format(rows.sumOf { it.second })
+                        description.text = "screen time today"
+                        renderList(list, rows)
+                    }
+                }
+                handler.postDelayed(refresh, 30_000L)
             }
         }.start()
     }

@@ -7,11 +7,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -25,6 +26,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
 
     <application
         android:name=".MissLauncherApp"
@@ -35,6 +38,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MinimalistLauncher"
         android:fontFamily="monospace">
+
 
         <receiver
             android:name=".BootReceiver"
@@ -74,13 +78,17 @@
         </activity>
 
         <activity android:name=".AppPickerActivity" android:screenOrientation="fullUser" />
-        <activity android:name=".QuickSettingsActivity" android:screenOrientation="fullUser" />
+        <activity android:name=".QuickSettingsActivity" android:screenOrientation="fullUser" android:exported="true" />
         <activity android:name=".AppDrawerActivity" android:screenOrientation="fullUser" />
         <activity android:name=".LauncherSettingsActivity" android:screenOrientation="fullUser" />
         <activity android:name=".TimeLimitActivity" android:screenOrientation="fullUser" />
         <activity android:name=".FocusActivity"
             android:screenOrientation="fullUser"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask"
+            android:resizeableActivity="false"
+            android:supportsPictureInPicture="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true" />
         <activity android:name=".NotificationPanelActivity" android:screenOrientation="fullUser" />
         <activity android:name=".PermissionOnboardingActivity" android:screenOrientation="fullUser" />
         <activity android:name=".TermsActivity" android:screenOrientation="fullUser" />

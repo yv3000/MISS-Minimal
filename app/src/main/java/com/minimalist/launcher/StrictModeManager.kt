@@ -16,17 +16,21 @@ enum class StrictUiState {
 object StrictModeManager {
   var uiState = StrictUiState.SETUP
   var serviceRef: StrictModeService? = null
+  var initialDurationMs = 25 * 60 * 1000L
   private var active = false
   private var endTimeMs = 0L
 
   fun start(context: Context, durationMs: Long) {
     active = true
+    initialDurationMs = durationMs
     endTimeMs = System.currentTimeMillis() + durationMs
     context.getSharedPreferences("strict", 
       Context.MODE_PRIVATE).edit()
       .putBoolean("active", true)
       .putLong("end", endTimeMs)
+      .putLong("initial_duration", durationMs)
       .apply()
+    PrivilegedToggle.setStatusBarExpansion(true)
     TopBarBlockerService.start(context)
     serviceRef?.startBlocking()
   }
@@ -36,6 +40,7 @@ object StrictModeManager {
     endTimeMs = 0L
     context.getSharedPreferences("strict",
       Context.MODE_PRIVATE).edit().clear().apply()
+    PrivilegedToggle.setStatusBarExpansion(false)
     TopBarBlockerService.stop(context)
     serviceRef?.stopBlocking()
   }
@@ -54,6 +59,7 @@ object StrictModeManager {
       "strict", Context.MODE_PRIVATE)
     val savedActive = prefs.getBoolean("active", false)
     val savedEnd = prefs.getLong("end", 0L)
+    initialDurationMs = prefs.getLong("initial_duration", 25 * 60 * 1000L)
     if (savedActive && 
         System.currentTimeMillis() < savedEnd) {
       active = true

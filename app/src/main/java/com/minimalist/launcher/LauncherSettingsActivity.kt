@@ -1,31 +1,57 @@
 package com.minimalist.launcher
 
+import android.Manifest
 import android.app.NotificationManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.net.ConnectivityManager
 import android.media.AudioManager
 import android.net.Uri
-import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.telephony.TelephonyManager
+import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.minimalist.launcher.databinding.ActivityLauncherSettingsBinding
 
 class LauncherSettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLauncherSettingsBinding
     private lateinit var audioManager: AudioManager
-    private lateinit var wifiManager: WifiManager
     private lateinit var cameraManager: CameraManager
-    private var torchState = false
+    private var torchState: Boolean? = null
     private var cameraId: String? = null
+
+    private val connectivity = ConnectivityControls(this) { updateAllStates() }
+
+
+    private val torchCallback = object : CameraManager.TorchCallback() {
+        override fun onTorchModeChanged(id: String, enabled: Boolean) {
+            if (id == cameraId && !isDestroyed) {
+                torchState = enabled
+                updateAllStates()
+            }
+        }
+
+        override fun onTorchModeUnavailable(id: String) {
+            if (id == cameraId && !isDestroyed) {
+                if (torchState == true) {
+                    Toast.makeText(this@LauncherSettingsActivity, "Flashlight unavailable", Toast.LENGTH_SHORT).show()
+                }
+                torchState = null
+                updateAllStates()
+            }
+        }
+    }
 
     private val handler = Handler(Looper.getMainLooper())
     private val stateRunnable = object : Runnable {
@@ -41,21 +67,16 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
         try {
-            cameraId = cameraManager.cameraIdList.firstOrNull()
-        } catch (e: Exception) {}
-
-        cameraManager.registerTorchCallback(object : CameraManager.TorchCallback() {
-            override fun onTorchModeChanged(id: String, enabled: Boolean) {
-                if (id == cameraId) {
-                    torchState = enabled
-                    updateAllStates()
-                }
+            cameraId = cameraManager.cameraIdList.firstOrNull {
+                cameraManager.getCameraCharacteristics(it).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
             }
-        }, null)
+            cameraManager.registerTorchCallback(torchCallback, handler)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Flashlight unavailable: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
 
         setupConnectivity()
         setupDisplay()
@@ -101,29 +122,39 @@ class LauncherSettingsActivity : AppCompatActivity() {
     private fun setupConnectivity() {
         binding.btnWifi.setOnClickListener {
             vibrate()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startActivity(Intent(Settings.Panel.ACTION_WIFI))
-            } else {
-                @Suppress("DEPRECATION")
-                wifiManager.isWifiEnabled = !wifiManager.isWifiEnabled
-                updateAllStates()
-            }
+            connectivity.toggle("wifi")
+        }
+        binding.btnWifi.setOnLongClickListener {
+            openSettings(Settings.ACTION_WIFI_SETTINGS)
+            true
         }
 
         binding.btnData.setOnClickListener {
             vibrate()
-            startActivity(Intent(Settings.ACTION_DATA_ROAMING_SETTINGS))
+            connectivity.toggle("data")
+        }
+        binding.btnData.setOnLongClickListener {
+            openSettings(Settings.ACTION_DATA_USAGE_SETTINGS)
+            true
         }
 
         binding.btnBluetooth.setOnClickListener {
             vibrate()
-            startActivity(Intent(Settings.ACTION_BLUETOOTH_SETTINGS))
+            connectivity.toggle("bluetooth")
+        }
+        binding.btnBluetooth.setOnLongClickListener {
+            openSettings(Settings.ACTION_BLUETOOTH_SETTINGS)
+            true
         }
 
         binding.btnDnd.setOnClickListener {
             vibrate()
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            if (nm.isNotificationPolicyAccessGranted) {
+            try {
+                if (!nm.isNotificationPolicyAccessGranted) {
+                    openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    return@setOnClickListener
+                }
                 val currentFilter = nm.currentInterruptionFilter
                 if (currentFilter == NotificationManager.INTERRUPTION_FILTER_ALL) {
                     nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
@@ -131,16 +162,14 @@ class LauncherSettingsActivity : AppCompatActivity() {
                     nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
                 }
                 updateAllStates()
-            } else {
-                startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+            } catch (_: SecurityException) {
+                openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             }
         }
 
         binding.btnFlashlight.setOnClickListener {
             vibrate()
-            try {
-                cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
-            } catch (e: Exception) { }
+            toggleFlashlight()
         }
 
         binding.btnRotate.setOnClickListener {
@@ -158,80 +187,72 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
         binding.btnAirplane.setOnClickListener {
             vibrate()
-            toggleAirplaneMode()
+            connectivity.toggle("airplane")
+        }
+        binding.btnAirplane.setOnLongClickListener {
+            openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+            true
         }
 
         binding.btnLocation.setOnClickListener {
             vibrate()
-            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            connectivity.toggle("location")
+        }
+        binding.btnLocation.setOnLongClickListener {
+            openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            true
         }
 
         binding.btnHotspot.setOnClickListener {
             vibrate()
-            toggleHotspot()
+            connectivity.toggle("hotspot")
+        }
+        binding.btnHotspot.setOnLongClickListener {
+            openSettings("android.settings.TETHER_SETTINGS", Settings.ACTION_WIRELESS_SETTINGS)
+            true
         }
     }
 
-    private fun toggleAirplaneMode() {
-        // A bare Settings.Global.AIRPLANE_MODE_ON write does nothing useful: the radios only react
-        // to ACTION_AIRPLANE_MODE_CHANGED, which only the system may broadcast. So go straight to
-        // the slimmest surface the platform offers.
-        if (Build.VERSION.SDK_INT >= 29) {
-            startActivity(Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY))
-        } else {
-            startActivity(Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS))
-        }
-    }
-
-    private fun toggleHotspot() {
-        val isOn = isHotspotEnabled()
+    private fun openSettings(primary: String, fallback: String = Settings.ACTION_SETTINGS) {
         try {
-            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (isOn) {
-                val stopMethod = cm.javaClass.getDeclaredMethod("stopTethering", Int::class.java)
-                stopMethod.isAccessible = true
-                stopMethod.invoke(cm, 0)
-            } else {
-                val callbackClass = Class.forName("android.net.ConnectivityManager\$OnStartTetheringCallback")
-                val callback = try {
-                    callbackClass.getDeclaredConstructor().newInstance()
-                } catch (e: Exception) {
-                    java.lang.reflect.Proxy.newProxyInstance(callbackClass.classLoader, arrayOf(callbackClass)) { _, _, _ -> null }
-                }
-                val startMethod = cm.javaClass.getDeclaredMethod("startTethering", Int::class.java, Boolean::class.java, callbackClass)
-                startMethod.isAccessible = true
-                startMethod.invoke(cm, 0, false, callback)
-            }
-            handler.postDelayed({ updateAllStates() }, 1000)
-        } catch (e: Exception) {
-            try {
-                val intent = Intent().apply {
-                    setClassName("com.android.settings", "com.android.settings.TetherSettings")
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                startActivity(intent)
-            } catch (ex: Exception) {
-                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-            }
+            startActivity(Intent(primary))
+        } catch (_: ActivityNotFoundException) {
+            startActivity(Intent(fallback))
         }
     }
 
-    private fun isHotspotEnabled(): Boolean {
-        return try {
-            val method = wifiManager.javaClass.getDeclaredMethod("isWifiApEnabled")
-            method.isAccessible = true
-            method.invoke(wifiManager) as Boolean
-        } catch (e: Exception) { false }
+    private fun toggleFlashlight() {
+
+        try {
+            val id = cameraId ?: cameraManager.cameraIdList.firstOrNull {
+                cameraManager.getCameraCharacteristics(it).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }?.also { cameraId = it }
+            if (id == null) {
+                Toast.makeText(this, "Flashlight unavailable", Toast.LENGTH_SHORT).show()
+                return
+            }
+            // Retry registration if camera access was unavailable during onCreate.
+            cameraManager.registerTorchCallback(torchCallback, handler)
+            cameraManager.setTorchMode(id, torchState != true)
+        } catch (e: Exception) {
+            torchState = null
+            updateAllStates()
+            Toast.makeText(this, "Unable to change flashlight: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun vibrate() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as android.os.Vibrator
+        if (Build.VERSION.SDK_INT >= 29) {
             vibrator.vibrate(android.os.VibrationEffect.createPredefined(android.os.VibrationEffect.EFFECT_CLICK))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(10)
         }
     }
 
     private fun setupDisplay() {
+        binding.seekBrightness.contentDescription = "Brightness"
         try {
             val curBrightness = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS)
             binding.seekBrightness.progress = curBrightness
@@ -257,6 +278,7 @@ class LauncherSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupSound() {
+        binding.seekVolume.contentDescription = "Media volume"
         val maxVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         val curVol = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         
@@ -277,23 +299,13 @@ class LauncherSettingsActivity : AppCompatActivity() {
 
     private fun updateAllStates() {
         // Wifi
-        setLabelState(binding.tvWifiState, wifiManager.isWifiEnabled)
+        setLabelState(binding.tvWifiState, connectivity.state("wifi"))
 
         // Data
-        try {
-            @Suppress("DEPRECATION")
-            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            @Suppress("DEPRECATION")
-            val isDataOn = cm.activeNetworkInfo?.type == ConnectivityManager.TYPE_MOBILE
-            setLabelState(binding.tvDataState, isDataOn)
-        } catch (e: Exception) {
-            setLabelState(binding.tvDataState, false)
-        }
+        setLabelState(binding.tvDataState, connectivity.state("data"))
 
         // Bluetooth
-        @Suppress("DEPRECATION")
-        val btAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
-        setLabelState(binding.tvBluetoothState, btAdapter?.isEnabled == true)
+        setLabelState(binding.tvBluetoothState, connectivity.state("bluetooth"))
 
         // Font Size
         binding.tvFontSizeState.text = AppFont.get(this).toString()
@@ -311,16 +323,13 @@ class LauncherSettingsActivity : AppCompatActivity() {
         setLabelState(binding.tvRotateState, isRotateOn)
 
         // Airplane
-        val isAirplaneOn = Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-        setLabelState(binding.tvAirplaneState, isAirplaneOn)
+        setLabelState(binding.tvAirplaneState, connectivity.state("airplane"))
 
         // Location
-        val lm = getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
-        val isGpsOn = lm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
-        setLabelState(binding.tvLocationState, isGpsOn)
+        setLabelState(binding.tvLocationState, connectivity.state("location"))
 
         // Hotspot
-        setLabelState(binding.tvHotspotState, isHotspotEnabled())
+        setLabelState(binding.tvHotspotState, connectivity.state("hotspot"))
 
         // Brightness
         try {
@@ -349,14 +358,19 @@ class LauncherSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setLabelState(tv: TextView, isActive: Boolean) {
-        if (isActive) {
-            tv.text = "ON"
-            tv.setTextColor(0xFFAAAAFF.toInt())
-        } else {
-            tv.text = "OFF"
-            tv.setTextColor(0xFF444444.toInt())
-        }
+    private fun setLabelState(tv: TextView, isActive: Boolean?) {
+        tv.text = when (isActive) { true -> "ON"; false -> "OFF"; null -> "UNKNOWN" }
+        tv.setTextColor(if (isActive == true) 0xFFAAAAFF.toInt() else 0xFF444444.toInt())
+        val row = tv.parent as ViewGroup
+        val label = (row.getChildAt(0) as TextView).text
+        row.contentDescription = "$label, ${tv.text}"
+    }
+
+    override fun onDestroy() {
+        connectivity.close()
+        handler.removeCallbacks(stateRunnable)
+        cameraManager.unregisterTorchCallback(torchCallback)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {

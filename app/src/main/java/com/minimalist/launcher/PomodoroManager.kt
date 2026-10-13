@@ -22,13 +22,23 @@ object PomodoroManager {
         "com.minimalist.launcher",
         "android",
         "com.android.systemui",
+        "com.android.phone",
         "com.android.dialer",
         "com.google.android.dialer",
+        "com.google.android.incallui",
+        "com.android.incallui",
+        "com.android.server.telecom",
+        "com.android.telecom",
+        "com.android.permissioncontroller",
+        "com.google.android.permissioncontroller",
+        "com.coloros.securitypermission",
         "com.samsung.android.dialer",
+        "com.samsung.android.incallui",
         "com.vivo.dialer",
         "com.iqoo.phone",
         "com.oneplus.dialer",
-        "com.miui.home",
+        "com.oplus.dialer",
+        "com.heytap.dialer",
         "com.coloros.phonemanager"
     )
 
@@ -40,7 +50,7 @@ object PomodoroManager {
     ) {
         workDurationSeconds = durationMinutes * 60
         remainingWorkSeconds = workDurationSeconds
-        workChunkSeconds = 25 * 60
+        workChunkSeconds = durationMinutes * 60
         
         isActive = true
         isWorkPhase = true
@@ -73,8 +83,30 @@ object PomodoroManager {
             .edit()
             .putBoolean("pomodoro_shade_block", true)
             .apply()
+
+        context.getSharedPreferences("pomodoro_prefs", Context.MODE_PRIVATE).edit()
+            .putBoolean("is_active", true)
+            .putInt("duration_minutes", durationMinutes)
+            .putStringSet("selected_apps", safeApps.toSet())
+            .putString("contact_0_name", emergencyContacts[0]?.first)
+            .putString("contact_0_num", emergencyContacts[0]?.second)
+            .putString("contact_1_name", emergencyContacts[1]?.first)
+            .putString("contact_1_num", emergencyContacts[1]?.second)
+            .apply()
         
+        // Block notification shade via Shizuku
+        PrivilegedToggle.setStatusBarExpansion(true)
         StrictModeService.instance?.startBlocking()
+    }
+
+    fun restoreFromPrefs(context: Context) {
+        val prefs = context.getSharedPreferences("pomodoro_prefs", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("is_active", false)) return
+        val dur = prefs.getInt("duration_minutes", 25)
+        val apps = prefs.getStringSet("selected_apps", emptySet())?.toList() ?: emptyList()
+        val c0 = prefs.getString("contact_0_num", null)?.let { (prefs.getString("contact_0_name", it) ?: it) to it }
+        val c1 = prefs.getString("contact_1_num", null)?.let { (prefs.getString("contact_1_name", it) ?: it) to it }
+        start(dur, apps, listOf(c0, c1), context)
     }
 
     fun stop(context: Context) {
@@ -91,7 +123,13 @@ object PomodoroManager {
             .edit()
             .putBoolean("pomodoro_shade_block", false)
             .apply()
+
+        context.getSharedPreferences("pomodoro_prefs", Context.MODE_PRIVATE).edit()
+            .putBoolean("is_active", false)
+            .apply()
         
+        // Unblock notification shade via Shizuku
+        PrivilegedToggle.setStatusBarExpansion(false)
         TopBarBlockerService.stop(context)
         StrictModeService.instance?.stopBlocking()
     }

@@ -38,12 +38,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var vibrator: Vibrator
 
     private var sotTick = 0
+    private var sotGeneration = 0
 
     private val timeRunnable = object : Runnable {
         override fun run() {
             updateTime()
-            // SOT needs a 48h usage-event query; once every 30s is plenty and keeps the
-            // clock tick cheap. It also runs off the main thread now.
+            // Keep usage queries off the clock's main-thread tick.
             if (sotTick % 30 == 0) updateSOT()
             sotTick++
             handler.postDelayed(this, 1000)
@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         setupGestures()
         setupClickListeners()
 
-        handler.post(timeRunnable)
         
         binding.tvTime.textSize = 72f
         binding.tvDate.textSize = 16f
@@ -100,12 +99,15 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         AppFont.applyToActivity(this)
+        sotTick = 0
+        handler.post(timeRunnable)
         
         // AUTO-RETURN TO POMODORO OR STRICT MODE IF ACTIVE
         if (PomodoroManager.isActive || StrictModeManager.isActive()) {
-            val intent = Intent(this, FocusActivity::class.java)
-            intent.putExtra("tab", if (PomodoroManager.isActive) "pomodoro" else "strict")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val intent = Intent(this, FocusActivity::class.java).apply {
+                putExtra("tab", if (PomodoroManager.isActive) "pomodoro" else "strict")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
             startActivity(intent)
             return
         }
@@ -118,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             requestAllPermissionsOnFirstLaunch()
         }
         
+        MissLauncherApp.blockNotifPanel = true
         getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
             .edit()
             .putBoolean("block_notif_panel", true)
@@ -126,10 +129,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
+        handler.removeCallbacks(timeRunnable)
+        ++sotGeneration
         super.onPause()
         if (!StrictModeManager.isActive()) {
             stopNotificationBlocker()
         }
+        MissLauncherApp.blockNotifPanel = false
         getSharedPreferences("miss_prefs", Context.MODE_PRIVATE)
             .edit()
             .putBoolean("block_notif_panel", false)
@@ -207,6 +213,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        if (PomodoroManager.isActive || StrictModeManager.isActive()) {
+            val focusIntent = Intent(this, FocusActivity::class.java).apply {
+                putExtra("tab", if (PomodoroManager.isActive) "pomodoro" else "strict")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(focusIntent)
+        }
     }
 
     private fun updateTime() {
@@ -223,17 +236,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateSOT() {
         val tvSot = binding.tvSOT ?: return
+        if (tvSot.visibility != View.VISIBLE) return
+        val generation = ++sotGeneration
         if (!UsageAccess.isGranted(this)) {
             tvSot.text = "SOT unavailable (grant usage access)"
             return
         }
         Thread {
-            val sotMs = SOTManager.getScreenOnTimeToday(this)
-            val sotMins = sotMs / (1000 * 60)
-            val h = sotMins / 60
-            val m = sotMins % 60
-            val text = if (h > 0) "${h}h ${m}m screen time" else "${m}m screen time"
-            runOnUiThread { if (!isFinishing && !isDestroyed) tvSot.text = text }
+            val text = runCatching {
+                "${SOTManager.format(SOTManager.getScreenOnTimeToday(this))} screen time"
+            }.getOrDefault("SOT unavailable")
+            runOnUiThread {
+                if (generation == sotGeneration && !isFinishing && !isDestroyed) {
+                    tvSot.text = if (UsageAccess.isGranted(this)) text else "SOT unavailable (grant usage access)"
+                }
+            }
         }.start()
     }
 

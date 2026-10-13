@@ -2,18 +2,14 @@ package com.minimalist.launcher
 
 import android.Manifest
 import android.app.NotificationManager
-import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.location.LocationManager
 import android.media.AudioManager
 import android.net.Uri
-import android.net.wifi.WifiManager
-import android.telephony.SubscriptionManager
-import android.telephony.TelephonyManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -23,6 +19,7 @@ import android.os.VibratorManager
 import android.provider.Settings
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -40,17 +37,32 @@ import android.view.View
 class QuickSettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityQuickSettingsBinding
     private lateinit var audioManager: AudioManager
-    private lateinit var wifiManager: WifiManager
     private lateinit var cameraManager: CameraManager
     private lateinit var vibrator: Vibrator
-    private var torchState = false
+    private var torchState: Boolean? = null
     private var cameraId: String? = null
     private val notificationAdapter = NotificationAdapter()
 
-    private val bluetoothPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) toggleBluetooth() else openBluetoothSettings()
+    private val connectivity = ConnectivityControls(this) { updateAllStates() }
+
+
+    private val torchCallback = object : CameraManager.TorchCallback() {
+        override fun onTorchModeChanged(id: String, enabled: Boolean) {
+            if (id == cameraId && !isDestroyed) {
+                torchState = enabled
+                updateAllStates()
+            }
+        }
+
+        override fun onTorchModeUnavailable(id: String) {
+            if (id == cameraId && !isDestroyed) {
+                if (torchState == true) {
+                    Toast.makeText(this@QuickSettingsActivity, "Flashlight unavailable", Toast.LENGTH_SHORT).show()
+                }
+                torchState = null
+                updateAllStates()
+            }
+        }
     }
 
     private val volumeReceiver = object : BroadcastReceiver() {
@@ -68,12 +80,6 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private val stateReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            updateAllStates()
-        }
-    }
-
     private val notificationReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) = notificationAdapter.refresh()
     }
@@ -86,7 +92,6 @@ class QuickSettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
         
         vibrator = if (Build.VERSION.SDK_INT >= 31) {
@@ -100,17 +105,13 @@ class QuickSettingsActivity : AppCompatActivity() {
         setupGestures()
 
         try {
-            cameraId = cameraManager.cameraIdList.firstOrNull()
-        } catch (e: Exception) {}
-
-        cameraManager.registerTorchCallback(object : CameraManager.TorchCallback() {
-            override fun onTorchModeChanged(id: String, enabled: Boolean) {
-                if (id == cameraId) {
-                    torchState = enabled
-                    updateAllStates()
-                }
+            cameraId = cameraManager.cameraIdList.firstOrNull {
+                cameraManager.getCameraCharacteristics(it).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
             }
-        }, null)
+            cameraManager.registerTorchCallback(torchCallback, android.os.Handler(Looper.getMainLooper()))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Flashlight unavailable: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
 
         setupConnectivity()
         setupSound()
@@ -167,13 +168,6 @@ class QuickSettingsActivity : AppCompatActivity() {
             false, brightnessObserver
         )
 
-        val filter = IntentFilter().apply {
-            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-            addAction(LocationManager.PROVIDERS_CHANGED_ACTION)
-            addAction(android.bluetooth.BluetoothAdapter.ACTION_STATE_CHANGED)
-            addAction(android.net.wifi.WifiManager.WIFI_STATE_CHANGED_ACTION)
-        }
-        ContextCompat.registerReceiver(this, stateReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
         LocalBroadcastManager.getInstance(this).registerReceiver(
             notificationReceiver,
             IntentFilter(NotificationService.ACTION_NOTIFY_UPDATED)
@@ -188,98 +182,37 @@ class QuickSettingsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         unregisterReceiver(volumeReceiver)
-        unregisterReceiver(stateReceiver)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(notificationReceiver)
         contentResolver.unregisterContentObserver(brightnessObserver)
     }
 
     private fun setupConnectivity() {
-        // WIFI
-        binding.btnWifi.setOnClickListener {
-            val enable = !wifiManager.isWifiEnabled
-            PrivilegedToggle.chain(
-                "wifi",
-                listOf(
-                    // Still honoured on Android 9 and below (CHANGE_WIFI_STATE). On Q+ WifiService
-                    // requires the signature-level NETWORK_SETTINGS/NETWORK_STACK, so this returns
-                    // false and we fall through. Writing Settings.Global "wifi_on" is deliberately
-                    // NOT attempted: the write succeeds but WifiSettingsStore never reads it back,
-                    // so it changes nothing and corrupts the stored state after a reboot.
-                    PrivilegedToggle.Attempt("WifiManager.setWifiEnabled") {
-                        @Suppress("DEPRECATION")
-                        wifiManager.setWifiEnabled(enable)
-                    },
-                    PrivilegedToggle.root(
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                            "cmd wifi set-wifi-enabled ${if (enable) "enabled" else "disabled"}"
-                        else "svc wifi ${if (enable) "enable" else "disable"}"
-                    )
-                ),
-                { wifiManager.isWifiEnabled == enable }
-            ) { winner ->
-                if (isFinishing || isDestroyed) return@chain
-                updateAllStates()
-                // Panel = slim bottom sheet, not the full Settings app.
-                if (winner == null) openSettings(Settings.Panel.ACTION_WIFI, Settings.ACTION_WIFI_SETTINGS)
-            }
-        }
+        binding.btnWifi.setOnClickListener { connectivity.toggle("wifi") }
         binding.btnWifi.setOnLongClickListener {
-            startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+            openSettings(Settings.ACTION_WIFI_SETTINGS)
             true
         }
 
-        // DATA — use internet connectivity panel
-        binding.btnData.setOnClickListener {
-            val current = isMobileDataEnabled()
-            if (current == null) {
-                openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
-                return@setOnClickListener
-            }
-            val enable = !current
-            PrivilegedToggle.chain(
-                "data",
-                listOf(
-                    // No third-party path exists: setDataEnabled needs MODIFY_PHONE_STATE
-                    // (signature|privileged, not adb-grantable). Writing Settings.Global
-                    // "mobile_data" is telephony's own persisted state, not a command, so it is
-                    // not attempted — it would only make the UI lie.
-                    PrivilegedToggle.root(
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                            "cmd phone data ${if (enable) "enable" else "disable"}"
-                        else "svc data ${if (enable) "enable" else "disable"}"
-                    )
-                ),
-                { isMobileDataEnabled() == enable }
-            ) { winner ->
-                if (isFinishing || isDestroyed) return@chain
-                updateAllStates()
-                if (winner == null) openSettings(Settings.Panel.ACTION_INTERNET_CONNECTIVITY, Settings.ACTION_DATA_USAGE_SETTINGS)
-            }
-        }
+        binding.btnData.setOnClickListener { connectivity.toggle("data") }
         binding.btnData.setOnLongClickListener {
             openSettings(Settings.ACTION_DATA_USAGE_SETTINGS)
             true
         }
 
-        // BLUETOOTH
-        binding.btnBluetooth.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
-            ) {
-                bluetoothPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
-            } else {
-                toggleBluetooth()
-            }
-        }
+        binding.btnBluetooth.setOnClickListener { connectivity.toggle("bluetooth") }
         binding.btnBluetooth.setOnLongClickListener {
-            openBluetoothSettings()
+            openSettings(Settings.ACTION_BLUETOOTH_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
             true
         }
 
         // DND
         binding.btnDnd.setOnClickListener {
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            if (nm.isNotificationPolicyAccessGranted) {
+            try {
+                if (!nm.isNotificationPolicyAccessGranted) {
+                    openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    return@setOnClickListener
+                }
                 val currentFilter = nm.currentInterruptionFilter
                 if (currentFilter == NotificationManager.INTERRUPTION_FILTER_ALL) {
                     nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
@@ -287,8 +220,8 @@ class QuickSettingsActivity : AppCompatActivity() {
                     nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
                 }
                 updateAllStates()
-            } else {
-                startActivity(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+            } catch (_: SecurityException) {
+                openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             }
         }
         binding.btnDnd.setOnLongClickListener {
@@ -297,11 +230,7 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
 
         // FLASHLIGHT
-        binding.btnFlashlightText.setOnClickListener {
-            try {
-                cameraId?.let { cameraManager.setTorchMode(it, !torchState) }
-            } catch (e: Exception) {}
-        }
+        binding.btnFlashlightText.setOnClickListener { toggleFlashlight() }
 
         // ROTATE
         binding.btnRotate.setOnClickListener {
@@ -316,46 +245,25 @@ class QuickSettingsActivity : AppCompatActivity() {
             }
         }
 
-        // LOCATION — third-party apps cannot directly change this setting.
         binding.btnLocation.visibility = View.VISIBLE
-        binding.btnLocation.setOnClickListener {
-            toggleLocation()
-        }
-
-        // HOTSPOT — tethering changes require privileged/carrier access.
-        binding.btnHotspot.visibility = View.VISIBLE
-        binding.btnHotspot.setOnClickListener {
-            toggleHotspot()
-        }
-        binding.btnHotspot.setOnLongClickListener {
-            openTetherSettings()
+        binding.btnLocation.setOnClickListener { connectivity.toggle("location") }
+        binding.btnLocation.setOnLongClickListener {
+            openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             true
         }
 
-        // AIRPLANE
+        binding.btnHotspot.visibility = View.VISIBLE
+        binding.btnHotspot.setOnClickListener { connectivity.toggle("hotspot") }
+        binding.btnHotspot.setOnLongClickListener {
+            openSettings("android.settings.TETHER_SETTINGS", Settings.ACTION_WIRELESS_SETTINGS)
+            true
+        }
+
         binding.btnAirplane.visibility = View.VISIBLE
-        binding.btnAirplane.setOnClickListener {
-            val enable = !isAirplaneModeEnabled()
-            PrivilegedToggle.chain(
-                "airplane",
-                listOf(
-                    // Settings.Global.AIRPLANE_MODE_ON is writable with WRITE_SECURE_SETTINGS, but
-                    // the radios only react to Intent.ACTION_AIRPLANE_MODE_CHANGED, which is a
-                    // protected broadcast that only the system may send. A bare write would
-                    // therefore make the UI claim success while nothing changed, so it is not
-                    // attempted. Root is the only non-privileged path that really works.
-                    PrivilegedToggle.root("cmd connectivity airplane-mode ${if (enable) "enable" else "disable"}")
-                ),
-                { isAirplaneModeEnabled() == enable }
-            ) { winner ->
-                if (isFinishing || isDestroyed) return@chain
-                updateAllStates()
-                // Internet panel exposes airplane mode and is a slim sheet, not the Settings app.
-                if (winner == null) openSettings(
-                    Settings.Panel.ACTION_INTERNET_CONNECTIVITY,
-                    Settings.ACTION_AIRPLANE_MODE_SETTINGS
-                )
-            }
+        binding.btnAirplane.setOnClickListener { connectivity.toggle("airplane") }
+        binding.btnAirplane.setOnLongClickListener {
+            openSettings(Settings.ACTION_AIRPLANE_MODE_SETTINGS)
+            true
         }
 
         setupMicroInteractions()
@@ -400,13 +308,9 @@ class QuickSettingsActivity : AppCompatActivity() {
         val dpToPx = resources.displayMetrics.density
 
         // Wifi
-        setButtonState(binding.btnWifi, stateOf { wifiManager.isWifiEnabled }, dpToPx)
-
-        setButtonState(binding.btnData, isMobileDataEnabled() == true, dpToPx)
-
-        setButtonState(binding.btnBluetooth, stateOf {
-            getSystemService(BluetoothManager::class.java).adapter?.isEnabled == true
-        }, dpToPx)
+        setButtonState(binding.btnWifi, connectivity.state("wifi"), dpToPx)
+        setButtonState(binding.btnData, connectivity.state("data"), dpToPx)
+        setButtonState(binding.btnBluetooth, connectivity.state("bluetooth"), dpToPx)
 
         // DND
         setButtonState(binding.btnDnd, stateOf {
@@ -423,15 +327,13 @@ class QuickSettingsActivity : AppCompatActivity() {
         }, dpToPx)
 
         // Location
-        setButtonState(binding.btnLocation, stateOf { isLocationOn() }, dpToPx)
+        setButtonState(binding.btnLocation, connectivity.state("location"), dpToPx)
 
         // Hotspot
-        setButtonState(binding.btnHotspot, stateOf { isHotspotEnabled() }, dpToPx)
+        setButtonState(binding.btnHotspot, connectivity.state("hotspot"), dpToPx)
 
         // Airplane
-        setButtonState(binding.btnAirplane, stateOf {
-            isAirplaneModeEnabled()
-        }, dpToPx)
+        setButtonState(binding.btnAirplane, connectivity.state("airplane"), dpToPx)
         
         updateSoundUI()
         updateDisplayUI()
@@ -440,29 +342,32 @@ class QuickSettingsActivity : AppCompatActivity() {
     private fun stateOf(read: () -> Boolean) = try {
         read()
     } catch (_: SecurityException) {
-        false
+        null
     }
 
-    private fun setButtonState(view: View, active: Boolean, dpToPx: Float) {
-        val color = if (active) 
+    private fun setButtonState(view: View, active: Boolean?, dpToPx: Float) {
+        val color = if (active == true)
             ContextCompat.getColor(this, R.color.white) 
         else 
             ContextCompat.getColor(this, R.color.text_secondary)
         
         if (view is TextView) {
+            val label = view.text.toString().removeSuffix(" ?")
+            view.text = label + if (active == null) " ?" else ""
+            view.contentDescription = "$label, ${when (active) { true -> "ON"; false -> "OFF"; null -> "UNKNOWN" }}"
             view.setTextColor(color)
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 12 * dpToPx
                 setStroke((1.5 * dpToPx).toInt(), color)
-                if (active) {
+                if (active == true) {
                     setColor(color)
                 } else {
                     setColor(android.graphics.Color.TRANSPARENT)
                 }
             }
             view.background = drawable
-            if (active) {
+            if (active == true) {
                 view.setTextColor(ContextCompat.getColor(this, R.color.black))
             }
         }
@@ -470,18 +375,16 @@ class QuickSettingsActivity : AppCompatActivity() {
 
     private fun setupSound() {
         binding.btnSoundNormal.setOnClickListener {
-            audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
-            updateSoundUI()
+            setRingerMode(AudioManager.RINGER_MODE_NORMAL)
         }
         binding.btnSoundVibrate.setOnClickListener {
-            audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
-            updateSoundUI()
+            setRingerMode(AudioManager.RINGER_MODE_VIBRATE)
         }
         binding.btnSoundSilent.setOnClickListener {
-            audioManager.ringerMode = AudioManager.RINGER_MODE_SILENT
-            updateSoundUI()
+            setRingerMode(AudioManager.RINGER_MODE_SILENT)
         }
 
+        binding.seekVolume.contentDescription = "Media volume"
         binding.seekVolume.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         binding.seekVolume.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         binding.seekVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -505,6 +408,15 @@ class QuickSettingsActivity : AppCompatActivity() {
         binding.seekVolume.progress = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
     }
 
+    private fun setRingerMode(mode: Int) {
+        try {
+            audioManager.ringerMode = mode
+            updateAllStates()
+        } catch (_: SecurityException) {
+            openSettings(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+        }
+    }
+
     private fun setupDisplay() {
         binding.btnAutoBrightness.setOnClickListener {
             if (Settings.System.canWrite(this)) {
@@ -518,15 +430,23 @@ class QuickSettingsActivity : AppCompatActivity() {
             }
         }
 
+        binding.seekBrightness.contentDescription = "Brightness"
         binding.seekBrightness.max = 255
         binding.seekBrightness.progress = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 128)
         binding.seekBrightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser && Settings.System.canWrite(this@QuickSettingsActivity)) {
+                    Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL)
                     Settings.System.putInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, progress)
                 }
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                if (!Settings.System.canWrite(this@QuickSettingsActivity)) {
+                    startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                    })
+                }
+            }
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
     }
@@ -538,47 +458,6 @@ class QuickSettingsActivity : AppCompatActivity() {
         binding.seekBrightness.progress = Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, 128)
     }
 
-    private fun openTetherSettings() {
-        // Since Android 8.0+, we can\u0027t easily toggle hotspot without high-level permissions.
-        // Opening settings is the safest way.
-        try {
-            startActivity(Intent("android.settings.TETHER_SETTINGS"))
-        } catch (e: Exception) {
-            startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
-        }
-    }
-
-    private fun toggleHotspot() {
-        val enable = !isHotspotEnabled()
-        PrivilegedToggle.chain(
-            "hotspot",
-            listOf(
-                // Removed from the public SDK in API 26 and permission-gated (TETHER_PRIVILEGED)
-                // since then; tried anyway because some OEM builds still expose it.
-                PrivilegedToggle.Attempt("WifiManager.setWifiApEnabled (reflection)") {
-                    val method = wifiManager.javaClass.getMethod(
-                        "setWifiApEnabled",
-                        android.net.wifi.WifiConfiguration::class.java,
-                        Boolean::class.javaPrimitiveType
-                    )
-                    method.invoke(wifiManager, null, enable) as? Boolean ?: true
-                },
-                PrivilegedToggle.root("svc wifi ${if (enable) "enable" else "disable"}ap"),
-                PrivilegedToggle.root("cmd wifi ${if (enable) "start-softap" else "stop-softap"}")
-            ),
-            { isHotspotEnabled() == enable }
-        ) { winner ->
-            if (isFinishing || isDestroyed) return@chain
-            updateAllStates()
-            if (winner == null) openTetherSettings()
-        }
-    }
-
-    private fun isHotspotEnabled(): Boolean = runCatching {
-        val method = wifiManager.javaClass.getMethod("isWifiApEnabled")
-        method.invoke(wifiManager) as? Boolean ?: false
-    }.getOrDefault(false)
-
     private fun openSettings(primary: String, fallback: String = Settings.ACTION_SETTINGS) {
         try {
             startActivity(Intent(primary))
@@ -587,85 +466,29 @@ class QuickSettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun toggleBluetooth() {
+    private fun toggleFlashlight() {
+
         try {
-            val adapter = getSystemService(BluetoothManager::class.java).adapter ?: return
-            val enable = !adapter.isEnabled
-            PrivilegedToggle.chain(
-                "bluetooth",
-                listOf(
-                    // Public until API 32, hidden (but usually still present) on 33+.
-                    PrivilegedToggle.Attempt("BluetoothAdapter.${if (enable) "enable" else "disable"}") {
-                        val method = adapter.javaClass.getMethod(if (enable) "enable" else "disable")
-                        method.invoke(adapter) as? Boolean ?: true
-                    },
-                    PrivilegedToggle.root("cmd bluetooth_manager ${if (enable) "enable" else "disable"}"),
-                    PrivilegedToggle.root("svc bluetooth ${if (enable) "enable" else "disable"}")
-                ),
-                { adapter.isEnabled == enable }
-            ) { winner ->
-                if (isFinishing || isDestroyed) return@chain
-                updateAllStates()
-                if (winner == null) {
-                    // Small system dialog beats the full Settings app.
-                    if (enable) startActivity(Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE))
-                    else openBluetoothSettings()
-                }
+            val id = cameraId ?: cameraManager.cameraIdList.firstOrNull {
+                cameraManager.getCameraCharacteristics(it).get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }?.also { cameraId = it }
+            if (id == null) {
+                Toast.makeText(this, "Flashlight unavailable", Toast.LENGTH_SHORT).show()
+                return
             }
-        } catch (_: SecurityException) {
-            openBluetoothSettings()
-        }
-    }
-
-    private fun openBluetoothSettings() {
-        openSettings(Settings.ACTION_BLUETOOTH_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
-    }
-
-    private fun isMobileDataEnabled(): Boolean? = try {
-        val subId = SubscriptionManager.getDefaultDataSubscriptionId()
-        getSystemService(TelephonyManager::class.java)
-            .createForSubscriptionId(subId)
-            .isDataEnabled
-    } catch (_: Exception) { null }
-
-    private fun isAirplaneModeEnabled() =
-        Settings.Global.getInt(contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) == 1
-
-    /** LocationManager.isLocationEnabled is API 28; minSdk is 26, so fall back to LOCATION_MODE. */
-    private fun isLocationOn(): Boolean =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            getSystemService(LocationManager::class.java).isLocationEnabled
-        } else {
-            Settings.Secure.getInt(contentResolver, Settings.Secure.LOCATION_MODE, 0) !=
-                Settings.Secure.LOCATION_MODE_OFF
-        }
-
-    private fun toggleLocation() {
-        val enable = !isLocationOn()
-        PrivilegedToggle.chain(
-            "location",
-            listOf(
-                // This is exactly what `adb shell settings put secure location_mode` does, and it
-                // keeps working on Android 12-16 as long as WRITE_SECURE_SETTINGS is granted.
-                // The old code gated this to API <= 30, so on newer phones it never even tried.
-                PrivilegedToggle.Attempt("Settings.Secure LOCATION_MODE") {
-                    PrivilegedToggle.writeSecure(
-                        this,
-                        Settings.Secure.LOCATION_MODE,
-                        if (enable) Settings.Secure.LOCATION_MODE_HIGH_ACCURACY else Settings.Secure.LOCATION_MODE_OFF
-                    )
-                },
-                PrivilegedToggle.root(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                        "cmd location set-location-enabled $enable --user current"
-                    else "settings put secure location_mode ${if (enable) 3 else 0}"
-                )
-            ),
-            { isLocationOn() == enable }
-        ) { winner ->
-            if (isFinishing || isDestroyed) return@chain
+            // Retry registration if camera access was unavailable during onCreate.
+            cameraManager.registerTorchCallback(torchCallback, android.os.Handler(Looper.getMainLooper()))
+            cameraManager.setTorchMode(id, torchState != true)
+        } catch (e: Exception) {
+            torchState = null
             updateAllStates()
-            if (winner == null) openSettings(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            Toast.makeText(this, "Unable to change flashlight: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        connectivity.close()
+        cameraManager.unregisterTorchCallback(torchCallback)
+        super.onDestroy()
     }
 }

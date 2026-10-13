@@ -384,9 +384,10 @@
         android:textAlignment="center"
         android:layout_marginBottom="12dp"/>
       <TextView
+        android:id="@+id/tvStrictDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enabling this will silence ALL calls,\nmessages and notifications for 25 minutes.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
+        android:text="Enabling this will silence ALL calls,\nmessages and notifications.\n\nCamera will be disabled.\nNo apps can be opened.\nThis CANNOT be cancelled once started.\n\nOnly enable if fully committed.\nUse at your own risk."
         android:textColor="@color/text_secondary"
         android:fontFamily="@font/plus_jakarta_sans"
         android:textSize="13sp"
@@ -394,6 +395,50 @@
         android:textAlignment="center"
         android:lineSpacingExtra="6dp"/>
 
+      <LinearLayout
+        android:id="@+id/layoutStrictDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+        <TextView
+          android:id="@+id/btnStrictMinus"
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:gravity="center"
+          android:text="−"
+          android:textColor="@color/white"
+          android:textSize="20sp"
+          android:background="@drawable/btn_border" />
+        <TextView
+          android:id="@+id/tvStrictDurationVal"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="15 min"
+          android:textColor="@color/white"
+          android:textSize="16sp"
+          android:fontFamily="@font/plus_jakarta_sans_extra_bold"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp" />
+        <TextView
+          android:id="@+id/btnStrictPlus"
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:gravity="center"
+          android:text="+"
+          android:textColor="@color/white"
+          android:textSize="20sp"
+          android:background="@drawable/btn_border" />
+      </LinearLayout>
+
+      <SeekBar
+        android:id="@+id/seekStrictDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:max="29"
+        android:progress="14" />
     </LinearLayout>
 
     <TextView android:id="@+id/btnEnableStrict"
@@ -512,8 +557,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="24dp"
-        android:gravity="center"
-        android:animateLayoutChanges="true">
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
@@ -767,6 +811,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
+        android:background="#000000"
+        android:clickable="true"
+        android:focusable="true"
         android:visibility="gone">
 
         <TextView android:id="@+id/pom_tvPhaseLabel"

@@ -82,45 +82,28 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addTopOverlay(type: Int, statusBarH: Int) {
+        val topH = maxOf(statusBarH * 6, dpToPx(130))
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
-            statusBarH * 4,
+            topH,
             0, 0, type,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            PixelFormat.TRANSPARENT
+            PixelFormat.TRANSLUCENT
         )
         params.gravity = Gravity.TOP
         
         topOverlayView = View(this).apply {
-            setOnTouchListener { _, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        touchStartY = event.rawY
-                        panelOpenedThisGesture = false
-                        true
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        val dy = event.rawY - touchStartY
-                        if (dy > 80f && !panelOpenedThisGesture) {
-                            panelOpenedThisGesture = true
-                            // Open our custom panel broadcast
-                            sendBroadcast(Intent("com.minimalist.launcher.OPEN_NOTIF_PANEL").apply {
-                                `package` = packageName
-                            })
-                        }
-                        true
-                    }
-                    else -> true
-                }
-            }
+            setBackgroundColor(0x01000000)
+            setOnTouchListener { _, _ -> true }
         }
         try { windowManager.addView(topOverlayView, params) } catch (e: Exception) {}
     }
 
     private fun addEdgeOverlay(type: Int, gravity: Int) {
-        val edgeWidth = dpToPx(24)
+        val edgeWidth = dpToPx(56)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -128,10 +111,11 @@ class TopBarBlockerService : Service() {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            PixelFormat.TRANSPARENT
+            PixelFormat.TRANSLUCENT
         )
         params.gravity = gravity
         val edgeView = View(this).apply {
+            setBackgroundColor(0x01000000)
             setOnTouchListener { _, _ -> true } // Consume all touches
         }
         if (gravity == Gravity.END) rightEdgeView = edgeView else leftEdgeView = edgeView
