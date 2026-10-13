@@ -15,17 +15,20 @@ import androidx.core.app.NotificationCompat
 class PomodoroTimerService : Service() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private var remainingSeconds = 0
-    private var isWorkPhase = true
+    private var remainingSeconds = WORK_DURATION_SECONDS
 
     companion object {
         const val ACTION_START = "START"
         const val ACTION_STOP = "STOP"
-        const val EXTRA_DURATION = "duration_seconds"
+        const val ACTION_SKIP_BREAK = "SKIP_BREAK"
+        const val EXTRA_DURATION = "duration"
         const val BROADCAST_TICK = "com.minimalist.launcher.POMODORO_TICK"
         const val BROADCAST_PHASE_CHANGE = "com.minimalist.launcher.POMODORO_PHASE"
         const val BROADCAST_COMPLETE = "com.minimalist.launcher.POMODORO_COMPLETE"
         var isRunning = false
+
+        const val WORK_DURATION_SECONDS = 25 * 60
+        const val BREAK_DURATION_SECONDS = 5 * 60
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -33,12 +36,15 @@ class PomodoroTimerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
-                val totalSecs = intent.getIntExtra(EXTRA_DURATION, 25 * 60)
-                isWorkPhase = true
                 isRunning = true
-                remainingSeconds = totalSecs
+                remainingSeconds = WORK_DURATION_SECONDS
                 startForegroundNotification()
                 startTicking()
+            }
+            ACTION_SKIP_BREAK -> {
+                if (PomodoroManager.isBreakActive()) {
+                    transitionToNextWorkSession()
+                }
             }
             ACTION_STOP -> {
                 stopTicking()
@@ -54,64 +60,72 @@ class PomodoroTimerService : Service() {
         override fun run() {
             if (remainingSeconds > 0) {
                 remainingSeconds--
-                // Broadcast tick to PomodoroActivity
-                val tickIntent = Intent(BROADCAST_TICK)
-                tickIntent.putExtra("remaining", remainingSeconds)
-                tickIntent.putExtra("is_work", isWorkPhase)
-                sendBroadcast(tickIntent)
-                // Update notification
-                updateNotification(remainingSeconds, isWorkPhase)
+                broadcastTick()
+                updateNotification(remainingSeconds, PomodoroManager.isWorkPhase)
                 handler.postDelayed(this, 1000)
             } else {
-                // Phase complete
-                if (isWorkPhase) {
-                    // Work phase ended
-                    PomodoroManager.remainingWorkSeconds -= PomodoroManager.workChunkSeconds
-                    
-                    if (PomodoroManager.remainingWorkSeconds > 0) {
-                        // More work to do -> Break
-                        isWorkPhase = false
-                        PomodoroManager.isWorkPhase = false
-                        remainingSeconds = 5 * 60 // 5 min break
-                        
-                        val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
-                        phaseIntent.putExtra("is_work", isWorkPhase)
-                        phaseIntent.putExtra("session", PomodoroManager.sessionCount)
-                        sendBroadcast(phaseIntent)
-                        handler.post(this)
-                    } else {
-                        // All work done -> Finish
-                        isRunning = false
-                        PomodoroManager.stop(this@PomodoroTimerService)
-                        val completeIntent = Intent(BROADCAST_COMPLETE)
-                        sendBroadcast(completeIntent)
-                        stopForeground(STOP_FOREGROUND_REMOVE)
-                        stopSelf()
-                    }
-                } else {
-                    // Break phase ended -> Start next work chunk
-                    isWorkPhase = true
-                    PomodoroManager.isWorkPhase = true
-                    PomodoroManager.sessionCount++
-                    remainingSeconds = minOf(PomodoroManager.workChunkSeconds, PomodoroManager.remainingWorkSeconds)
-                    
-                    val phaseIntent = Intent(BROADCAST_PHASE_CHANGE)
-                    phaseIntent.putExtra("is_work", isWorkPhase)
-                    phaseIntent.putExtra("session", PomodoroManager.sessionCount)
-                    sendBroadcast(phaseIntent)
-                    handler.post(this)
-                }
+                handlePhaseCompletion()
             }
         }
     }
 
+    private fun handlePhaseCompletion() {
+        if (PomodoroManager.isWorkPhase) {
+            // 25 min work session completed
+            if (PomodoroManager.currentSession < PomodoroManager.totalSessions) {
+                // Start 5 min break
+                PomodoroManager.startBreak(this@PomodoroTimerService)
+                remainingSeconds = BREAK_DURATION_SECONDS
+                broadcastPhaseChange()
+                updateNotification(remainingSeconds, false)
+                startTicking()
+            } else {
+                // Final session finished -> Pomodoro complete
+                isRunning = false
+                PomodoroManager.stop(this@PomodoroTimerService)
+                val completeIntent = Intent(BROADCAST_COMPLETE)
+                sendBroadcast(completeIntent)
+                stopForeground(STOP_FOREGROUND_REMOVE)
+                stopSelf()
+            }
+        } else {
+            // 5 min break completed -> start next 25 min work session
+            transitionToNextWorkSession()
+        }
+    }
+
+    private fun transitionToNextWorkSession() {
+        PomodoroManager.resumeNextWorkSession(this@PomodoroTimerService)
+        remainingSeconds = WORK_DURATION_SECONDS
+        broadcastPhaseChange()
+        updateNotification(remainingSeconds, true)
+        startTicking()
+    }
+
+    private fun broadcastTick() {
+        val tickIntent = Intent(BROADCAST_TICK).apply {
+            putExtra("remaining", remainingSeconds)
+            putExtra("is_work", PomodoroManager.isWorkPhase)
+            putExtra("session", PomodoroManager.currentSession)
+            putExtra("total_sessions", PomodoroManager.totalSessions)
+        }
+        sendBroadcast(tickIntent)
+    }
+
+    private fun broadcastPhaseChange() {
+        val phaseIntent = Intent(BROADCAST_PHASE_CHANGE).apply {
+            putExtra("is_work", PomodoroManager.isWorkPhase)
+            putExtra("session", PomodoroManager.currentSession)
+            putExtra("total_sessions", PomodoroManager.totalSessions)
+            putExtra("remaining", remainingSeconds)
+        }
+        sendBroadcast(phaseIntent)
+    }
+
     private fun startTicking() {
         handler.removeCallbacks(tickRunnable)
-        val tickIntent = Intent(BROADCAST_TICK)
-        tickIntent.putExtra("remaining", remainingSeconds)
-        tickIntent.putExtra("is_work", isWorkPhase)
-        sendBroadcast(tickIntent)
-        updateNotification(remainingSeconds, isWorkPhase)
+        broadcastTick()
+        updateNotification(remainingSeconds, PomodoroManager.isWorkPhase)
         handler.postDelayed(tickRunnable, 1000)
     }
 
@@ -121,14 +135,22 @@ class PomodoroTimerService : Service() {
 
     private fun startForegroundNotification() {
         createNotificationChannel()
-        val notification = buildNotification(remainingSeconds, isWorkPhase)
+        val notification = buildNotification(remainingSeconds, PomodoroManager.isWorkPhase)
         startForeground(2001, notification)
     }
 
     private fun buildNotification(secs: Int, isWork: Boolean): Notification {
         val m = secs / 60
         val s = secs % 60
-        val title = if (isWork) "Focus Session" else "Break"
+        val title = if (isWork) {
+            if (PomodoroManager.totalSessions > 1) {
+                "Work Session ${PomodoroManager.currentSession} of ${PomodoroManager.totalSessions}"
+            } else {
+                "Focus Session"
+            }
+        } else {
+            "Break Time"
+        }
         val text = "%02d:%02d remaining".format(m, s)
 
         val intent = Intent(this, FocusActivity::class.java).apply {

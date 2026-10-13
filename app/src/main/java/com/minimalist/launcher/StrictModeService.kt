@@ -42,11 +42,7 @@ class StrictModeService : AccessibilityService() {
             val shouldBlock = shouldBlock()
             syncOverlay(shouldBlock)
             syncStatusBarBlock(shouldBlock)
-            if (shouldBlock) {
-                dismissNotificationShade()
-                checkAndBlockFloatingWindows()
-            }
-            if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 750)
+            if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 1000)
         }
     }
 
@@ -54,7 +50,6 @@ class StrictModeService : AccessibilityService() {
         StrictModeManager.isActive() || PomodoroManager.isWorkSessionActive()
 
     private fun dismissNotificationShade() {
-        performGlobalAction(GLOBAL_ACTION_BACK)
         if (Build.VERSION.SDK_INT >= 31) {
             performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
         }
@@ -64,6 +59,7 @@ class StrictModeService : AccessibilityService() {
             val statusBar = getSystemService("statusbar")
             statusBar.javaClass.getMethod("collapsePanels").invoke(statusBar)
         } catch (_: Exception) {}
+        performGlobalAction(GLOBAL_ACTION_BACK)
     }
 
     private fun isPermissionOrSystemDialog(pkg: String): Boolean {
@@ -73,24 +69,16 @@ class StrictModeService : AccessibilityService() {
                p.contains("securitypermission")
     }
 
-    private fun checkAndBlockFloatingWindows() {
-        if (!shouldBlock()) return
-        val currentWindows = runCatching { windows }.getOrNull() ?: return
-        for (w in currentWindows) {
-            if (w.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
-                val bounds = android.graphics.Rect()
-                w.getBoundsInScreen(bounds)
-                val dm = resources.displayMetrics
-                val isFullScreen = bounds.width() >= dm.widthPixels && bounds.height() >= (dm.heightPixels - 120)
-                if (!isFullScreen && bounds.width() > 60 && bounds.height() > 60) {
-                    performGlobalAction(GLOBAL_ACTION_BACK)
-                    return
-                }
-            }
-        }
+    private fun isNotificationPanelEvent(event: AccessibilityEvent): Boolean {
+        val cls = event.className?.toString()?.lowercase() ?: return false
+        return cls.contains("notification") ||
+               cls.contains("panel") ||
+               cls.contains("shade") ||
+               cls.contains("quicksettings") ||
+               cls.contains("statusbar")
     }
 
-    /** Use Shizuku to set policy_control to block/unblock status bar pull-down. */
+    /** Set policy_control to block/unblock status bar pull-down. */
     private fun syncStatusBarBlock(shouldBlock: Boolean) {
         if (statusBarBlocked == shouldBlock) return
         statusBarBlocked = shouldBlock
@@ -132,7 +120,6 @@ class StrictModeService : AccessibilityService() {
     fun startBlocking() {
         handler.removeCallbacks(shadeBlocker)
         handler.post(shadeBlocker)
-        // Immediately block status bar expansion
         PrivilegedToggle.setStatusBarExpansion(true)
         statusBarBlocked = true
     }
@@ -143,7 +130,6 @@ class StrictModeService : AccessibilityService() {
             handler.post(shadeBlocker)
         } else {
             syncOverlay(false)
-            // Unblock status bar
             if (statusBarBlocked) {
                 PrivilegedToggle.setStatusBarExpansion(false)
                 statusBarBlocked = false
@@ -165,7 +151,6 @@ class StrictModeService : AccessibilityService() {
         instance = null
         if (StrictModeManager.serviceRef === this) StrictModeManager.serviceRef = null
         handler.removeCallbacks(shadeBlocker)
-        // Always unblock status bar on destroy
         if (statusBarBlocked) {
             PrivilegedToggle.setStatusBarExpansion(false)
             statusBarBlocked = false
@@ -185,35 +170,54 @@ class StrictModeService : AccessibilityService() {
             return
         }
 
-        // Block notification shade / system panels
-        if (isSystemUi(eventPkg)) {
-            dismissNotificationShade()
-        }
-
-        // Block floating windows / side panels
-        if (isSidebarOrFloatPanel(eventPkg)) {
-            dismissNotificationShade()
-            performGlobalAction(GLOBAL_ACTION_BACK)
-            PrivilegedToggle.forceStop(eventPkg)
-            bringFocusActivityToFront(if (PomodoroManager.isWorkSessionActive()) "pomodoro" else "strict")
-            return
-        }
-
-        checkAndBlockFloatingWindows()
-
+        // 1. In Pomodoro Mode:
         if (PomodoroManager.isWorkSessionActive()) {
-            val allowed = PomodoroManager.allowedPackages
-            if (!allowed.contains(eventPkg) && !isSystemUi(eventPkg) && eventPkg != packageName) {
-                performGlobalAction(GLOBAL_ACTION_HOME)
+            // If the event belongs to an allowed app or launcher itself, let it run completely!
+            if (PomodoroManager.allowedPackages.contains(eventPkg) || eventPkg == packageName) {
+                return
+            }
+
+            // Block sidebar or floating panels
+            if (isSidebarOrFloatPanel(eventPkg)) {
+                dismissNotificationShade()
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 PrivilegedToggle.forceStop(eventPkg)
                 bringFocusActivityToFront("pomodoro")
+                return
             }
+
+            // Block notification shade if expanded
+            if (isSystemUi(eventPkg)) {
+                if (isNotificationPanelEvent(event)) {
+                    dismissNotificationShade()
+                }
+                return
+            }
+
+            // Any unallowed application: block immediately!
+            performGlobalAction(GLOBAL_ACTION_HOME)
+            performGlobalAction(GLOBAL_ACTION_BACK)
+            PrivilegedToggle.forceStop(eventPkg)
+            bringFocusActivityToFront("pomodoro")
             return
         }
 
+        // 2. In Strict Mode:
         if (StrictModeManager.isActive()) {
-            if (!isSystemUi(eventPkg) && eventPkg != packageName) {
+            if (isSidebarOrFloatPanel(eventPkg)) {
+                dismissNotificationShade()
+                performGlobalAction(GLOBAL_ACTION_BACK)
+                PrivilegedToggle.forceStop(eventPkg)
+                bringFocusActivityToFront("strict")
+                return
+            }
+            if (isSystemUi(eventPkg)) {
+                if (isNotificationPanelEvent(event)) {
+                    dismissNotificationShade()
+                }
+                return
+            }
+            if (eventPkg != packageName) {
                 performGlobalAction(GLOBAL_ACTION_HOME)
                 performGlobalAction(GLOBAL_ACTION_BACK)
                 PrivilegedToggle.forceStop(eventPkg)
@@ -244,5 +248,4 @@ class StrictModeService : AccessibilityService() {
     }
 
     override fun onInterrupt() {}
-
 }

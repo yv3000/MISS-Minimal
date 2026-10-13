@@ -82,7 +82,7 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addTopOverlay(type: Int, statusBarH: Int) {
-        val topH = maxOf(statusBarH * 6, dpToPx(130))
+        val topH = statusBarH + dpToPx(4)
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             topH,
@@ -103,7 +103,7 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addEdgeOverlay(type: Int, gravity: Int) {
-        val edgeWidth = dpToPx(56)
+        val edgeWidth = dpToPx(14)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,
