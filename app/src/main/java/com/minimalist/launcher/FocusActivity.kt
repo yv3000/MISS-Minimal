@@ -112,7 +112,16 @@ class FocusActivity : AppCompatActivity() {
     ActivityResultContracts.RequestPermission()
   ) { isGranted ->
     if (isGranted) {
-      pendingCallNumber?.let { makeDirectCall(it) }
+      val num = pendingCallNumber
+      if (num != null) {
+        makeDirectCall(num)
+      } else {
+        try {
+          pomContactPicker.launch(
+            Intent(Intent.ACTION_PICK).setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
+          )
+        } catch (_: Exception) {}
+      }
     } else {
       Toast.makeText(this, "Call permission required for direct emergency calls", Toast.LENGTH_SHORT).show()
     }
@@ -203,6 +212,12 @@ class FocusActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (savedInstanceState != null) {
+      val savedApps = savedInstanceState.getStringArrayList("pom_selected_apps")
+      if (savedApps != null) {
+        selectedApps.clear()
+        selectedApps.addAll(savedApps)
+      }
+      selectedDurationMins = savedInstanceState.getInt("pom_selected_duration", 25)
       emergencyContacts.indices.forEach { index ->
         val name = savedInstanceState.getString("pom_contact_${index}_name")
         val number = savedInstanceState.getString("pom_contact_${index}_number")
@@ -230,15 +245,14 @@ class FocusActivity : AppCompatActivity() {
 
       bindViews()
       setupGestures()
+      PomodoroManager.restoreFromPrefs(this)
+      restorePomodoroState()
       setupTabs()
       setupStopwatch()
       setupTimer()
       setupStrictMode()
       setupPomodoro()
       portraitUiInitialized = true
-
-      // Restore Pomodoro state if session is still active
-      restorePomodoroState()
 
       handleIntent(intent)
     } catch (e: Exception) {
@@ -357,9 +371,6 @@ class FocusActivity : AppCompatActivity() {
       onStrictTabSelected()
       return
     }
-
-    val root = findViewById<ViewGroup>(android.R.id.content)
-    TransitionManager.beginDelayedTransition(root, Fade())
 
     tabStopwatch.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
     tabTimer.setTextColor(android.graphics.Color.parseColor("#8E8E93"))
@@ -854,6 +865,13 @@ class FocusActivity : AppCompatActivity() {
       
       selectTab("pomodoro")
       showPomActiveScreen()
+
+      if (!PomodoroTimerService.isRunning) {
+        val timerIntent = Intent(this, PomodoroTimerService::class.java).apply {
+          action = PomodoroTimerService.ACTION_START
+        }
+        startService(timerIntent)
+      }
     } else {
       showPomSetupScreen()
       updatePomDurationSelection(selectedDurationMins)
@@ -1081,20 +1099,34 @@ class FocusActivity : AppCompatActivity() {
         }
       }
     }
-    pom_btnCancelBreak.setOnClickListener { endPomodoroSession() }
+    pom_btnCancelBreak.setOnClickListener {
+      val intent = Intent(this, PomodoroTimerService::class.java).apply {
+        action = PomodoroTimerService.ACTION_SKIP_BREAK
+      }
+      startService(intent)
+    }
     
     val activeSlots = listOf(pom_active_slot1, pom_active_slot2, pom_active_slot3)
     activeSlots.forEachIndexed { index, slot ->
-        slot.setOnClickListener {
-            selectedApps.getOrNull(index)?.let { pkg ->
-                val intent = packageManager.getLaunchIntentForPackage(pkg)
-                if (intent != null) {
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Cannot launch $pkg", Toast.LENGTH_SHORT).show()
-                }
+      slot.setOnClickListener {
+        val pkg = PomodoroManager.userSelectedApps.getOrNull(index) ?: selectedApps.getOrNull(index)
+        if (pkg != null) {
+          try {
+            PomodoroManager.lastLaunchTime = android.os.SystemClock.uptimeMillis()
+            PomodoroManager.lastLaunchedAppPkg = pkg
+            val intent = packageManager.getLaunchIntentForPackage(pkg)?.apply {
+              addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
             }
+            if (intent != null) {
+              startActivity(intent)
+            } else {
+              Toast.makeText(this, "Cannot launch app", Toast.LENGTH_SHORT).show()
+            }
+          } catch (e: Exception) {
+            Toast.makeText(this, "Launch failed: ${e.message}", Toast.LENGTH_SHORT).show()
+          }
         }
+      }
     }
     
     listOf(pom_btnDur25, pom_btnDur50, pom_btnDur75, pom_btnDur100, 
@@ -1135,7 +1167,13 @@ class FocusActivity : AppCompatActivity() {
   private fun updatePomAppSlotsUI() {
     fun style(slot: TextView, pkg: String?) {
       if (pkg != null) {
-        slot.text = pkg.substringAfterLast(".").take(6)
+        val label = try {
+          val info = packageManager.getApplicationInfo(pkg, 0)
+          packageManager.getApplicationLabel(info).toString().take(8)
+        } catch (_: Exception) {
+          pkg.substringAfterLast(".").take(8)
+        }
+        slot.text = label
         slot.setBackgroundResource(R.drawable.bg_pill)
         slot.backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#222222"))
         slot.setTextColor(android.graphics.Color.WHITE)
@@ -1155,6 +1193,7 @@ class FocusActivity : AppCompatActivity() {
     pendingContactIndex = index
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
       callPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+      return
     }
     try {
       pomContactPicker.launch(
@@ -1272,6 +1311,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun endPomodoroSession() {
+    applyPomodoroImmersiveMode(false)
     val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     if (nm.isNotificationPolicyAccessGranted) {
       nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
@@ -1285,6 +1325,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun onPomodoroCompleted() {
+    applyPomodoroImmersiveMode(false)
     vibrator.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 500, 200, 500), -1))
     AlertDialog.Builder(this)
       .setTitle("Session Complete")
@@ -1296,6 +1337,7 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun showPomSetupScreen() {
+    applyPomodoroImmersiveMode(false)
     scrollPomodoroSetup.visibility = View.VISIBLE
     pom_layoutSetup.visibility = View.VISIBLE
     pom_layoutActive.visibility = View.GONE
@@ -1304,12 +1346,17 @@ class FocusActivity : AppCompatActivity() {
   }
 
   private fun showPomActiveScreen() {
+    applyPomodoroImmersiveMode(true)
     scrollPomodoroSetup.visibility = View.GONE
     pom_layoutSetup.visibility = View.GONE
     pom_layoutActive.visibility = View.VISIBLE
     findViewById<View>(R.id.tabBar).visibility = View.GONE
     tabIndicator.visibility = View.GONE
-    pom_tvSessionCount.text = "session ${PomodoroManager.sessionCount}"
+    pom_tvSessionCount.text = if (PomodoroManager.totalSessions > 1) {
+      "session ${PomodoroManager.currentSession} of ${PomodoroManager.totalSessions}"
+    } else {
+      "session ${PomodoroManager.currentSession}"
+    }
     
     emergencyContacts.indices.forEach { emergencyContacts[it] = PomodoroManager.emergencyContacts[it] }
     listOf(pom_btnCallContact, pom_btnCallContact2).forEachIndexed { index, view ->
@@ -1340,6 +1387,22 @@ class FocusActivity : AppCompatActivity() {
                 pkg.substringAfterLast(".").take(8)
             }
             slot.text = label
+            slot.setOnClickListener {
+                try {
+                    PomodoroManager.lastLaunchTime = android.os.SystemClock.uptimeMillis()
+                    PomodoroManager.lastLaunchedAppPkg = pkg
+                    val launchIntent = packageManager.getLaunchIntentForPackage(pkg)?.apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                    }
+                    if (launchIntent != null) {
+                        startActivity(launchIntent)
+                    } else {
+                        Toast.makeText(this, "Cannot launch $label", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Launch error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
   }
@@ -1348,9 +1411,22 @@ class FocusActivity : AppCompatActivity() {
     val mins = remaining / 60
     val secs = remaining % 60
     pom_tvCountdown.text = "%02d:%02d".format(mins, secs)
-    pom_tvPhaseLabel.text = if (isWork) "WORK PHASE" else "BREAK TIME"
-    pom_tvPhaseLabel.setTextColor(if (isWork) android.graphics.Color.WHITE else android.graphics.Color.parseColor("#4CAF50"))
-    pom_btnCancelBreak.visibility = if (!isWork) View.VISIBLE else View.GONE
+    if (isWork) {
+      pom_tvPhaseLabel.text = if (PomodoroManager.totalSessions > 1) {
+        "WORK SESSION ${PomodoroManager.currentSession} OF ${PomodoroManager.totalSessions}"
+      } else {
+        "WORK PHASE"
+      }
+      pom_tvPhaseLabel.setTextColor(android.graphics.Color.WHITE)
+      pom_btnCancelBreak.visibility = View.GONE
+    } else {
+      pom_tvPhaseLabel.text = "BREAK TIME (5 MIN)"
+      pom_tvPhaseLabel.setTextColor(android.graphics.Color.parseColor("#4CAF50"))
+      pom_btnCancelBreak.visibility = View.VISIBLE
+      if (pom_btnCancelBreak is TextView) {
+        (pom_btnCancelBreak as TextView).text = "SKIP BREAK"
+      }
+    }
   }
 
   private fun onPomPhaseChanged(isWork: Boolean, session: Int) {
@@ -1360,14 +1436,72 @@ class FocusActivity : AppCompatActivity() {
       @Suppress("DEPRECATION")
       vibrator.vibrate(100)
     }
-    pom_tvSessionCount.text = "session $session"
+    pom_tvSessionCount.text = if (PomodoroManager.totalSessions > 1) {
+      "session $session of ${PomodoroManager.totalSessions}"
+    } else {
+      "session $session"
+    }
     
     // Block during work, unblock during break
     if (isWork) {
+      applyPomodoroImmersiveMode(true)
       TopBarBlockerService.start(this)
     } else {
+      applyPomodoroImmersiveMode(false)
       TopBarBlockerService.stop(this)
     }
+  }
+
+  private fun applyPomodoroImmersiveMode(enable: Boolean) {
+    if (enable) {
+      @Suppress("DEPRECATION")
+      window.decorView.systemUiVisibility = (
+          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+          or View.SYSTEM_UI_FLAG_FULLSCREEN
+          or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+          or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+          or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+          or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+    }
+  }
+
+  override fun onWindowFocusChanged(hasFocus: Boolean) {
+    super.onWindowFocusChanged(hasFocus)
+    if (PomodoroManager.isWorkSessionActive()) {
+      if (!hasFocus) {
+        val timeSinceLaunch = android.os.SystemClock.uptimeMillis() - PomodoroManager.lastLaunchTime
+        if (timeSinceLaunch >= 2500) {
+          collapseNotificationShade()
+        }
+      } else {
+        applyPomodoroImmersiveMode(true)
+      }
+    }
+  }
+
+  private fun collapseNotificationShade() {
+    val doCollapse = Runnable {
+      try {
+        @Suppress("DEPRECATION")
+        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+      } catch (_: Throwable) {}
+      try {
+        val statusBar = getSystemService("statusbar")
+        val method = statusBar?.javaClass?.getMethod("collapsePanels")
+        method?.isAccessible = true
+        method?.invoke(statusBar)
+      } catch (_: Throwable) {}
+      try {
+        StrictModeService.instance?.dismissNotificationShade()
+      } catch (_: Throwable) {}
+    }
+    doCollapse.run()
+    handler.postDelayed(doCollapse, 150)
+    handler.postDelayed(doCollapse, 350)
   }
 
   override fun onBackPressed() {
@@ -1381,6 +1515,8 @@ class FocusActivity : AppCompatActivity() {
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
+    outState.putStringArrayList("pom_selected_apps", ArrayList(selectedApps))
+    outState.putInt("pom_selected_duration", selectedDurationMins)
     emergencyContacts.forEachIndexed { index, contact ->
       outState.putString("pom_contact_${index}_name", contact?.first)
       outState.putString("pom_contact_${index}_number", contact?.second)

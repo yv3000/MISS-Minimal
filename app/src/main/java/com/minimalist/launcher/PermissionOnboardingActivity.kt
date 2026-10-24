@@ -112,8 +112,8 @@ class PermissionOnboardingActivity : AppCompatActivity() {
                 isBatteryOptimizationIgnored() &&
                 isNotificationListenerGranted()
 
-        btnContinue.isEnabled = allGranted
-        btnContinue.alpha = if (allGranted) 1f else 0.3f
+        btnContinue.isEnabled = true
+        btnContinue.alpha = if (allGranted) 1f else 0.85f
     }
 
     fun updateRow(row: View, btnId: Int, statusId: Int, isGranted: Boolean) {

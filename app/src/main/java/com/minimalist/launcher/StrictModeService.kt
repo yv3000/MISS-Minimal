@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
 class StrictModeService : AccessibilityService() {
@@ -42,40 +43,90 @@ class StrictModeService : AccessibilityService() {
             val shouldBlock = shouldBlock()
             syncOverlay(shouldBlock)
             syncStatusBarBlock(shouldBlock)
-            if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 1000)
+            if (shouldBlock) {
+                checkAndDismissShadeIfVisible()
+            }
+            if (shouldBlock || PomodoroManager.isActive) handler.postDelayed(this, 500)
         }
+    }
+
+    private fun checkAndDismissShadeIfVisible() {
+        try {
+            val wins = windows ?: return
+            for (w in wins) {
+                val title = w.title?.toString()?.lowercase() ?: ""
+                if (title.contains("notificationshade") || title.contains("notification") || (title.contains("status") && w.isFocused)) {
+                    dismissNotificationShade()
+                    break
+                }
+            }
+        } catch (_: Exception) {}
     }
 
     private fun shouldBlock() =
         StrictModeManager.isActive() || PomodoroManager.isWorkSessionActive()
 
-    private fun dismissNotificationShade() {
+    fun dismissNotificationShade() {
         if (Build.VERSION.SDK_INT >= 31) {
-            performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            try {
+                performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
+            } catch (_: Exception) {}
         }
-        @Suppress("DEPRECATION")
-        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+        try {
+            performGlobalAction(GLOBAL_ACTION_BACK)
+        } catch (_: Exception) {}
+        try {
+            @Suppress("DEPRECATION")
+            sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+        } catch (_: Exception) {}
         try {
             val statusBar = getSystemService("statusbar")
-            statusBar.javaClass.getMethod("collapsePanels").invoke(statusBar)
+            val method = statusBar?.javaClass?.getMethod("collapsePanels")
+            method?.isAccessible = true
+            method?.invoke(statusBar)
         } catch (_: Exception) {}
-        performGlobalAction(GLOBAL_ACTION_BACK)
     }
 
     private fun isPermissionOrSystemDialog(pkg: String): Boolean {
         val p = pkg.lowercase()
         return p.contains("permissioncontroller") ||
                p.contains("packageinstaller") ||
-               p.contains("securitypermission")
+               p.contains("securitypermission") ||
+               p.contains("safecenter")
+    }
+
+    private fun isInputMethod(pkg: String): Boolean {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+            ?: return false
+        return imm.enabledInputMethodList.any { it.packageName == pkg }
     }
 
     private fun isNotificationPanelEvent(event: AccessibilityEvent): Boolean {
-        val cls = event.className?.toString()?.lowercase() ?: return false
-        return cls.contains("notification") ||
-               cls.contains("panel") ||
-               cls.contains("shade") ||
-               cls.contains("quicksettings") ||
-               cls.contains("statusbar")
+        val cls = event.className?.toString()?.lowercase() ?: ""
+        if (cls.contains("navigation")) return false
+
+        // Any window state change from SystemUI during block mode is almost certainly shade or quicksettings
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            return true
+        }
+
+        if (cls.contains("notification") ||
+            cls.contains("shade") ||
+            cls.contains("quicksettings") ||
+            cls.contains("qs") ||
+            cls.contains("panel") ||
+            cls.contains("statusbar")) {
+            return true
+        }
+
+        val text = event.text.joinToString(" ").lowercase()
+        val desc = event.contentDescription?.toString()?.lowercase() ?: ""
+        val combined = "$text $desc"
+        return combined.contains("notification") ||
+               combined.contains("quick settings") ||
+               combined.contains("clear all") ||
+               combined.contains("alerting") ||
+               combined.contains("manage")
     }
 
     /** Set policy_control to block/unblock status bar pull-down. */
@@ -91,7 +142,32 @@ class StrictModeService : AccessibilityService() {
         if (shouldBlock) TopBarBlockerService.start(this) else TopBarBlockerService.stop(this)
     }
 
+    private val SYSTEM_LAUNCHERS = setOf(
+        "com.oppo.launcher",
+        "com.oplus.launcher",
+        "com.coloros.launcher",
+        "com.google.android.apps.nexuslauncher",
+        "com.sec.android.app.launcher",
+        "com.miui.home",
+        "com.mi.android.globallauncher",
+        "com.android.launcher3",
+        "com.android.launcher",
+        "com.huawei.android.launcher",
+        "com.bbk.launcher2",
+        "com.vivo.upslide",
+        "com.transsion.xoslauncher"
+    )
+
+    private fun isSystemLauncher(pkg: String): Boolean {
+        if (pkg == packageName) return false
+        if (SYSTEM_LAUNCHERS.contains(pkg)) return true
+        val homeIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
+        val resolve = packageManager.resolveActivity(homeIntent, 0)
+        return resolve?.activityInfo?.packageName == pkg
+    }
+
     private fun isSidebarOrFloatPanel(pkg: String): Boolean {
+        if (PomodoroManager.userSelectedApps.contains(pkg)) return false
         val p = pkg.lowercase()
         return p.contains("securityadd") ||
                p.contains("securitycenter") ||
@@ -107,13 +183,15 @@ class StrictModeService : AccessibilityService() {
                p.contains("multiwindow") ||
                p.contains("popupview") ||
                p.contains("bubbles") ||          // Chat bubbles
+               p.contains("assistantscreen") ||  // ColorOS assistant screen
                p.contains("floating")
     }
 
     private fun isSystemUi(packageName: String): Boolean {
         if (isSidebarOrFloatPanel(packageName)) return false
-        return packageName.contains("systemui", ignoreCase = true) ||
-               packageName.contains("notification", ignoreCase = true) ||
+        val p = packageName.lowercase()
+        return p.contains("systemui") ||
+               p.contains("notification") ||
                SYSTEM_UI_PACKAGES.any { packageName == it || packageName.startsWith("$it.") }
     }
 
@@ -142,6 +220,10 @@ class StrictModeService : AccessibilityService() {
         instance = this
         StrictModeManager.serviceRef = this
 
+        // Restore Pomodoro state so allowedPackages survives process restarts
+        PomodoroManager.restoreFromPrefs(this)
+        StrictModeManager.restoreFromPrefs(this)
+
         if (shouldBlock()) {
             startBlocking()
         }
@@ -166,39 +248,59 @@ class StrictModeService : AccessibilityService() {
         syncStatusBarBlock(shouldBlock)
         if (!shouldBlock) return
 
-        if (isPermissionOrSystemDialog(eventPkg)) {
-            return
-        }
-
         // 1. In Pomodoro Mode:
         if (PomodoroManager.isWorkSessionActive()) {
-            // If the event belongs to an allowed app or launcher itself, let it run completely!
-            if (PomodoroManager.allowedPackages.contains(eventPkg) || eventPkg == packageName) {
-                return
-            }
-
-            // Block sidebar or floating panels
+            // A. ALWAYS block sidebar and floating panels FIRST!
             if (isSidebarOrFloatPanel(eventPkg)) {
+                Log.d("PomBlock", "BLOCK sidebar pkg=$eventPkg")
                 dismissNotificationShade()
                 performGlobalAction(GLOBAL_ACTION_BACK)
-                PrivilegedToggle.forceStop(eventPkg)
-                bringFocusActivityToFront("pomodoro")
                 return
             }
 
-            // Block notification shade if expanded
+            // B. ALWAYS block notification shade if expanding / visible
             if (isSystemUi(eventPkg)) {
                 if (isNotificationPanelEvent(event)) {
+                    Log.d("PomBlock", "BLOCK notification shade cls=${event.className}")
                     dismissNotificationShade()
                 }
                 return
             }
 
-            // Any unallowed application: block immediately!
-            performGlobalAction(GLOBAL_ACTION_HOME)
-            performGlobalAction(GLOBAL_ACTION_BACK)
-            PrivilegedToggle.forceStop(eventPkg)
-            bringFocusActivityToFront("pomodoro")
+            // C. Permission dialogs, keyboards (IME)
+            if (isPermissionOrSystemDialog(eventPkg) || isInputMethod(eventPkg)) {
+                return
+            }
+
+            // D. Launcher itself, user-allowed apps, or ALWAYS_ALLOWED (telecom/dialer)
+            if (PomodoroManager.allowedPackages.contains(eventPkg) || eventPkg == packageName) {
+                Log.d("PomBlock", "ALLOWED pkg=$eventPkg eventType=${event.eventType}")
+                return
+            }
+
+            // E. Transition Window: if an allowed app was launched in the last 2.5 seconds,
+            // allow launcher animations / intermediate system transitions without blocking!
+            val timeSinceLaunch = android.os.SystemClock.uptimeMillis() - PomodoroManager.lastLaunchTime
+            if (timeSinceLaunch < 2500) {
+                Log.d("PomBlock", "TRANSITION window pkg=$eventPkg time=$timeSinceLaunch")
+                return
+            }
+
+            // F. System Home Launcher: user pressed home or swiped home outside transition
+            if (isSystemLauncher(eventPkg)) {
+                if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                    Log.d("PomBlock", "HOME pressed -> bring focus front")
+                    bringFocusActivityToFront("pomodoro")
+                }
+                return
+            }
+
+            // G. Any unallowed 3rd-party application: block immediately!
+            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                Log.d("PomBlock", "BLOCK unallowed pkg=$eventPkg allowedPkgs=${PomodoroManager.allowedPackages}")
+                performGlobalAction(GLOBAL_ACTION_BACK)
+                bringFocusActivityToFront("pomodoro")
+            }
             return
         }
 
@@ -207,7 +309,6 @@ class StrictModeService : AccessibilityService() {
             if (isSidebarOrFloatPanel(eventPkg)) {
                 dismissNotificationShade()
                 performGlobalAction(GLOBAL_ACTION_BACK)
-                PrivilegedToggle.forceStop(eventPkg)
                 bringFocusActivityToFront("strict")
                 return
             }
@@ -217,10 +318,11 @@ class StrictModeService : AccessibilityService() {
                 }
                 return
             }
-            if (eventPkg != packageName) {
-                performGlobalAction(GLOBAL_ACTION_HOME)
+            if (isPermissionOrSystemDialog(eventPkg) || isInputMethod(eventPkg)) {
+                return
+            }
+            if (eventPkg != packageName && event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                 performGlobalAction(GLOBAL_ACTION_BACK)
-                PrivilegedToggle.forceStop(eventPkg)
                 bringFocusActivityToFront("strict")
             }
         }
@@ -231,7 +333,7 @@ class StrictModeService : AccessibilityService() {
             val intent = Intent(this, FocusActivity::class.java).apply {
                 addFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or
                     Intent.FLAG_ACTIVITY_SINGLE_TOP
                 )
                 putExtra("tab", tab)

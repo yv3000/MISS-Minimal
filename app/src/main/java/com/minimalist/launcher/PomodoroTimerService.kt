@@ -37,7 +37,8 @@ class PomodoroTimerService : Service() {
         when (intent?.action) {
             ACTION_START -> {
                 isRunning = true
-                remainingSeconds = WORK_DURATION_SECONDS
+                val durationSecs = intent.getIntExtra(EXTRA_DURATION, PomodoroManager.selectedDurationMinutes * 60)
+                remainingSeconds = if (durationSecs > 0) durationSecs else WORK_DURATION_SECONDS
                 startForegroundNotification()
                 startTicking()
             }
@@ -83,7 +84,9 @@ class PomodoroTimerService : Service() {
                 // Final session finished -> Pomodoro complete
                 isRunning = false
                 PomodoroManager.stop(this@PomodoroTimerService)
-                val completeIntent = Intent(BROADCAST_COMPLETE)
+                val completeIntent = Intent(BROADCAST_COMPLETE).apply {
+                    setPackage(packageName)
+                }
                 sendBroadcast(completeIntent)
                 stopForeground(STOP_FOREGROUND_REMOVE)
                 stopSelf()
@@ -104,6 +107,7 @@ class PomodoroTimerService : Service() {
 
     private fun broadcastTick() {
         val tickIntent = Intent(BROADCAST_TICK).apply {
+            setPackage(packageName)
             putExtra("remaining", remainingSeconds)
             putExtra("is_work", PomodoroManager.isWorkPhase)
             putExtra("session", PomodoroManager.currentSession)
@@ -114,6 +118,7 @@ class PomodoroTimerService : Service() {
 
     private fun broadcastPhaseChange() {
         val phaseIntent = Intent(BROADCAST_PHASE_CHANGE).apply {
+            setPackage(packageName)
             putExtra("is_work", PomodoroManager.isWorkPhase)
             putExtra("session", PomodoroManager.currentSession)
             putExtra("total_sessions", PomodoroManager.totalSessions)

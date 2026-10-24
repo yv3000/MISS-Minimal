@@ -12,6 +12,9 @@ object PomodoroManager {
     var selectedDurationMinutes = 25
     val sessionCount: Int get() = currentSession
     
+    var lastLaunchTime = 0L
+    var lastLaunchedAppPkg: String? = null
+
     val userSelectedApps = mutableListOf<String>()
     val allowedPackages = mutableSetOf<String>()
     val emergencyContacts = MutableList<Pair<String, String>?>(2) { null }
@@ -19,7 +22,11 @@ object PomodoroManager {
     private val ALWAYS_ALLOWED = setOf(
         "com.minimalist.launcher",
         "android",
-        "com.android.systemui",
+        // System frameworks & Google Play Services
+        "com.google.android.gms",
+        "com.google.android.gsf",
+        "com.android.vending",
+        // Phone, Dialer & Telecom (direct emergency calls)
         "com.android.phone",
         "com.android.dialer",
         "com.google.android.dialer",
@@ -27,17 +34,26 @@ object PomodoroManager {
         "com.android.incallui",
         "com.android.server.telecom",
         "com.android.telecom",
-        "com.android.permissioncontroller",
-        "com.google.android.permissioncontroller",
-        "com.coloros.securitypermission",
         "com.samsung.android.dialer",
         "com.samsung.android.incallui",
         "com.vivo.dialer",
+        "com.vivo.incallui",
         "com.iqoo.phone",
         "com.oneplus.dialer",
         "com.oplus.dialer",
         "com.heytap.dialer",
-        "com.coloros.phonemanager"
+        "com.coloros.phonemanager",
+        "com.coloros.telecom",
+        "com.oplus.telecom",
+        // Permission & security dialogs
+        "com.android.permissioncontroller",
+        "com.google.android.permissioncontroller",
+        "com.coloros.securitypermission",
+        "com.oplus.securitypermission",
+        "com.coloros.safecenter",
+        "com.oplus.safecenter",
+        "com.android.packageinstaller",
+        "com.google.android.packageinstaller"
     )
 
     fun start(

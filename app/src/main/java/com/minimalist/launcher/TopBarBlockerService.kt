@@ -82,7 +82,7 @@ class TopBarBlockerService : Service() {
     }
 
     private fun addTopOverlay(type: Int, statusBarH: Int) {
-        val topH = statusBarH + dpToPx(4)
+        val topH = statusBarH + dpToPx(24)
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
             topH,
@@ -97,13 +97,30 @@ class TopBarBlockerService : Service() {
         
         topOverlayView = View(this).apply {
             setBackgroundColor(0x01000000)
-            setOnTouchListener { _, _ -> true }
+            setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
+                    try {
+                        @Suppress("DEPRECATION")
+                        sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
+                    } catch (_: Exception) {}
+                    try {
+                        val sb = getSystemService("statusbar")
+                        val method = sb?.javaClass?.getMethod("collapsePanels")
+                        method?.isAccessible = true
+                        method?.invoke(sb)
+                    } catch (_: Exception) {}
+                    try {
+                        StrictModeService.instance?.dismissNotificationShade()
+                    } catch (_: Exception) {}
+                }
+                true
+            }
         }
         try { windowManager.addView(topOverlayView, params) } catch (e: Exception) {}
     }
 
     private fun addEdgeOverlay(type: Int, gravity: Int) {
-        val edgeWidth = dpToPx(14)
+        val edgeWidth = dpToPx(28)
         val params = WindowManager.LayoutParams(
             edgeWidth,
             WindowManager.LayoutParams.MATCH_PARENT,

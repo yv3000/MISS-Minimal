@@ -76,7 +76,6 @@ class NotificationBlockAccessibility : AccessibilityService() {
     if (Build.VERSION.SDK_INT >= 31) {
       performGlobalAction(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE)
     }
-    performGlobalAction(GLOBAL_ACTION_BACK)
     @Suppress("DEPRECATION")
     sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
   }
